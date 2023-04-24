@@ -45,7 +45,12 @@ function Header() {
                 <img className={'w-[96px] pointer-events-none sm:w-[128px]'} src={logo} alt={'Holidaze home'} />
               </Link>
               <nav>
-                <NavLink className={'text-rose-800 font-semibold text-sm sm:text-base'} to={'/venues'}>
+                <NavLink
+                  className={
+                    'text-rose-800 font-semibold text-sm ease-out duration-200 hover:text-rose-700 sm:text-base'
+                  }
+                  to={'/venues'}
+                >
                   Venues
                 </NavLink>
               </nav>
@@ -64,7 +69,11 @@ function Header() {
                         placeholder={'Search for venues'}
                       />
                     </label>
-                    <button className={'border border-rose-700 text-rose-700 font-semibold py-1.5 px-3 rounded'}>
+                    <button
+                      className={
+                        'border border-rose-800 text-rose-800 font-semibold py-1.5 px-3 rounded hover:bg-rose-800 hover:text-white ease-out duration-200'
+                      }
+                    >
                       Search
                     </button>
                   </div>
@@ -76,19 +85,30 @@ function Header() {
                     <div className={'flex items-center gap-2 relative'}>
                       <small className={'leading-none'}>Profile</small>
                       <button id={'profile-menu'} onClick={handleProfileMenu}>
-                        <img className={'pointer-events-none'} src={profileSmall} alt={'Profile icon'} />
+                        <img className={'pointer-events-none'} src={profileSmall} alt={'Profile menu'} />
                       </button>
                       <div
                         id={'profile-nav'}
                         className={`${
                           isProfileMenuOpen ? 'block' : 'hidden'
-                        } absolute bottom-10 right-0 w-max p-3 bg-zinc-100 rounded text-sm sm:top-8 sm:h-fit`}
+                        } absolute bottom-10 w-32 right-0 pb-1 bg-gray-50 shadow shadow-slate-200 rounded sm:top-8 sm:h-fit`}
                       >
-                        <strong className={'block pb-1.5 border-b-2 border-b-neutral-100'}>Steve453</strong>
-                        <nav className={'flex flex-col gap-2'}>
-                          <Link to={'/profile'}>Profile</Link>
-                          {isManager && <Link to={'/create-venue'}>Create Venue</Link>}
-                          <Link to={'/profile'}>Sign Out</Link>
+                        <div className={'pb-2 p-3 border-b-2 border-b-gray-100'}>
+                          <strong className={'block'}>Steve453</strong>
+                          <span className={'text-xs'}>{isManager ? 'Venue manager' : 'Customer'}</span>
+                        </div>
+                        <nav className={'flex flex-col mt-2 gap-2 text-sm'}>
+                          <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                            Profile
+                          </Link>
+                          {isManager && (
+                            <Link to={'/create-venue'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                              Create Venue
+                            </Link>
+                          )}
+                          <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                            Sign Out
+                          </Link>
                         </nav>
                       </div>
                     </div>
@@ -97,7 +117,9 @@ function Header() {
                   <button
                     onClick={() => setIsSignInUpModal(true)}
                     id={'sign-in-up'}
-                    className={'bg-rose-700 text-white rounded h-10 w-full sm:w-[88px]'}
+                    className={
+                      'bg-rose-800 text-white rounded h-10 w-full hover:bg-rose-700 ease-out duration-200 sm:w-[88px]'
+                    }
                   >
                     Sign In
                   </button>
