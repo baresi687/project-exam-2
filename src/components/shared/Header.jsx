@@ -45,7 +45,12 @@ function Header() {
                 <img className={'w-[96px] pointer-events-none sm:w-[128px]'} src={logo} alt={'Holidaze home'} />
               </Link>
               <nav>
-                <NavLink className={'text-rose-800 font-semibold text-sm sm:text-base'} to={'/venues'}>
+                <NavLink
+                  className={
+                    'text-rose-800 font-semibold text-sm ease-out duration-200 hover:text-rose-700 sm:text-base'
+                  }
+                  to={'/venues'}
+                >
                   Venues
                 </NavLink>
               </nav>
@@ -64,7 +69,11 @@ function Header() {
                         placeholder={'Search for venues'}
                       />
                     </label>
-                    <button className={'border border-rose-700 text-rose-700 font-semibold py-1.5 px-3 rounded'}>
+                    <button
+                      className={
+                        'border border-rose-800 text-rose-800 font-semibold py-1.5 px-3 rounded hover:bg-rose-800 hover:text-white ease-out duration-200'
+                      }
+                    >
                       Search
                     </button>
                   </div>
@@ -76,7 +85,7 @@ function Header() {
                     <div className={'flex items-center gap-2 relative'}>
                       <small className={'leading-none'}>Profile</small>
                       <button id={'profile-menu'} onClick={handleProfileMenu}>
-                        <img className={'pointer-events-none'} src={profileSmall} alt={'Profile icon'} />
+                        <img className={'pointer-events-none'} src={profileSmall} alt={'Profile menu'} />
                       </button>
                       <div
                         id={'profile-nav'}
@@ -97,7 +106,9 @@ function Header() {
                   <button
                     onClick={() => setIsSignInUpModal(true)}
                     id={'sign-in-up'}
-                    className={'bg-rose-700 text-white rounded h-10 w-full sm:w-[88px]'}
+                    className={
+                      'bg-rose-800 text-white rounded h-10 w-full hover:bg-rose-700 ease-out duration-200 sm:w-[88px]'
+                    }
                   >
                     Sign In
                   </button>

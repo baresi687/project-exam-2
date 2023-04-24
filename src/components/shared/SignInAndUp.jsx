@@ -34,16 +34,16 @@ function SignInAndUp({ isSignInUpModal, setIsSignInUpModal, isSignInElemActive, 
             <div className={'mt-8'}>
               <button
                 onClick={() => setIsSignInElemActive(true)}
-                className={`font-semibold w-[88px] h-10 border border-rose-700 bg-rose-700  ${
-                  !isSignInElemActive ? 'bg-transparent text-rose-700' : 'text-white'
+                className={`font-semibold w-[88px] h-10 border border-rose-800 bg-rose-800 ease-out duration-200 hover:bg-rose-800 hover:text-white ${
+                  !isSignInElemActive ? 'bg-transparent text-rose-800' : 'text-white'
                 }`}
               >
                 Sign In
               </button>
               <button
                 onClick={() => setIsSignInElemActive(false)}
-                className={`font-semibold w-[88px] h-10 border border-rose-700 bg-rose-700  ${
-                  isSignInElemActive ? 'bg-transparent text-rose-700' : 'text-white'
+                className={`font-semibold w-[88px] h-10 border border-rose-800 bg-rose-800 ease-out duration-200 hover:bg-rose-800 hover:text-white ${
+                  isSignInElemActive ? 'bg-transparent text-rose-800' : 'text-white'
                 }`}
               >
                 Sign Up
@@ -70,7 +70,11 @@ function SignInAndUp({ isSignInUpModal, setIsSignInUpModal, isSignInElemActive, 
                           placeholder={'Password'}
                         />
                       </label>
-                      <button className={'font-semibold rounded mt-3 mb-6 bg-rose-700 text-white h-10 w-full'}>
+                      <button
+                        className={
+                          'font-semibold rounded mt-3 mb-6 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+                        }
+                      >
                         Sign In
                       </button>
                     </form>
@@ -118,11 +122,17 @@ function SignInAndUp({ isSignInUpModal, setIsSignInUpModal, isSignInElemActive, 
                             placeholder={'Confirm password'}
                           />
                         </label>
-                        <div className={'flex items-center gap-2'}>
-                          <p className={'font-semibold'}>I am a Venue manager</p>
-                          <input type={'checkbox'} />
+                        <div className={'flex items-center gap-2 mt-3'}>
+                          <label htmlFor={'venue-manager'} className={'font-semibold select-none'}>
+                            I am a Venue manager
+                          </label>
+                          <input id={'venue-manager'} type={'checkbox'} />
                         </div>
-                        <button className={'font-semibold rounded mt-3 mb-6 bg-rose-700 text-white h-10 w-full'}>
+                        <button
+                          className={
+                            'font-semibold rounded mt-3 mb-6 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+                          }
+                        >
                           Sign In
                         </button>
                       </form>
