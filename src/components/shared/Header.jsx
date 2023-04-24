@@ -2,10 +2,14 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import profileSmall from '../../assets/profile-small.svg';
 import { useEffect, useRef, useState } from 'react';
+import SignInAndUp from './SignInAndUp.jsx';
 
 function Header() {
   const isSignedIn = false;
   const isManager = false;
+
+  const [isSignInUpModal, setIsSignInUpModal] = useState(false);
+  const [isSignInElemActive, setIsSignInElemActive] = useState(true);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const { pathname } = useLocation();
@@ -13,6 +17,7 @@ function Header() {
   function handleProfileMenu() {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   }
+
   function handleProfileMenuClickOutside(e) {
     if (!profileMenuRef.current.contains(e.target) && isProfileMenuOpen) {
       setIsProfileMenuOpen(false);
@@ -90,7 +95,7 @@ function Header() {
                   </>
                 ) : (
                   <button
-                    onClick={() => console.log('Placeholder Sign In/Up')}
+                    onClick={() => setIsSignInUpModal(true)}
                     id={'sign-in-up'}
                     className={'bg-rose-700 text-white rounded h-10 w-full sm:w-[88px]'}
                   >
@@ -102,6 +107,12 @@ function Header() {
           </div>
         </div>
       </header>
+      <SignInAndUp
+        isSignInUpModal={isSignInUpModal}
+        setIsSignInUpModal={setIsSignInUpModal}
+        isSignInElemActive={isSignInElemActive}
+        setIsSignInElemActive={setIsSignInElemActive}
+      />
     </>
   );
 }
