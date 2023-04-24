@@ -91,13 +91,24 @@ function Header() {
                         id={'profile-nav'}
                         className={`${
                           isProfileMenuOpen ? 'block' : 'hidden'
-                        } absolute bottom-10 right-0 w-max p-3 bg-zinc-100 rounded text-sm sm:top-8 sm:h-fit`}
+                        } absolute bottom-10 w-32 right-0 pb-1 bg-gray-50 shadow shadow-slate-200 rounded sm:top-8 sm:h-fit`}
                       >
-                        <strong className={'block pb-1.5 border-b-2 border-b-neutral-100'}>Steve453</strong>
-                        <nav className={'flex flex-col gap-2'}>
-                          <Link to={'/profile'}>Profile</Link>
-                          {isManager && <Link to={'/create-venue'}>Create Venue</Link>}
-                          <Link to={'/profile'}>Sign Out</Link>
+                        <div className={'pb-2 p-3 border-b-2 border-b-gray-100'}>
+                          <strong className={'block'}>Steve453</strong>
+                          <span className={'text-xs'}>{isManager ? 'Venue manager' : 'Customer'}</span>
+                        </div>
+                        <nav className={'flex flex-col mt-2 gap-2 text-sm'}>
+                          <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                            Profile
+                          </Link>
+                          {isManager && (
+                            <Link to={'/create-venue'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                              Create Venue
+                            </Link>
+                          )}
+                          <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                            Sign Out
+                          </Link>
                         </nav>
                       </div>
                     </div>
