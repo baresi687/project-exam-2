@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <VenueDetails />,
       },
       {
-        path: '/search',
+        path: '/search/:value',
         element: <Search />,
       },
       {
