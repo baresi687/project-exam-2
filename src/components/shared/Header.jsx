@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import profileSmall from '../../assets/profile-small.svg';
 import { useEffect, useRef, useState } from 'react';
@@ -8,11 +8,25 @@ function Header() {
   const isSignedIn = false;
   const isManager = false;
 
+  const [searchValue, setSearchValue] = useState('');
+  const navigate = useNavigate();
   const [isSignInUpModal, setIsSignInUpModal] = useState(false);
   const [isSignInElemActive, setIsSignInElemActive] = useState(true);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const { pathname } = useLocation();
+
+  function handleSearch() {
+    if (searchValue) {
+      navigate(`/search/${searchValue}`);
+    }
+  }
+
+  function handleSearchEnterPress(e) {
+    if (e.key === 'Enter' && searchValue) {
+      handleSearch();
+    }
+  }
 
   function handleProfileMenu() {
     setIsProfileMenuOpen(!isProfileMenuOpen);
@@ -33,6 +47,10 @@ function Header() {
 
   useEffect(() => {
     setIsProfileMenuOpen(false);
+
+    if (!pathname.includes('/search')) {
+      setSearchValue('');
+    }
   }, [pathname]);
 
   return (
@@ -62,14 +80,43 @@ function Header() {
               >
                 <div className={'container mx-auto px-4'}>
                   <div className={'flex gap-2 max-w-[600px]'}>
-                    <label className={'w-full'}>
+                    <label className={'w-full relative'}>
                       <input
+                        aria-label={'Search for venues'}
                         className={'border-gray-200 border rounded h-10 indent-4 w-full'}
                         type={'text'}
                         placeholder={'Search for venues'}
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                        onKeyUp={handleSearchEnterPress}
                       />
+                      <button
+                        aria-label={'Clear search value'}
+                        onClick={() => setSearchValue('')}
+                        className={`${searchValue ? 'absolute' : 'hidden'} right-3 top-2`}
+                      >
+                        <svg
+                          className={'pointer-events-none'}
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          fill="none"
+                        >
+                          <path
+                            fill="#A9A9A9"
+                            d="M24 12c0 6.628-5.372 12-12 12S0 18.628 0 12 5.372 0 12 0s12 5.372 12 12Z"
+                            opacity=".5"
+                          />
+                          <path
+                            fill="#fff"
+                            d="M8.365 8.364a.9.9 0 0 1 1.272 0L12 10.728l2.364-2.364a.9.9 0 1 1 1.271 1.272L13.274 12l2.364 2.364a.9.9 0 0 1-1.273 1.272L12 13.272l-2.363 2.364a.9.9 0 0 1-1.272-1.272L10.729 12 8.364 9.636a.9.9 0 0 1 0-1.272Z"
+                          />
+                        </svg>
+                      </button>
                     </label>
                     <button
+                      onClick={handleSearch}
+                      aria-label={'Submit search'}
                       className={
                         'border border-rose-800 text-rose-800 font-semibold py-1.5 px-3 rounded hover:bg-rose-800 hover:text-white ease-out duration-200'
                       }
