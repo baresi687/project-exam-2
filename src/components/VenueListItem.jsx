@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 function VenueListItem({ id, name, media, maxGuests, price }) {
   return (
-    <Link key={id} to={`venues/venue-details/${id}`} className={'group'}>
+    <Link key={id} to={`/venues/venue-details/${id}`} className={'group'}>
       <img className={'rounded-xl object-cover h-72 w-full md:h-64'} src={media[0]} alt={name} />
       <div className={'flex flex-col gap-2 mt-4'}>
         <h3 className={'text-lg font-bold capitalize whitespace-nowrap overflow-hidden text-ellipsis'}>{name}</h3>

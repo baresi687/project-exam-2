@@ -24,7 +24,7 @@ function Home() {
             <h2 className={'text-3xl font-bold mb-12'}>Latest venues</h2>
             {isLoading && (
               <>
-                <div className={'my-0 mx-auto w-fit'}>
+                <div className={'my-0 mx-auto w-fit min-h-screen'}>
                   <div className={'loader'}></div>
                 </div>
               </>
