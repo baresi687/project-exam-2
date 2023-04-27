@@ -73,9 +73,11 @@ function Venues() {
             >
               {!isError ? (
                 <>
-                  {data.map((venue) => (
-                    <VenueListItem key={venue.id} {...venue} />
-                  ))}
+                  {data
+                    .filter((venue) => venue.media.length)
+                    .map((venue) => (
+                      <VenueListItem key={venue.id} {...venue} />
+                    ))}
                 </>
               ) : (
                 <div className={'api-error'}>
