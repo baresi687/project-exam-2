@@ -36,6 +36,27 @@ function VenueDetails() {
     console.log(body);
   }
 
+  function handleGuests(e) {
+    const id = e.currentTarget.id;
+
+    switch (id) {
+      case 'guest-increment':
+        if (maxGuests === guests) {
+          break;
+        } else {
+          setGuests(guests + 1);
+          break;
+        }
+      case 'guest-decrement':
+        if (guests === 1) {
+          break;
+        } else {
+          setGuests(guests - 1);
+          break;
+        }
+    }
+  }
+
   const onChange = (dates) => {
     const [start, end] = dates;
     setIsValidDateRange(true);
@@ -119,6 +140,7 @@ function VenueDetails() {
                         <div className={'flex flex-col gap-2'}>
                           <label htmlFor={'dates'}>Available dates:</label>
                           <DatePicker
+                            name={'dates'}
                             locale={'en-GB'}
                             selected={startDate}
                             onChange={onChange}
@@ -137,21 +159,60 @@ function VenueDetails() {
                           />
                         </div>
                         <div className={'flex flex-col gap-2'}>
-                          <label htmlFor={'guests'}>Guests:</label>
-                          <input
-                            defaultValue={guests}
-                            onChange={(e) => {
-                              setGuests(parseInt(e.target.value));
-                            }}
-                            min={1}
-                            max={maxGuests}
-                            name={'guests'}
-                            className={
-                              'w-24 border-gray-200 border rounded h-10 indent-4 invalid:border-2 invalid:border-rose-800'
-                            }
-                            type={'number'}
-                            onKeyDown={(e) => e.preventDefault()}
-                          />
+                          <label htmlFor={'guests'}>Guests: </label>
+                          <div className={'flex items-center'}>
+                            <button
+                              aria-label={'Decrement guests'}
+                              id={'guest-decrement'}
+                              type={'button'}
+                              onClick={(e) => handleGuests(e)}
+                              className={`rounded-full p-2 border border-neutral-400 ${
+                                guests === 1 && 'opacity-30 cursor-not-allowed'
+                              }`}
+                            >
+                              <svg
+                                className={'pointer-events-none'}
+                                width="12"
+                                height="12"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path d="M0 6H16V10H0V6Z" fill="#737373" />
+                              </svg>
+                            </button>
+                            <input
+                              aria-label={'Current number of guests'}
+                              name={'guests'}
+                              id={'guests'}
+                              value={guests}
+                              min={1}
+                              max={maxGuests}
+                              className={'text-center h-10 font-semibold'}
+                              type={'number'}
+                              readOnly
+                            />
+                            <button
+                              aria-label={'Increment guests'}
+                              id={'guest-increment'}
+                              type={'button'}
+                              onClick={(e) => handleGuests(e)}
+                              className={`rounded-full p-2 border border-neutral-400 ${
+                                guests === maxGuests && 'opacity-30 cursor-not-allowed'
+                              }`}
+                            >
+                              <svg
+                                className={'pointer-events-none'}
+                                width="12"
+                                height="12"
+                                viewBox="0 0 16 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path d="M9.6 6.4V0H6.4V6.4H0V9.6H6.4V16H9.6V9.6H16V6.4H9.6Z" fill="#737373" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                       <button
