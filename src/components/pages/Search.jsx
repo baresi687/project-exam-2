@@ -34,7 +34,9 @@ function Search() {
               {!isError ? (
                 <>
                   {searchResults.length ? (
-                    searchResults.map((venue) => <VenueListItem key={venue.id} {...venue} />)
+                    searchResults
+                      .filter((venue) => venue.media.length)
+                      .map((venue) => <VenueListItem key={venue.id} {...venue} />)
                   ) : (
                     <h2 className={'text-lg font-normal'}>
                       No matches for <span className={'italic font-bold'}>{value.trim()}</span>

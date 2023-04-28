@@ -3,7 +3,7 @@ import { GET_VENUES } from '../../settings/api.js';
 import VenueListItem from '../VenueListItem.jsx';
 
 function Home() {
-  const { data, isLoading, isError } = useApi(GET_VENUES + '?&sort=created&limit=12');
+  const { data, isLoading, isError } = useApi(GET_VENUES + '?&sort=created');
 
   return (
     <>
@@ -37,9 +37,12 @@ function Home() {
             >
               {!isError ? (
                 <>
-                  {data.map((venue) => (
-                    <VenueListItem key={venue.id} {...venue} />
-                  ))}
+                  {data
+                    .filter((venue) => venue.media.length)
+                    .slice(0, 12)
+                    .map((venue) => (
+                      <VenueListItem key={venue.id} {...venue} />
+                    ))}
                 </>
               ) : (
                 <div className={'api-error'}>
