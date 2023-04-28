@@ -1,11 +1,61 @@
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import DatePicker, { registerLocale } from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import en_gb from 'date-fns/locale/en-GB';
+registerLocale('en-GB', en_gb);
 
 function VenueDetails() {
   const { id } = useParams();
   const { data, isLoading, isError } = useApi(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
-  const { name, description, media, owner, maxGuests, meta, price } = data;
+  const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [guests, setGuests] = useState(1);
+  const [isValidDateRange, setIsValidDateRange] = useState(true);
+  const bookingsArray = [];
+
+  if (bookings && bookings.length) {
+    bookings.forEach((booking) => {
+      bookingsArray.push({ start: new Date(booking.dateFrom), end: new Date(booking.dateTo) });
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const body = {
+      dateFrom: startDate.toISOString(),
+      dateTo: endDate.toISOString(),
+      guests: guests,
+      venueId: venueId,
+    };
+
+    console.log(body);
+  }
+
+  const onChange = (dates) => {
+    const [start, end] = dates;
+    setIsValidDateRange(true);
+    setStartDate(start);
+
+    if (bookingsArray.length > 0) {
+      for (let i = 0; i < bookingsArray.length; i++) {
+        if (start < new Date(bookingsArray[i].start) && end > new Date(bookingsArray[i].end)) {
+          setStartDate(null);
+          setEndDate(null);
+          setIsValidDateRange(false);
+          break;
+        } else {
+          setEndDate(end);
+        }
+      }
+    } else {
+      setEndDate(end);
+    }
+  };
 
   return (
     <>
@@ -22,7 +72,7 @@ function VenueDetails() {
             {!isError ? (
               <>
                 <h1 className={'text-2xl font-bold capitalize mb-10 sm:text-4xl'}>{name}</h1>
-                <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:max-h-[460px]'}>
+                <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   <div className={'h-72 sm:h-auto lg:flex-1'}>
                     <img className={'rounded-xl object-cover h-full w-full'} src={media && media[0]} alt={name} />
                   </div>
@@ -59,21 +109,40 @@ function VenueDetails() {
                         <span className={'font-bold'}>{price} kr NOK</span> a night
                       </h3>
                     </div>
-                    <div id={'booking'} className={'flex flex-col gap-5 mt-6'}>
+                    <form
+                      autoComplete="off"
+                      onSubmit={handleSubmit}
+                      id={'booking'}
+                      className={'flex flex-col gap-5 mt-6'}
+                    >
                       <div className={'flex flex-col gap-4 sm:flex-row sm: sm:gap-8'}>
                         <div className={'flex flex-col gap-2'}>
                           <label htmlFor={'dates'}>Available dates:</label>
-                          <input
-                            name={'dates'}
-                            className={'border-gray-200 border rounded h-10 indent-2 max-w-[152px]'}
-                            type={'date'}
-                            placeholder={'Available dates'}
+                          <DatePicker
+                            locale={'en-GB'}
+                            selected={startDate}
+                            onChange={onChange}
+                            startDate={startDate}
+                            endDate={endDate}
+                            selectsRange
+                            required
+                            id={'dates'}
+                            className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52 active:border-0 ${
+                              !isValidDateRange && 'text-xs indent-2 border-2 border-red-700 placeholder:text-red-700'
+                            }`}
+                            dateFormat={'dd.MM.yyyy'}
+                            minDate={new Date()}
+                            placeholderText={!isValidDateRange ? 'Please select valid available dates' : 'Select dates'}
+                            excludeDateIntervals={bookingsArray}
                           />
                         </div>
                         <div className={'flex flex-col gap-2'}>
                           <label htmlFor={'guests'}>Guests:</label>
                           <input
-                            defaultValue={1}
+                            defaultValue={guests}
+                            onChange={(e) => {
+                              setGuests(parseInt(e.target.value));
+                            }}
                             min={1}
                             max={maxGuests}
                             name={'guests'}
@@ -86,13 +155,14 @@ function VenueDetails() {
                         </div>
                       </div>
                       <button
+                        type={'submit'}
                         className={
                           'bg-rose-800 text-white rounded h-10 w-full mt-2 sm:w-40 hover:bg-rose-700 ease-out duration-200'
                         }
                       >
                         Reserve
                       </button>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </>
