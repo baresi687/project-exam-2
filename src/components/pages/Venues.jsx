@@ -10,7 +10,7 @@ function Venues() {
 
   useEffect(() => {
     fetchData(`${GET_VENUES}?&sort=${sort ? 'created' : 'name'}&sortOrder=${sortOrder ? 'desc' : 'asc'}`);
-  }, [sort, sortOrder]);
+  }, [fetchData, sort, sortOrder]);
 
   return (
     <>

@@ -8,7 +8,7 @@ function Home() {
 
   useEffect(() => {
     fetchData(GET_VENUES + '?&sort=created');
-  }, []);
+  }, [fetchData]);
 
   return (
     <>

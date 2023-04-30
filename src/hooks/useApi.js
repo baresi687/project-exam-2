@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 export function useApi() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  async function fetchData(url, method = 'GET', auth, postData) {
+
+  const fetchData = useCallback(async function (url, method = 'GET', auth, postData) {
     try {
       setIsLoading(true);
       setIsError(false);
@@ -34,7 +35,7 @@ export function useApi() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, []);
 
   return { data, isLoading, isError, errorMsg, fetchData };
 }

@@ -19,7 +19,7 @@ function VenueDetails() {
 
   useEffect(() => {
     fetchData(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
-  }, []);
+  }, [fetchData, id]);
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {

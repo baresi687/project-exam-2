@@ -15,7 +15,7 @@ function Search() {
 
   useEffect(() => {
     fetchData(GET_VENUES + '?&sort=created&sortOrder=desc');
-  }, []);
+  }, [fetchData]);
 
   return (
     <>
