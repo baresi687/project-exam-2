@@ -2,15 +2,20 @@ import { useParams } from 'react-router-dom';
 import VenueListItem from '../VenueListItem.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
+import { useEffect } from 'react';
 
 function Search() {
   const { value } = useParams();
-  const { data, isLoading, isError } = useApi(GET_VENUES + '?&sort=created&sortOrder=desc');
+  const { data, isLoading, isError, fetchData } = useApi();
   const searchResults = data.filter(
     ({ name, description }) =>
       name.toLowerCase().includes(value.toLowerCase().trim()) ||
       description.toLowerCase().includes(value.toLowerCase().trim())
   );
+
+  useEffect(() => {
+    fetchData(GET_VENUES + '?&sort=created&sortOrder=desc');
+  }, []);
 
   return (
     <>

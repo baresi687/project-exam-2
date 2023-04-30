@@ -1,9 +1,14 @@
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import VenueListItem from '../VenueListItem.jsx';
+import { useEffect } from 'react';
 
 function Home() {
-  const { data, isLoading, isError } = useApi(GET_VENUES + '?&sort=created');
+  const { data, isLoading, isError, fetchData } = useApi();
+
+  useEffect(() => {
+    fetchData(GET_VENUES + '?&sort=created');
+  }, []);
 
   return (
     <>

@@ -11,7 +11,7 @@ function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemAct
         }`}
       >
         <div id={'modal-content'} className={'bg-white mt-24 max-w-xl mx-auto rounded-xl'}>
-          <div className={'px-6'}>
+          <div className={'px-6 pb-6'}>
             <header className={'h-[80px] flex items-center justify-center relative border-b-2 border-b-neutral-50'}>
               <h3 className={'font-bold'}>Sign In or Up</h3>
               <button
@@ -52,7 +52,9 @@ function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemAct
                 Sign Up
               </button>
             </div>
-            <div className={'mt-12'}>{isSignInElemActive ? <SignIn /> : <SignUp />}</div>
+            <div className={'mt-12'}>
+              {isSignInElemActive ? <SignIn /> : <SignUp signUpSuccess={setIsSignInElemActive} />}
+            </div>
           </div>
         </div>
       </div>

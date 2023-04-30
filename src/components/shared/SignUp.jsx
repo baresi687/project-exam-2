@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useApi } from '../../hooks/useApi.js';
+import { SIGN_UP } from '../../settings/api.js';
 
 const schema = yup.object({
   name: yup
@@ -29,33 +31,52 @@ const schema = yup.object({
     .oneOf([yup.ref('password')], 'Password do not match'),
 });
 
-function SignUp() {
+function SignUp({ signUpSuccess }) {
   const [isVenueManager, setIsVenueManager] = useState(false);
+  const [isFormError, setIsFormError] = useState(false);
   const {
     register,
     handleSubmit,
 
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const { data: response, isLoading, isError, errorMsg, fetchData } = useApi();
 
-  const onSubmit = (data) => {
+  const useSubmit = (data) => {
     const body = data;
-    delete body.confirmPassword;
     body.venueManager = isVenueManager;
 
-    console.log(body);
+    fetchData(SIGN_UP, 'POST', null, body);
+    console.log(response);
   };
 
   function handleVenueManager() {
     setIsVenueManager(!isVenueManager);
   }
 
+  useEffect(() => {
+    if (response.id) {
+      signUpSuccess(true);
+    }
+  }, [response, signUpSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      setIsFormError(true);
+    }
+  }, [isError]);
+
   return (
     <>
       <h3 className={'text-2xl font-bold my-2'}>Sign Up</h3>
       <p>Sign Up to place bookings. Or create venues if you are a manager</p>
       <div className={'mt-12'}>
-        <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className={'flex flex-col gap-4'}>
+        <form
+          onBlur={() => setIsFormError(false)}
+          onSubmit={handleSubmit(useSubmit)}
+          autoComplete="off"
+          className={'flex flex-col gap-4'}
+        >
           <label className={'w-full'}>
             <input
               {...register('name')}
@@ -103,12 +124,14 @@ function SignUp() {
           <button
             type={'submit'}
             className={
-              'font-semibold rounded mt-3 mb-6 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+              'relative font-semibold rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
             }
           >
-            Sign In
+            {isLoading && <span className={'loader absolute top-2 left-6 h-6 w-6'}></span>}
+            {isLoading ? 'Processing..' : 'Sign Up'}
           </button>
         </form>
+        {isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}
       </div>
     </>
   );

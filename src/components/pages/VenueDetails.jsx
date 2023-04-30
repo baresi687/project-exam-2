@@ -1,7 +1,7 @@
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import { useParams } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import en_gb from 'date-fns/locale/en-GB';
@@ -9,13 +9,17 @@ registerLocale('en-GB', en_gb);
 
 function VenueDetails() {
   const { id } = useParams();
-  const { data, isLoading, isError } = useApi(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
+  const { data, isLoading, isError, fetchData } = useApi();
   const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [guests, setGuests] = useState(1);
   const [isValidDateRange, setIsValidDateRange] = useState(true);
   const bookingsArray = [];
+
+  useEffect(() => {
+    fetchData(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
+  }, []);
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {
