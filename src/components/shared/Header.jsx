@@ -2,7 +2,7 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import profileSmall from '../../assets/profile-small.svg';
 import { useEffect, useRef, useState } from 'react';
-import SignInAndUp from './SignInAndUp.jsx';
+import SignInAndUpModal from './SignInAndUpModal.jsx';
 
 function Header() {
   const isSignedIn = false;
@@ -176,7 +176,7 @@ function Header() {
           </div>
         </div>
       </header>
-      <SignInAndUp
+      <SignInAndUpModal
         isSignInUpModal={isSignInUpModal}
         setIsSignInUpModal={setIsSignInUpModal}
         isSignInElemActive={isSignInElemActive}
