@@ -47,7 +47,6 @@ function SignUp({ signUpSuccess }) {
     body.venueManager = isVenueManager;
 
     fetchData(SIGN_UP, 'POST', null, body);
-    console.log(response);
   };
 
   function handleVenueManager() {

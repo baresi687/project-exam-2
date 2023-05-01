@@ -2,19 +2,18 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import profileSmall from '../../assets/profile-small.svg';
 import { useContext, useEffect, useRef, useState } from 'react';
-import SignInAndUpModal from './SignInAndUpModal.jsx';
 import { AuthContext } from '../../context/AuthContext.js';
+import { SignInUpModal } from '../layout/Layout.jsx';
 
 function Header() {
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
-  const [isSignInUpModal, setIsSignInUpModal] = useState(false);
-  const [isSignInElemActive, setIsSignInElemActive] = useState(true);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const { pathname } = useLocation();
   const [isNotSignedIn, setIsNotSignedIn] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
+  const [, setIsSignInUpModal] = useContext(SignInUpModal);
 
   function handleSearch() {
     if (searchValue) {
@@ -153,13 +152,15 @@ function Header() {
                         id={'profile-nav'}
                         className={`${
                           isProfileMenuOpen ? 'block' : 'hidden'
-                        } absolute bottom-10 max-w-[11rem] right-0 pb-1 bg-gray-50 shadow shadow-slate-200 rounded sm:top-8 sm:h-fit`}
+                        } absolute bottom-10 min-w-[8rem] max-w-[11rem] right-0 /*pb-1*/ bg-gray-50 border border-gray-100 shadow-sm shadow-slate-200 rounded-md sm:top-8 sm:h-fit`}
                       >
-                        <div className={'py-3 px-3 border-b-2 border-b-gray-100'}>
-                          <strong className={'block break-words text-sm'}>{auth.name}</strong>
-                          <span className={'text-xs'}>{auth.venueManager ? 'Venue manager' : 'Customer'}</span>
+                        <div className={'py-2.5 px-3 border-b-2 border-b-gray-100'}>
+                          <p className={'text-sm font-light mb-1'}>
+                            {auth.venueManager ? 'Venue manager' : 'Customer'}
+                          </p>
+                          <p className={'text-sm font-semibold break-words'}>{auth.name}</p>
                         </div>
-                        <nav className={'flex flex-col mt-2 gap-2 text-sm'}>
+                        <nav className={'flex flex-col mt-1.5 text-sm'}>
                           <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
                             Profile
                           </Link>
@@ -170,7 +171,9 @@ function Header() {
                           )}
                           <button
                             onClick={handleSignOut}
-                            className={'text-left px-3 py-1.5 hover:bg-rose-800 hover:text-white'}
+                            className={
+                              'text-left mt-1.5 px-3 py-2 border-t-2 border-gray-100 hover:bg-rose-800 hover:text-white'
+                            }
                           >
                             Sign Out
                           </button>
@@ -194,12 +197,6 @@ function Header() {
             </div>
           </div>
         </div>
-        <SignInAndUpModal
-          isSignInUpModal={isSignInUpModal}
-          setIsSignInUpModal={setIsSignInUpModal}
-          isSignInElemActive={isSignInElemActive}
-          setIsSignInElemActive={setIsSignInElemActive}
-        />
       </header>
     </>
   );
