@@ -53,7 +53,11 @@ function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemAct
               </button>
             </div>
             <div className={'mt-12'}>
-              {isSignInElemActive ? <SignIn /> : <SignUp signUpSuccess={setIsSignInElemActive} />}
+              {isSignInElemActive ? (
+                <SignIn closeModalonSignIn={setIsSignInUpModal} />
+              ) : (
+                <SignUp signUpSuccess={setIsSignInElemActive} />
+              )}
             </div>
           </div>
         </div>
