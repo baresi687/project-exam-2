@@ -22,7 +22,7 @@ export function useApi() {
 
       if (response.status === 200 || response.status === 201 || response.status === 202) {
         setData(responseJSON);
-      } else if (response.status === 400) {
+      } else if (response.status === 400 || response.status === 401) {
         setIsError(true);
         setErrorMsg(responseJSON.errors[0].message);
       } else {
