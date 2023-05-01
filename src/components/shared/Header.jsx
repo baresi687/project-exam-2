@@ -1,13 +1,11 @@
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import profileSmall from '../../assets/profile-small.svg';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import SignInAndUpModal from './SignInAndUpModal.jsx';
+import { AuthContext } from '../../context/AuthContext.js';
 
 function Header() {
-  const isSignedIn = false;
-  const isManager = false;
-
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
   const [isSignInUpModal, setIsSignInUpModal] = useState(false);
@@ -15,6 +13,8 @@ function Header() {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const { pathname } = useLocation();
+  const [isNotSignedIn, setIsNotSignedIn] = useState(false);
+  const [auth, setAuth] = useContext(AuthContext);
 
   function handleSearch() {
     if (searchValue) {
@@ -38,6 +38,13 @@ function Header() {
     }
   }
 
+  function handleSignOut() {
+    setAuth(null);
+    setIsNotSignedIn(true);
+    localStorage.clear();
+    navigate('/', { replace: true });
+  }
+
   useEffect(() => {
     document.addEventListener('mousedown', handleProfileMenuClickOutside);
     return () => {
@@ -52,6 +59,14 @@ function Header() {
       setSearchValue('');
     }
   }, [pathname]);
+
+  useEffect(() => {
+    if (localStorage.getItem('user')) {
+      setAuth(JSON.parse(localStorage.getItem('user')));
+    } else {
+      setIsNotSignedIn(true);
+    }
+  }, [setAuth]);
 
   return (
     <>
@@ -126,10 +141,10 @@ function Header() {
                   </div>
                 </div>
               </div>
-              <div ref={profileMenuRef} id={'sign-in-up-profile'} className={'w-[88px] sm:shrink-0 sm:w-auto'}>
-                {isSignedIn ? (
+              <div ref={profileMenuRef} id={'sign-in-up-profile'} className={'w-[88px] sm:shrink-0'}>
+                {auth && (
                   <>
-                    <div className={'flex items-center gap-2 relative'}>
+                    <div className={'flex items-center gap-2 relative sm:justify-end'}>
                       <small className={'leading-none'}>Profile</small>
                       <button id={'profile-menu'} onClick={handleProfileMenu}>
                         <img className={'pointer-events-none'} src={profileSmall} alt={'Profile menu'} />
@@ -138,29 +153,33 @@ function Header() {
                         id={'profile-nav'}
                         className={`${
                           isProfileMenuOpen ? 'block' : 'hidden'
-                        } absolute bottom-10 w-32 right-0 pb-1 bg-gray-50 shadow shadow-slate-200 rounded sm:top-8 sm:h-fit`}
+                        } absolute bottom-10 max-w-[11rem] right-0 pb-1 bg-gray-50 shadow shadow-slate-200 rounded sm:top-8 sm:h-fit`}
                       >
-                        <div className={'pb-2 p-3 border-b-2 border-b-gray-100'}>
-                          <strong className={'block'}>Steve453</strong>
-                          <span className={'text-xs'}>{isManager ? 'Venue manager' : 'Customer'}</span>
+                        <div className={'py-3 px-3 border-b-2 border-b-gray-100'}>
+                          <strong className={'block break-words text-sm'}>{auth.name}</strong>
+                          <span className={'text-xs'}>{auth.venueManager ? 'Venue manager' : 'Customer'}</span>
                         </div>
                         <nav className={'flex flex-col mt-2 gap-2 text-sm'}>
                           <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
                             Profile
                           </Link>
-                          {isManager && (
+                          {auth.venueManager && (
                             <Link to={'/create-venue'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
                               Create Venue
                             </Link>
                           )}
-                          <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                          <button
+                            onClick={handleSignOut}
+                            className={'text-left px-3 py-1.5 hover:bg-rose-800 hover:text-white'}
+                          >
                             Sign Out
-                          </Link>
+                          </button>
                         </nav>
                       </div>
                     </div>
                   </>
-                ) : (
+                )}
+                {isNotSignedIn && !auth && (
                   <button
                     onClick={() => setIsSignInUpModal(true)}
                     id={'sign-in-up'}
@@ -175,13 +194,13 @@ function Header() {
             </div>
           </div>
         </div>
+        <SignInAndUpModal
+          isSignInUpModal={isSignInUpModal}
+          setIsSignInUpModal={setIsSignInUpModal}
+          isSignInElemActive={isSignInElemActive}
+          setIsSignInElemActive={setIsSignInElemActive}
+        />
       </header>
-      <SignInAndUpModal
-        isSignInUpModal={isSignInUpModal}
-        setIsSignInUpModal={setIsSignInUpModal}
-        isSignInElemActive={isSignInElemActive}
-        setIsSignInElemActive={setIsSignInElemActive}
-      />
     </>
   );
 }

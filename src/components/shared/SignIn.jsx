@@ -1,9 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useApi } from '../../hooks/useApi.js';
 import { SIGN_IN } from '../../settings/api.js';
+import { AuthContext } from '../../context/AuthContext.js';
 
 const schema = yup.object({
   email: yup
@@ -29,6 +30,7 @@ function SignIn({ closeModalonSignIn }) {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { data: response, isLoading, isError, errorMsg, fetchData } = useApi();
+  const [, setAuth] = useContext(AuthContext);
 
   const useSubmit = (data) => {
     fetchData(SIGN_IN, 'POST', null, data);
@@ -42,10 +44,11 @@ function SignIn({ closeModalonSignIn }) {
 
   useEffect(() => {
     if (response.name) {
-      console.log(response);
+      setAuth(response);
+      localStorage.setItem('user', JSON.stringify(response));
       closeModalonSignIn(false);
     }
-  }, [closeModalonSignIn, response]);
+  }, [closeModalonSignIn, response, setAuth]);
 
   return (
     <>
