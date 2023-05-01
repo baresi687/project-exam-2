@@ -1,14 +1,16 @@
 import VenueListItem from '../VenueListItem.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function Venues() {
   const [sort, setSort] = useState(true);
   const [sortOrder, setSortOrder] = useState(true);
-  const { data, isLoading, isError } = useApi(
-    `${GET_VENUES}?&sort=${sort ? 'created' : 'name'}&sortOrder=${sortOrder ? 'desc' : 'asc'}`
-  );
+  const { data, isLoading, isError, fetchData } = useApi();
+
+  useEffect(() => {
+    fetchData(`${GET_VENUES}?&sort=${sort ? 'created' : 'name'}&sortOrder=${sortOrder ? 'desc' : 'asc'}`);
+  }, [fetchData, sort, sortOrder]);
 
   return (
     <>
