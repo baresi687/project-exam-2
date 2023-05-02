@@ -23,7 +23,9 @@ function VenueDetails() {
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {
-      bookingsArray.push({ start: new Date(booking.dateFrom), end: new Date(booking.dateTo) });
+      if (new Date(booking.dateFrom) < new Date(booking.dateTo)) {
+        bookingsArray.push({ start: new Date(booking.dateFrom), end: new Date(booking.dateTo) });
+      }
     });
   }
 
