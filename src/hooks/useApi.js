@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 export function useApi() {
   const [data, setData] = useState([]);
+  const [created, setCreated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,6 +23,7 @@ export function useApi() {
 
       if (response.status === 200 || response.status === 201 || response.status === 202) {
         setData(responseJSON);
+        setCreated(true);
       } else if (response.status === 400 || response.status === 401) {
         setIsError(true);
         setErrorMsg(responseJSON.errors[0].message);
@@ -37,5 +39,5 @@ export function useApi() {
     }
   }, []);
 
-  return { data, isLoading, isError, errorMsg, fetchData };
+  return { data, created, isLoading, isError, errorMsg, fetchData };
 }

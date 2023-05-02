@@ -4,4 +4,8 @@ function handleImgError(e) {
   e.target.src = placeHolderImg;
 }
 
-export { handleImgError };
+function scrollToMessage(elemRef) {
+  elemRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
+}
+
+export { handleImgError, scrollToMessage };

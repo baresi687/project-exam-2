@@ -1,25 +1,36 @@
 import { useApi } from '../../hooks/useApi.js';
-import { GET_VENUES } from '../../settings/api.js';
+import { CREATE_BOOKING, GET_VENUES } from '../../settings/api.js';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import en_gb from 'date-fns/locale/en-GB';
+import { AuthContext } from '../../context/AuthContext.js';
+import { SignInUpModal } from '../layout/Layout.jsx';
+import { scrollToMessage } from '../../utils/validation.js';
 registerLocale('en-GB', en_gb);
 
 function VenueDetails() {
   const { id } = useParams();
   const { data, isLoading, isError, fetchData } = useApi();
+  const {
+    data: postBooking,
+    created,
+    isLoading: isLoadingBooking,
+    isError: isErrorBooking,
+    errorMsg,
+    fetchData: fetchBooking,
+  } = useApi();
   const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [guests, setGuests] = useState(1);
   const [isValidDateRange, setIsValidDateRange] = useState(true);
   const bookingsArray = [];
-
-  useEffect(() => {
-    fetchData(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
-  }, [fetchData, id]);
+  const [isFormError, setIsFormError] = useState(false);
+  const [auth] = useContext(AuthContext);
+  const [, setIsSignInUpModal] = useContext(SignInUpModal);
+  const bookingErrorRef = useRef(null);
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {
@@ -32,14 +43,18 @@ function VenueDetails() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const body = {
-      dateFrom: startDate.toISOString(),
-      dateTo: endDate.toISOString(),
-      guests: guests,
-      venueId: venueId,
-    };
+    if (auth) {
+      const body = {
+        dateFrom: startDate.toISOString(),
+        dateTo: endDate.toISOString(),
+        guests: guests,
+        venueId: venueId,
+      };
 
-    console.log(body);
+      fetchBooking(CREATE_BOOKING, 'POST', auth.accessToken, body);
+    } else {
+      setIsSignInUpModal(true);
+    }
   }
 
   function handleGuests(e) {
@@ -47,19 +62,11 @@ function VenueDetails() {
 
     switch (id) {
       case 'guest-increment':
-        if (maxGuests === guests) {
-          break;
-        } else {
-          setGuests(guests + 1);
-          break;
-        }
+        setGuests(guests + 1);
+        break;
       case 'guest-decrement':
-        if (guests === 1) {
-          break;
-        } else {
-          setGuests(guests - 1);
-          break;
-        }
+        setGuests(guests - 1);
+        break;
     }
   }
 
@@ -83,6 +90,23 @@ function VenueDetails() {
       setEndDate(end);
     }
   };
+
+  useEffect(() => {
+    fetchData(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
+  }, [fetchData, id, postBooking]);
+
+  useEffect(() => {
+    if (isErrorBooking) {
+      setIsFormError(true);
+      scrollToMessage(bookingErrorRef);
+    }
+  }, [isErrorBooking]);
+
+  useEffect(() => {
+    if (created) {
+      console.log(postBooking);
+    }
+  }, [created, postBooking]);
 
   return (
     <>
@@ -137,6 +161,7 @@ function VenueDetails() {
                       </h3>
                     </div>
                     <form
+                      onBlur={() => setIsFormError(false)}
                       autoComplete="off"
                       onSubmit={handleSubmit}
                       id={'booking'}
@@ -153,7 +178,7 @@ function VenueDetails() {
                             startDate={startDate}
                             endDate={endDate}
                             selectsRange
-                            required
+                            required={auth}
                             id={'dates'}
                             className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52 active:border-0 ${
                               !isValidDateRange && 'text-xs indent-2 border-2 border-red-700 placeholder:text-red-700'
@@ -171,6 +196,7 @@ function VenueDetails() {
                               aria-label={'Decrement guests'}
                               id={'guest-decrement'}
                               type={'button'}
+                              disabled={guests === 1}
                               onClick={(e) => handleGuests(e)}
                               className={`rounded-full p-2 border border-neutral-400 ${
                                 guests === 1 && 'opacity-30 cursor-not-allowed'
@@ -202,6 +228,7 @@ function VenueDetails() {
                               aria-label={'Increment guests'}
                               id={'guest-increment'}
                               type={'button'}
+                              disabled={guests === maxGuests}
                               onClick={(e) => handleGuests(e)}
                               className={`rounded-full p-2 border border-neutral-400 ${
                                 guests === maxGuests && 'opacity-30 cursor-not-allowed'
@@ -223,14 +250,22 @@ function VenueDetails() {
                       </div>
                       <button
                         type={'submit'}
-                        className={
-                          'bg-rose-800 text-white rounded h-10 w-full mt-2 sm:w-40 hover:bg-rose-700 ease-out duration-200'
-                        }
+                        className={`relative bg-rose-800 text-white rounded h-10 w-full mt-2 sm:w-40 hover:bg-rose-700 ease-out duration-200`}
                       >
-                        Reserve
+                        {isLoadingBooking && (
+                          <span
+                            className={
+                              'loader absolute top-2 left-6 h-6 w-6 sm:left-3 sm:h-4 sm:w-4 sm:border-2 sm:top-3'
+                            }
+                          ></span>
+                        )}
+                        {isLoadingBooking ? 'Processing..' : 'Reserve'}
                       </button>
                     </form>
                   </div>
+                </div>
+                <div ref={bookingErrorRef}>
+                  {isFormError && <div className={'api-error my-8 w-fit lg:w-2/4 lg:ml-auto'}>{errorMsg}</div>}
                 </div>
               </>
             ) : (
