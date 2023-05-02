@@ -71,7 +71,7 @@ function Header() {
     <>
       <header className={'sm:border-b-2 sm:border-b-neutral-50'}>
         <div id={'header'}>
-          <div className={'container mx-auto fixed z-10 bottom-0 bg-white sm:static sm:max-w-7xl sm:px-4'}>
+          <div className={'container mx-auto fixed z-50 bottom-0 bg-white sm:static sm:max-w-7xl sm:px-4'}>
             <div className={'flex items-center justify-center gap-6 h-[72px] border-t-2 border-t-neutral-50 sm:gap-8'}>
               <Link to={'/'} className={'sm:shrink-0'}>
                 <img className={'w-[96px] pointer-events-none sm:w-[128px]'} src={logo} alt={'Holidaze home'} />
@@ -152,7 +152,7 @@ function Header() {
                         id={'profile-nav'}
                         className={`${
                           isProfileMenuOpen ? 'block' : 'hidden'
-                        } absolute bottom-10 min-w-[8rem] max-w-[11rem] right-0 /*pb-1*/ bg-gray-50 border border-gray-100 shadow-sm shadow-slate-200 rounded-md sm:top-8 sm:h-fit`}
+                        } absolute z-50 bottom-10 min-w-[8rem] max-w-[11rem] right-0 /*pb-1*/ bg-gray-50 border border-gray-100 shadow-sm shadow-slate-200 rounded-md sm:top-8 sm:h-fit`}
                       >
                         <div className={'py-2.5 px-3 border-b-2 border-b-gray-100'}>
                           <p className={'text-sm font-light mb-1'}>

@@ -22,6 +22,7 @@ function VenueDetails() {
     fetchData: fetchBooking,
   } = useApi();
   const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
+  const [showMoreDesc, setShowMoreDesc] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [guests, setGuests] = useState(1);
@@ -124,7 +125,7 @@ function VenueDetails() {
               <>
                 <h1 className={'text-2xl font-bold capitalize mb-10 sm:text-4xl'}>{name}</h1>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
-                  <div className={'h-72 sm:h-auto lg:flex-1'}>
+                  <div className={'h-72 sm:h-96 md:h-[28rem] lg:h-auto lg:basis-1/2'}>
                     <img
                       className={'rounded-xl object-cover h-full w-full'}
                       src={media && media[0]}
@@ -132,11 +133,42 @@ function VenueDetails() {
                       onError={handleImgError}
                     />
                   </div>
-                  <div className={'rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100 lg:flex-1'}>
-                    <h2 className={'pb-2 text-lg font-semibold border-b border-b-zinc-100 '}>
-                      {description && description.substring(0, 120)} {description && description.length > 120 && '..'}
-                    </h2>
-                    <div className={'flex flex-col gap-4 mt-4 pb-2 border-b border-b-zinc-100'}>
+                  <div
+                    className={'relative rounded-xl py-6 border border-gray-100 shadow-sm shadow-gray-100 lg:basis-1/2'}
+                  >
+                    <div
+                      className={`left-0 px-6 bg-white lg:absolute ${
+                        showMoreDesc && 'z-20 rounded-xl venue-desc-shadow'
+                      }`}
+                    >
+                      <div className={`border-b border-b-zinc-100 pb-3`}>
+                        <h2
+                          onClick={() => description && description.length > 120 && setShowMoreDesc(!showMoreDesc)}
+                          className={'mb-1 text-base font-semibold'}
+                        >
+                          {description && description.substring(0, 120)}
+                          <span
+                            className={`${description && description.length > 120 ? 'inline' : 'hidden'} ${
+                              !showMoreDesc ? 'inline' : 'hidden'
+                            }`}
+                          >
+                            ...
+                          </span>
+                          {showMoreDesc && <span>{description && description.substring(120)}</span>}
+                        </h2>
+                        {description && description.length > 120 && (
+                          <button
+                            onClick={() => setShowMoreDesc(!showMoreDesc)}
+                            className={
+                              'underline-offset-4 text-sm font-light bottom-[18px] right-[32px] bg-white lg:absolute hover:underline'
+                            }
+                          >
+                            {showMoreDesc ? 'Show less' : 'Show more'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <div className={'flex flex-col gap-4 mt-4 px-6 lg:mt-20'}>
                       <p>
                         Up to <span className={'font-semibold'}>{maxGuests}</span> guests
                       </p>
@@ -161,7 +193,7 @@ function VenueDetails() {
                             );
                           })}
                       </div>
-                      <h3 className={'text-lg mt-2'}>
+                      <h3 className={'text-lg mt-2 pb-2 border-b border-b-zinc-100'}>
                         <span className={'font-bold'}>{price} kr NOK</span> a night
                       </h3>
                     </div>
@@ -170,7 +202,7 @@ function VenueDetails() {
                       autoComplete="off"
                       onSubmit={handleSubmit}
                       id={'booking'}
-                      className={'flex flex-col gap-5 mt-6'}
+                      className={'flex flex-col gap-5 px-6 mt-8'}
                     >
                       <div className={'flex flex-col gap-4 sm:flex-row sm: sm:gap-8'}>
                         <div className={'flex flex-col gap-2'}>
@@ -268,7 +300,7 @@ function VenueDetails() {
                       </div>
                       <button
                         type={'submit'}
-                        className={`relative bg-rose-800 text-white rounded h-10 w-full mt-2 sm:w-40 hover:bg-rose-700 ease-out duration-200`}
+                        className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-40 hover:bg-rose-700 ease-out duration-200`}
                       >
                         {isLoadingBooking && (
                           <span
@@ -283,7 +315,7 @@ function VenueDetails() {
                   </div>
                 </div>
                 <div ref={bookingErrorRef}>
-                  {isFormError && <div className={'api-error my-8 w-fit lg:w-2/4 lg:ml-auto'}>{errorMsg}</div>}
+                  {isFormError && <div className={'api-error my-8 w-full lg:w-2/4 lg:pl-6 lg:ml-auto'}>{errorMsg}</div>}
                 </div>
               </>
             ) : (
