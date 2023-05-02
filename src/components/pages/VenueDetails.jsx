@@ -186,7 +186,7 @@ function VenueDetails() {
                             selectsRange
                             required={auth}
                             id={'dates'}
-                            className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52 active:border-0 ${
+                            className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52 ${
                               !isValidDateRange && 'text-xs indent-2 border-2 border-red-700 placeholder:text-red-700'
                             }`}
                             dateFormat={'dd.MM.yyyy'}
@@ -210,13 +210,19 @@ function VenueDetails() {
                             >
                               <svg
                                 className={'pointer-events-none'}
+                                xmlns="http://www.w3.org/2000/svg"
                                 width="12"
                                 height="12"
-                                viewBox="0 0 16 16"
                                 fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                <path d="M0 6H16V10H0V6Z" fill="#737373" />
+                                <g clipPath="url(#a)">
+                                  <path stroke="#737373" strokeWidth="2" d="M0 6h16" />
+                                </g>
+                                <defs>
+                                  <clipPath id="a">
+                                    <path fill="#fff" d="M0 0h12v12H0z" />
+                                  </clipPath>
+                                </defs>
                               </svg>
                             </button>
                             <input
@@ -242,13 +248,19 @@ function VenueDetails() {
                             >
                               <svg
                                 className={'pointer-events-none'}
+                                xmlns="http://www.w3.org/2000/svg"
                                 width="12"
                                 height="12"
-                                viewBox="0 0 16 16"
                                 fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
                               >
-                                <path d="M9.6 6.4V0H6.4V6.4H0V9.6H6.4V16H9.6V9.6H16V6.4H9.6Z" fill="#737373" />
+                                <g stroke="#737373" strokeWidth="2" clipPath="url(#a)">
+                                  <path d="M0 6h16M6 12V-4" />
+                                </g>
+                                <defs>
+                                  <clipPath id="a">
+                                    <path fill="#fff" d="M0 0h12v12H0z" />
+                                  </clipPath>
+                                </defs>
                               </svg>
                             </button>
                           </div>
