@@ -177,6 +177,7 @@ function VenueDetails() {
                             onChange={onChange}
                             startDate={startDate}
                             endDate={endDate}
+                            onClickOutside={() => startDate && !endDate && setStartDate(null)}
                             selectsRange
                             required={auth}
                             id={'dates'}
