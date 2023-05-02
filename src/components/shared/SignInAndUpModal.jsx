@@ -10,7 +10,7 @@ function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemAct
           isSignInUpModal ? '' : 'invisible opacity-0'
         }`}
       >
-        <div id={'modal-content'} className={'bg-white mt-24 max-w-xl mx-auto rounded-xl'}>
+        <div id={'modal-content'} className={'bg-white mt-24 max-w-xl mx-auto rounded-xl mb-36 sm:mb-0'}>
           <div className={'px-6 pb-6'}>
             <header className={'h-[80px] flex items-center justify-center relative border-b-2 border-b-neutral-50'}>
               <h3 className={'font-bold'}>Sign In or Up</h3>
