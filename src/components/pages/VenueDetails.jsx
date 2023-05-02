@@ -7,7 +7,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import en_gb from 'date-fns/locale/en-GB';
 import { AuthContext } from '../../context/AuthContext.js';
 import { SignInUpModal } from '../layout/Layout.jsx';
-import { scrollToMessage } from '../../utils/validation.js';
+import { handleImgError, scrollToMessage } from '../../utils/validation.js';
 registerLocale('en-GB', en_gb);
 
 function VenueDetails() {
@@ -125,7 +125,12 @@ function VenueDetails() {
                 <h1 className={'text-2xl font-bold capitalize mb-10 sm:text-4xl'}>{name}</h1>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   <div className={'h-72 sm:h-auto lg:flex-1'}>
-                    <img className={'rounded-xl object-cover h-full w-full'} src={media && media[0]} alt={name} />
+                    <img
+                      className={'rounded-xl object-cover h-full w-full'}
+                      src={media && media[0]}
+                      alt={name}
+                      onError={handleImgError}
+                    />
                   </div>
                   <div className={'rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100 lg:flex-1'}>
                     <h2 className={'pb-2 text-lg font-semibold border-b border-b-zinc-100 '}>
