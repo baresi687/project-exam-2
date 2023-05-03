@@ -146,7 +146,11 @@ function Header() {
                     <div className={'flex items-center gap-2 relative sm:justify-end'}>
                       <small className={'leading-none'}>Profile</small>
                       <button id={'profile-menu'} onClick={handleProfileMenu}>
-                        <img className={'pointer-events-none'} src={profileSmall} alt={'Profile menu'} />
+                        <img
+                          className={'pointer-events-none h-6 w-6 object-cover rounded-full'}
+                          src={auth.avatar ? auth.avatar : profileSmall}
+                          alt={'Profile menu'}
+                        />
                       </button>
                       <div
                         id={'profile-nav'}
