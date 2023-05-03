@@ -9,6 +9,7 @@ import { getFromStorage } from '../../utils/storage.js';
 import { useApi } from '../../hooks/useApi.js';
 import { PROFILES } from '../../settings/api.js';
 import { scrollToMessage } from '../../utils/validation.js';
+import ProfileCustomer from '../ProfileCustomer.jsx';
 
 const schema = yup.object({
   avatar: yup
@@ -66,12 +67,12 @@ function Profile() {
 
   return (
     <>
-      <main className={'mt-[120px] min-h-screen sm:mt-12'}>
+      <main className={'mt-[120px] min-h-[50vh] sm:mt-12'}>
         <section id={'profile'} className={'mt-[88px] mb-12 sm:mt-12'}>
           <div className={'container mx-auto px-4 max-w-7xl'}>
             <h1 className={'text-4xl font-bold mb-10'}>Profile</h1>
-            <div id={'profile-container'}>
-              <div id={'avatar'} className={'sm:max-w-[18rem]'}>
+            <div id={'profile-container'} className={'flex flex-col gap-14 sm:flex-row sm:gap-8'}>
+              <div id={'avatar'} className={'sm:w-[18rem] shrink-0'}>
                 <h2 className={'text-xl font-bold mb-6'}>Avatar</h2>
                 <div className={'rounded-xl px-6 pt-12 pb-6 border border-gray-100 shadow-sm shadow-gray-100'}>
                   <img
@@ -114,7 +115,9 @@ function Profile() {
                   </div>
                 </div>
               </div>
-              <div id={'customer-manager-placeholder'}></div>
+              <div id={'customer-manager'} className={'sm:grow'}>
+                {venueManager ? <div>Venue Manager placeholder</div> : <ProfileCustomer />}
+              </div>
             </div>
           </div>
         </section>
