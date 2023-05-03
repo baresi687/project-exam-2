@@ -24,7 +24,7 @@ export function useApi() {
       if (response.status === 200 || response.status === 201 || response.status === 202) {
         setData(responseJSON);
         setCreated(true);
-      } else if (response.status === 400 || response.status === 401) {
+      } else if (response.status === 400 || response.status === 401 || response.status === 404) {
         setIsError(true);
         setErrorMsg(responseJSON.errors[0].message);
       } else {
