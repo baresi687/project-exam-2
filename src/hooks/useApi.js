@@ -11,6 +11,8 @@ export function useApi() {
     try {
       setIsLoading(true);
       setIsError(false);
+      setErrorMsg('');
+
       const response = await fetch(url, {
         method: method,
         headers: {
@@ -21,10 +23,10 @@ export function useApi() {
       });
       const responseJSON = await response.json();
 
-      if (response.status === 200 || response.status === 201 || response.status === 202) {
+      if (response.status === 200 || response.status === 201 || response.status === 202 || response.status === 204) {
         setData(responseJSON);
         setCreated(true);
-      } else if (response.status === 400 || response.status === 401 || response.status === 404) {
+      } else if (response.status === 400 || response.status === 401) {
         setIsError(true);
         setErrorMsg(responseJSON.errors[0].message);
       } else {
