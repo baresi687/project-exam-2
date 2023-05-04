@@ -1,6 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useApi } from '../../hooks/useApi.js';
+import { GET_VENUES as CREATE_VENUE } from '../../settings/api.js';
+import { useContext, useEffect, useRef, useState } from 'react';
+import { AuthContext } from '../../context/AuthContext.js';
+import { scrollToMessage } from '../../utils/validation.js';
 
 const schema = yup.object({
   name: yup
@@ -31,7 +36,6 @@ const schema = yup.object({
     .string()
     .trim()
     .required('Image URL is a required field')
-    .max(450, 'Description can not exceed 450 characters')
     .matches(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/, 'Image URL is not valid'),
 });
 
@@ -41,10 +45,28 @@ function CreateVenue() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const [auth] = useContext(AuthContext);
+  const { data, created, isLoading, isError, errorMsg, fetchData } = useApi();
+  const [isFormError, setIsFormError] = useState(false);
+  const formErrorRef = useRef(null);
 
   function onSubmit(data) {
-    console.log(data);
+    data.media = [data.media];
+    fetchData(CREATE_VENUE, 'POST', auth.accessToken, data);
   }
+
+  useEffect(() => {
+    if (created) {
+      console.log(data);
+    }
+  }, [created, data]);
+
+  useEffect(() => {
+    if (isError) {
+      setIsFormError(true);
+      scrollToMessage(formErrorRef);
+    }
+  }, [isError]);
 
   return (
     <>
@@ -52,6 +74,7 @@ function CreateVenue() {
         <section id={'profile'} className={'mt-[88px] mb-12 sm:mt-12 md:mb-28'}>
           <div className={'container mx-auto px-4 max-w-7xl'}>
             <form
+              onBlur={() => setIsFormError(false)}
               autoComplete={'off'}
               onSubmit={handleSubmit(onSubmit)}
               className={
@@ -144,10 +167,10 @@ function CreateVenue() {
                     'relative font-semibold rounded bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
                   }
                 >
-                  Create Venue
-                  {/* {isLoading && <span className={'loader absolute top-2 left-6 h-6 w-6'}></span>}
-                  {isLoading ? 'Processing..' : 'Create Venue'}*/}
+                  {isLoading && <span className={'loader absolute top-2 left-6 h-6 w-6'}></span>}
+                  {isLoading ? 'Processing..' : 'Create Venue'}
                 </button>
+                <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
               </div>
             </form>
           </div>
