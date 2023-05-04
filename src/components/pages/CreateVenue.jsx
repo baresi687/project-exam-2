@@ -3,9 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES as CREATE_VENUE } from '../../settings/api.js';
-import { useContext, useEffect, useRef, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext.js';
+import { useEffect, useRef, useState } from 'react';
 import { scrollToMessage } from '../../utils/validation.js';
+import { useNavigate } from 'react-router-dom';
+import { getFromStorage } from '../../utils/storage.js';
 
 const schema = yup.object({
   name: yup
@@ -45,21 +46,35 @@ function CreateVenue() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
-  const [auth] = useContext(AuthContext);
+
+  const { venueManager, accessToken } = getFromStorage('user');
   const { data, created, isLoading, isError, errorMsg, fetchData } = useApi();
   const [isFormError, setIsFormError] = useState(false);
+  const [metaCheckboxes, setMetaCheckboxes] = useState({});
   const formErrorRef = useRef(null);
+  const navigate = useNavigate();
+
+  function handleCheckboxes(e) {
+    setMetaCheckboxes({ ...metaCheckboxes, [e.currentTarget.name]: e.target.checked });
+  }
 
   function onSubmit(data) {
     data.media = [data.media];
-    fetchData(CREATE_VENUE, 'POST', auth.accessToken, data);
+    data.meta = metaCheckboxes;
+    fetchData(CREATE_VENUE, 'POST', accessToken, data);
   }
 
   useEffect(() => {
-    if (created) {
-      console.log(data);
+    if (!accessToken || !venueManager) {
+      navigate('/', { replace: true });
     }
-  }, [created, data]);
+  }, [accessToken, navigate, venueManager]);
+
+  useEffect(() => {
+    if (created) {
+      navigate(`/venues/venue-details/${data.id}`);
+    }
+  }, [created, data, navigate]);
 
   useEffect(() => {
     if (isError) {
@@ -75,7 +90,6 @@ function CreateVenue() {
           <div className={'container mx-auto px-4 max-w-7xl'}>
             <form
               onBlur={() => setIsFormError(false)}
-              autoComplete={'off'}
               onSubmit={handleSubmit(onSubmit)}
               className={
                 'rounded-xl px-6 pt-10 pb-8 border border-gray-100 shadow-sm shadow-gray-100 md:max-w-[568px] md:my-0 md:mx-auto'
@@ -140,25 +154,25 @@ function CreateVenue() {
                     <label htmlFor={'wifi'} className={'font-semibold select-none'}>
                       Wifi
                     </label>
-                    <input id={'wifi'} type={'checkbox'} />
+                    <input name={'wifi'} id={'wifi'} type={'checkbox'} onChange={handleCheckboxes} />
                   </div>
                   <div className={'flex items-center gap-1.5'}>
                     <label htmlFor={'parking'} className={'font-semibold select-none'}>
                       Parking
                     </label>
-                    <input id={'parking'} type={'checkbox'} />
+                    <input name={'parking'} id={'parking'} type={'checkbox'} onChange={handleCheckboxes} />
                   </div>
                   <div className={'flex items-center gap-1.5'}>
                     <label htmlFor={'breakfast'} className={'font-semibold select-none'}>
                       Breakfast
                     </label>
-                    <input id={'breakfast'} type={'checkbox'} />
+                    <input name={'breakfast'} id={'breakfast'} type={'checkbox'} onChange={handleCheckboxes} />
                   </div>
                   <div className={'flex items-center gap-1.5'}>
                     <label htmlFor={'pets'} className={'font-semibold select-none'}>
                       Pets
                     </label>
-                    <input id={'pets'} type={'checkbox'} />
+                    <input name={'pets'} id={'pets'} type={'checkbox'} onChange={handleCheckboxes} />
                   </div>
                 </div>
                 <button
@@ -170,8 +184,8 @@ function CreateVenue() {
                   {isLoading && <span className={'loader absolute top-2 left-6 h-6 w-6'}></span>}
                   {isLoading ? 'Processing..' : 'Create Venue'}
                 </button>
-                <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
               </div>
+              <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
             </form>
           </div>
         </section>
