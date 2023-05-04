@@ -1,6 +1,6 @@
 import { useApi } from '../../hooks/useApi.js';
 import { CREATE_BOOKING, GET_VENUES } from '../../settings/api.js';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -32,6 +32,7 @@ function VenueDetails() {
   const [auth] = useContext(AuthContext);
   const [, setIsSignInUpModal] = useContext(SignInUpModal);
   const bookingErrorRef = useRef(null);
+  const navigate = useNavigate();
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {
@@ -105,9 +106,9 @@ function VenueDetails() {
 
   useEffect(() => {
     if (created) {
-      console.log(postBooking);
+      navigate('/profile');
     }
-  }, [created, postBooking]);
+  }, [created, navigate]);
 
   return (
     <>
