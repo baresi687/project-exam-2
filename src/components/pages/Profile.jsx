@@ -10,6 +10,7 @@ import { useApi } from '../../hooks/useApi.js';
 import { PROFILES } from '../../settings/api.js';
 import { scrollToMessage } from '../../utils/validation.js';
 import ProfileCustomer from '../ProfileCustomer.jsx';
+import ProfileVenueManager from '../ProfileVenueManager.jsx';
 
 const schema = yup.object({
   avatar: yup
@@ -116,7 +117,7 @@ function Profile() {
                 </div>
               </div>
               <div id={'customer-manager'} className={'sm:grow'}>
-                {venueManager ? <div>Venue Manager placeholder</div> : <ProfileCustomer />}
+                {venueManager ? <ProfileVenueManager /> : <ProfileCustomer />}
               </div>
             </div>
           </div>
