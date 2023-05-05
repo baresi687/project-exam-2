@@ -6,40 +6,49 @@ export function useApi() {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isDeleted, setIsDeleted] = useState(0);
 
-  const fetchData = useCallback(async function (url, method = 'GET', auth, postData) {
-    try {
-      setIsLoading(true);
-      setIsError(false);
-      setErrorMsg('');
+  const fetchData = useCallback(
+    async function (url, method = 'GET', auth, postData) {
+      try {
+        setIsLoading(true);
+        setIsError(false);
+        setErrorMsg('');
 
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${auth}`,
-        },
-        body: JSON.stringify(postData),
-      });
-      const responseJSON = await response.json();
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${auth}`,
+          },
+          body: JSON.stringify(postData),
+        });
 
-      if (response.status === 200 || response.status === 201 || response.status === 202 || response.status === 204) {
-        setData(responseJSON);
-        setCreated(true);
-      } else if (response.status === 400 || response.status === 401) {
-        setIsError(true);
-        setErrorMsg(responseJSON.errors[0].message);
-      } else {
+        if (response.status === 204) {
+          setIsDeleted(isDeleted + 1);
+        } else {
+          const responseJSON = await response.json();
+
+          if (response.status === 200 || response.status === 201 || response.status === 202) {
+            setData(responseJSON);
+            setCreated(true);
+          } else if (response.status === 400 || response.status === 401) {
+            setIsError(true);
+            setErrorMsg(responseJSON.errors[0].message);
+          } else {
+            setIsError(true);
+            setErrorMsg('Something went wrong.. please try again later');
+          }
+        }
+      } catch (error) {
         setIsError(true);
         setErrorMsg('Something went wrong.. please try again later');
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      setIsError(true);
-      setErrorMsg('Something went wrong.. please try again later');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+    },
+    [isDeleted]
+  );
 
-  return { data, created, isLoading, isError, errorMsg, fetchData };
+  return { data, created, isDeleted, isLoading, isError, errorMsg, fetchData };
 }
