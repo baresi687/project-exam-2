@@ -50,17 +50,11 @@ function CreateVenue() {
   const { venueManager, accessToken } = getFromStorage('user');
   const { data, created, isLoading, isError, errorMsg, fetchData } = useApi();
   const [isFormError, setIsFormError] = useState(false);
-  const [metaCheckboxes, setMetaCheckboxes] = useState({});
   const formErrorRef = useRef(null);
   const navigate = useNavigate();
 
-  function handleCheckboxes(e) {
-    setMetaCheckboxes({ ...metaCheckboxes, [e.currentTarget.name]: e.target.checked });
-  }
-
   function onSubmit(data) {
     data.media = [data.media];
-    data.meta = metaCheckboxes;
     fetchData(CREATE_VENUE, 'POST', accessToken, data);
   }
 
@@ -154,25 +148,25 @@ function CreateVenue() {
                     <label htmlFor={'wifi'} className={'font-semibold select-none'}>
                       Wifi
                     </label>
-                    <input name={'wifi'} id={'wifi'} type={'checkbox'} onChange={handleCheckboxes} />
+                    <input {...register('meta.wifi')} name={'meta.wifi'} id={'wifi'} type={'checkbox'} />
                   </div>
                   <div className={'flex items-center gap-1.5'}>
                     <label htmlFor={'parking'} className={'font-semibold select-none'}>
                       Parking
                     </label>
-                    <input name={'parking'} id={'parking'} type={'checkbox'} onChange={handleCheckboxes} />
+                    <input {...register('meta.parking')} name={'meta.parking'} id={'parking'} type={'checkbox'} />
                   </div>
                   <div className={'flex items-center gap-1.5'}>
                     <label htmlFor={'breakfast'} className={'font-semibold select-none'}>
                       Breakfast
                     </label>
-                    <input name={'breakfast'} id={'breakfast'} type={'checkbox'} onChange={handleCheckboxes} />
+                    <input {...register('meta.breakfast')} name={'meta.breakfast'} id={'breakfast'} type={'checkbox'} />
                   </div>
                   <div className={'flex items-center gap-1.5'}>
                     <label htmlFor={'pets'} className={'font-semibold select-none'}>
                       Pets
                     </label>
-                    <input name={'pets'} id={'pets'} type={'checkbox'} onChange={handleCheckboxes} />
+                    <input {...register('meta.pets')} name={'meta.pets'} id={'pets'} type={'checkbox'} />
                   </div>
                 </div>
                 <button
