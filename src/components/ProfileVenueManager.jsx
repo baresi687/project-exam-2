@@ -92,19 +92,20 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
 
   return (
     <>
-      <div className={'flex gap-8 mb-6 text-lg font-semibold'}>
+      <div className={'flex gap-3 items-center mb-5 text-red-800 font-semibold'}>
         <button
           onClick={() => setIsVenueSectionActive(true)}
-          className={`ease-out duration-200 decoration-2 underline-offset-4 hover:text-rose-700 ${
-            isVenueSectionActive && 'underline'
+          className={`ease-out duration-200 decoration-2 px-2 py-1 rounded hover:bg-rose-700 hover:text-white ${
+            isVenueSectionActive && 'bg-rose-800 text-white'
           }`}
         >
           Venues
         </button>
+        <span className={'text-gray-900'}>|</span>
         <button
           onClick={() => setIsVenueSectionActive(false)}
-          className={`ease-out duration-200 decoration-2 underline-offset-4 hover:text-rose-700 ${
-            !isVenueSectionActive && 'underline'
+          className={`ease-out duration-200 decoration-2 px-2 py-1 rounded hover:bg-rose-700 hover:text-white ${
+            !isVenueSectionActive && 'bg-rose-800 text-white'
           }`}
         >
           Upcoming bookings
