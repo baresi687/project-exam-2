@@ -186,13 +186,13 @@ function ProfileVenueManager() {
       )}
       <div
         id={'edit-venue-modal'}
-        className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/70 overflow-auto flex justify-center items-center ${
+        className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/70 overflow-auto ${
           isEditModalOpen ? '' : 'invisible opacity-0'
         }`}
       >
         <div
           id={'edit-venue-modal-content'}
-          className={'relative bg-white rounded-xl w-full mt-48 mb-16 sm:my-auto sm:w-[568px]'}
+          className={'relative bg-white rounded-xl mx-auto my-28 sm:mt-36 sm:mb-0 sm:max-w-[568px]'}
         >
           <button
             aria-label={'Close modal'}

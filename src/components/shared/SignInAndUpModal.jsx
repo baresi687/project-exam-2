@@ -6,11 +6,11 @@ function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemAct
     <>
       <div
         id={'sign-in-up-modal'}
-        className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/40 overflow-auto ${
+        className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/70 overflow-auto ${
           isSignInUpModal ? '' : 'invisible opacity-0'
         }`}
       >
-        <div id={'modal-content'} className={'bg-white mt-24 max-w-xl mx-auto rounded-xl mb-36 sm:mb-0'}>
+        <div id={'modal-content'} className={'bg-white my-28 max-w-xl mx-auto rounded-xl sm:mt-36 sm:mb-0'}>
           <div className={'px-6 pb-6'}>
             <header className={'h-[80px] flex items-center justify-center relative border-b-2 border-b-neutral-50'}>
               <h3 className={'font-bold'}>Sign In or Up</h3>
