@@ -120,7 +120,7 @@ function VenueDetails() {
           <div className={'container mx-auto px-4 max-w-7xl'}>
             {isLoading && (
               <>
-                <div className={'my-0 mx-auto w-fit min-h-screen'}>
+                <div className={'flex justify-center min-h-screen mt-48 lg:mt-32'}>
                   <div className={'loader'}></div>
                 </div>
               </>
@@ -268,7 +268,7 @@ function VenueDetails() {
                               value={guests}
                               min={1}
                               max={maxGuests}
-                              className={'text-center h-10 font-semibold'}
+                              className={'text-center h-10 w-10 font-semibold'}
                               type={'number'}
                               readOnly
                             />
