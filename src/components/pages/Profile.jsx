@@ -110,7 +110,7 @@ function Profile() {
                         {isLoading ? 'Processing..' : 'Update avatar'}
                       </button>
                       <div ref={avatarErrorRef}>
-                        {isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}
+                        {isFormError && <div className={'api-error mt-6 break-words'}>{errorMsg}</div>}
                       </div>
                     </form>
                   </div>

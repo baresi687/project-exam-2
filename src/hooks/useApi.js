@@ -14,6 +14,7 @@ export function useApi() {
         setIsLoading(true);
         setIsError(false);
         setErrorMsg('');
+        setCreated(false);
 
         const response = await fetch(url, {
           method: method,

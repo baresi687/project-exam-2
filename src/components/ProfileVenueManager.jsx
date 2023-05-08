@@ -1,25 +1,62 @@
 import { Link } from 'react-router-dom';
-import { handleImgError } from '../utils/validation.js';
+import { createAndEditSchema, handleImgError, scrollToMessage } from '../utils/validation.js';
 import { PROFILES, GET_VENUES as EDIT_DELETE_VENUE } from '../settings/api.js';
 import { useApi } from '../hooks/useApi.js';
 import { getFromStorage } from '../utils/storage.js';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { format, parseISO } from 'date-fns';
+import CreateAndEditVenueForm from './shared/CreateAndEditVenueForm.jsx';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 function ProfileVenueManager() {
   const { data, isLoading, created, isError, fetchData } = useApi();
   const { isError: isDeleteError, isLoading: isLoadingDeleteVenue, isDeleted, fetchData: deleteVenue } = useApi();
   const { name, accessToken } = getFromStorage('user');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [venueIdToBeDeleted, setVenueIdToBeDeleted] = useState('');
+  const [venueIdToBeDeletedOrChanged, setVenueIdToBeDeletedOrChanged] = useState('');
   const [venueNameToBeDeleted, setVenueNameToBeDeleted] = useState('');
   const [venueDeleteError, setVenueDeleteError] = useState(false);
+  const editForm = useForm({ resolver: yupResolver(createAndEditSchema) });
+  const editFormErrorRef = useRef(null);
+  const [isFormError, setIsFormError] = useState(false);
+  const { setValue } = editForm;
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const {
+    isLoading: isLoadingEditVenue,
+    created: venueEdited,
+    isError: isEditError,
+    errorMsg: editErrorMsg,
+    fetchData: editVenue,
+  } = useApi();
+
+  function onEditSubmit(data) {
+    data.media = [data.media];
+    editVenue(`${EDIT_DELETE_VENUE}/${venueIdToBeDeletedOrChanged}`, 'PUT', accessToken, data);
+  }
+
+  function handleEditVenue(e) {
+    const meta = JSON.parse(e.currentTarget.dataset.meta);
+
+    setValue('name', e.currentTarget.dataset.name);
+    setValue('description', e.currentTarget.dataset.description);
+    setValue('price', e.currentTarget.dataset.price);
+    setValue('maxGuests', e.currentTarget.dataset.maxguests);
+    setValue('media', e.currentTarget.dataset.media);
+
+    for (const property in meta) {
+      setValue(`meta.${property}`, meta[property]);
+    }
+
+    setIsEditModalOpen(true);
+    setVenueIdToBeDeletedOrChanged(e.currentTarget.dataset.id);
+  }
 
   function handleDeleteModal(id, e) {
     setVenueDeleteError(false);
     setIsDeleteModalOpen(true);
     setVenueNameToBeDeleted(e.currentTarget.dataset.venuename);
-    setVenueIdToBeDeleted(id);
+    setVenueIdToBeDeletedOrChanged(id);
   }
 
   function handleDeleteVenue(id) {
@@ -29,7 +66,15 @@ function ProfileVenueManager() {
   useEffect(() => {
     fetchData(`${PROFILES}/${name}/venues?_bookings=true&_venues=true`, 'GET', accessToken);
     setIsDeleteModalOpen(false);
-  }, [accessToken, fetchData, name, isDeleted]);
+    setIsEditModalOpen(false);
+  }, [accessToken, fetchData, name, isDeleted, venueEdited]);
+
+  useEffect(() => {
+    if (isEditError) {
+      setIsFormError(true);
+      scrollToMessage(editFormErrorRef);
+    }
+  }, [isEditError]);
 
   useEffect(() => {
     if (isDeleteError) {
@@ -42,14 +87,14 @@ function ProfileVenueManager() {
       <h2 className={'text-xl font-bold mb-6'}>Venues</h2>
       {isLoading && (
         <>
-          <div className={'my-0 mx-auto w-fit min-h-screen'}>
-            <div className={'loader'}></div>
+          <div className={'my-0 mx-auto w-fit relative'}>
+            <div className={'loader absolute'}></div>
           </div>
         </>
       )}
       <div id={'venue-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3'}>
         {data &&
-          data.map(({ id, name: venueName, media, bookings }, index) => {
+          data.map(({ id, name: venueName, description, price, maxGuests, media, bookings, meta }, index) => {
             return (
               <div key={index} className={'rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100'}>
                 <Link to={`/venues/venue-details/${id}`}>
@@ -92,6 +137,14 @@ function ProfileVenueManager() {
                 </div>
                 <div className={'flex gap-3'}>
                   <button
+                    data-id={id}
+                    data-name={venueName}
+                    data-description={description}
+                    data-price={price}
+                    data-maxguests={maxGuests}
+                    data-media={media[0]}
+                    data-meta={JSON.stringify(meta)}
+                    onClick={handleEditVenue}
                     className={'bg-rose-800 text-white rounded h-8 w-full hover:bg-rose-700 ease-out duration-200'}
                   >
                     Edit
@@ -132,12 +185,54 @@ function ProfileVenueManager() {
         </div>
       )}
       <div
+        id={'edit-venue-modal'}
+        className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/70 overflow-auto ${
+          isEditModalOpen ? '' : 'invisible opacity-0'
+        }`}
+      >
+        <div
+          id={'edit-venue-modal-content'}
+          className={'relative bg-white rounded-xl mx-auto my-28 sm:mt-36 sm:mb-0 sm:max-w-[568px]'}
+        >
+          <button
+            aria-label={'Close modal'}
+            className={'absolute right-6 top-6'}
+            onClick={() => setIsEditModalOpen(false)}
+          >
+            <svg
+              className={'pointer-events-none'}
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z"
+                fill="#111827"
+              />
+            </svg>
+          </button>
+          <CreateAndEditVenueForm
+            form={editForm}
+            title={'Edit Venue'}
+            btnTitle={'Edit Venue'}
+            onSubmit={onEditSubmit}
+            isLoading={isLoadingEditVenue}
+            isFormError={isFormError}
+            setIsFormError={setIsFormError}
+            errorMsg={editErrorMsg}
+            formErrorRef={editFormErrorRef}
+          />
+        </div>
+      </div>
+      <div
         id={'delete-venue-modal'}
         className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/70 overflow-auto flex justify-center items-center ${
           isDeleteModalOpen ? '' : 'invisible opacity-0'
         }`}
       >
-        <div id={'delete-venue-modal-content'} className={'bg-white max-w-md mx-auto rounded-xl mb-36 sm:mb-0'}>
+        <div id={'delete-venue-modal-content'} className={'bg-white max-w-md mx-auto rounded-xl'}>
           <div className={'px-6 pb-6'}>
             <header className={'h-[80px] flex items-center justify-center relative border-b-2 border-b-neutral-50'}>
               <h3 className={'font-bold'}>Delete venue</h3>
@@ -172,7 +267,7 @@ function ProfileVenueManager() {
                   Cancel
                 </button>
                 <button
-                  onClick={() => handleDeleteVenue(venueIdToBeDeleted)}
+                  onClick={() => handleDeleteVenue(venueIdToBeDeletedOrChanged)}
                   className={
                     'relative bg-amber-500 text-gray-900 text-sm rounded h-10 w-full font-semibold hover:bg-amber-400 ease-out duration-200'
                   }
