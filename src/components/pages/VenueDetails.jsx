@@ -32,6 +32,7 @@ function VenueDetails() {
   const [auth] = useContext(AuthContext);
   const [, setIsSignInUpModal] = useContext(SignInUpModal);
   const bookingErrorRef = useRef(null);
+  const [isVenueOwnedByUser, setIsVenueOwnedByUSer] = useState(false);
   const navigate = useNavigate();
 
   if (bookings && bookings.length) {
@@ -45,7 +46,7 @@ function VenueDetails() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    if (auth) {
+    if (auth && owner && auth.name !== owner.name) {
       const body = {
         dateFrom: startDate.toISOString(),
         dateTo: endDate.toISOString(),
@@ -54,6 +55,8 @@ function VenueDetails() {
       };
 
       fetchBooking(CREATE_BOOKING, 'POST', auth.accessToken, body);
+    } else if (auth && owner && auth.name === owner.name) {
+      setIsVenueOwnedByUSer(true);
     } else {
       setIsSignInUpModal(true);
     }
@@ -299,19 +302,28 @@ function VenueDetails() {
                           </div>
                         </div>
                       </div>
-                      <button
-                        type={'submit'}
-                        className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-40 hover:bg-rose-700 ease-out duration-200`}
-                      >
-                        {isLoadingBooking && (
+                      <div className={'flex flex-col gap-4 sm:flex-row sm:items-center'}>
+                        <button
+                          type={'submit'}
+                          className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-40 hover:bg-rose-700 ease-out duration-200`}
+                        >
+                          {isLoadingBooking && (
+                            <span
+                              className={
+                                'loader absolute top-2 left-6 h-6 w-6 sm:left-3 sm:h-4 sm:w-4 sm:border-2 sm:top-3'
+                              }
+                            ></span>
+                          )}
+                          {isLoadingBooking ? 'Processing..' : 'Reserve'}
+                        </button>
+                        {isVenueOwnedByUser && (
                           <span
-                            className={
-                              'loader absolute top-2 left-6 h-6 w-6 sm:left-3 sm:h-4 sm:w-4 sm:border-2 sm:top-3'
-                            }
-                          ></span>
+                            className={'rounded py-2 px-4 font-semibold text-sm text-red-800 border border-red-700'}
+                          >
+                            You can not reserve your own venue
+                          </span>
                         )}
-                        {isLoadingBooking ? 'Processing..' : 'Reserve'}
-                      </button>
+                      </div>
                     </form>
                   </div>
                 </div>
