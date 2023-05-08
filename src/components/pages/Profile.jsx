@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AuthContext } from '../../context/AuthContext.js';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/profile.svg';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -35,6 +35,8 @@ function Profile() {
   const { data, isLoading, errorMsg, isError, fetchData } = useApi();
   const [isFormError, setIsFormError] = useState(false);
   const avatarErrorRef = useRef(null);
+  const [hasVenueManagerBooked, setHasVenueManagerBooked] = useState(false);
+  const { state } = useLocation();
 
   function onAvatarSubmit(data) {
     fetchData(`${PROFILES}/${name}/media`, 'PUT', accessToken, data);
@@ -48,6 +50,12 @@ function Profile() {
       navigate('/', { replace: true });
     }
   }, [navigate, setAuth]);
+
+  useEffect(() => {
+    if (state && state.ifManagerHasBooked === true) {
+      setHasVenueManagerBooked(true);
+    }
+  }, [state]);
 
   useEffect(() => {
     if (isError) {
@@ -117,7 +125,14 @@ function Profile() {
                 </div>
               </div>
               <div id={'customer-manager'} className={'sm:grow'}>
-                {venueManager ? <ProfileVenueManager /> : <ProfileCustomer />}
+                {venueManager ? (
+                  <ProfileVenueManager ifManagerHasBooked={hasVenueManagerBooked} />
+                ) : (
+                  <div>
+                    <h2 className={'text-xl font-bold mb-6'}>Upcoming bookings</h2>
+                    <ProfileCustomer />
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -109,7 +109,7 @@ function VenueDetails() {
 
   useEffect(() => {
     if (created) {
-      navigate('/profile');
+      navigate('/profile', { state: { ifManagerHasBooked: true } });
     }
   }, [created, navigate]);
 

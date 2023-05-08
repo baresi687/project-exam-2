@@ -20,8 +20,7 @@ function ProfileCustomer() {
   }, [accessToken, fetchData, name]);
 
   return (
-    <div>
-      <h2 className={'text-xl font-bold mb-6'}>Upcoming bookings</h2>
+    <>
       {isLoading && (
         <>
           <div className={'my-0 mx-auto w-fit min-h-screen'}>
@@ -82,7 +81,7 @@ function ProfileCustomer() {
           <p>Please try again later</p>
         </div>
       )}
-    </div>
+    </>
   );
 }
 

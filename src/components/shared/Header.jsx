@@ -156,7 +156,7 @@ function Header() {
                         id={'profile-nav'}
                         className={`${
                           isProfileMenuOpen ? 'block' : 'hidden'
-                        } absolute z-50 bottom-10 min-w-[8rem] max-w-[11rem] right-0 /*pb-1*/ bg-gray-50 border border-gray-100 shadow-sm shadow-slate-200 rounded-md sm:top-8 sm:h-fit`}
+                        } absolute z-50 bottom-10 min-w-[8rem] max-w-[12rem] right-0 bg-gray-50 border border-gray-100 shadow-sm shadow-slate-200 rounded-md sm:top-8 sm:h-fit`}
                       >
                         <div className={'py-2.5 px-3 border-b-2 border-b-gray-100'}>
                           <p className={'text-sm font-light mb-1'}>
