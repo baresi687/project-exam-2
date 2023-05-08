@@ -10,7 +10,9 @@ function ProfileCustomer() {
   const { data, isLoading, isError, fetchData } = useApi();
   const { name, accessToken } = getFromStorage('user');
   const upComingBookings = data.bookings
-    ? data.bookings.filter((booking) => new Date(new Date().setHours(0, 0, 0, 0)) <= new Date(booking.dateFrom))
+    ? data.bookings
+        .filter((booking) => new Date(new Date().setHours(0, 0, 0, 0)) <= new Date(booking.dateFrom))
+        .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
     : [];
 
   useEffect(() => {
@@ -27,12 +29,12 @@ function ProfileCustomer() {
           </div>
         </>
       )}
-      <div id={'bookings-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-3'}>
+      <div id={'bookings-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3'}>
         {upComingBookings.length > 0 &&
           upComingBookings.map(({ created, dateFrom, dateTo, venue }, index) => {
-            const dateCreated = format(parseISO(created), 'MMMM do');
-            const fromDate = format(parseISO(dateFrom), 'MMMM do');
-            const toDate = format(parseISO(dateTo), 'MMMM do');
+            const dateCreated = format(parseISO(created), 'd MMM');
+            const fromDate = format(parseISO(dateFrom), 'd MMM');
+            const toDate = format(parseISO(dateTo), 'd MMM');
 
             return (
               <div
