@@ -145,10 +145,10 @@ function VenueDetails() {
                         showMoreDesc && 'z-20 rounded-xl venue-desc-shadow'
                       }`}
                     >
-                      <div className={`border-b border-b-zinc-100 pb-3`}>
+                      <div className={`border-b border-b-zinc-100 pb-3 ${showMoreDesc && 'lg:pb-9'}`}>
                         <h2
                           onClick={() => description && description.length > 120 && setShowMoreDesc(!showMoreDesc)}
-                          className={'mb-1 text-base font-semibold'}
+                          className={`text-base font-semibold ${showMoreDesc && 'whitespace-pre-line'}`}
                         >
                           {description && description.substring(0, 120)}
                           <span
@@ -162,10 +162,11 @@ function VenueDetails() {
                         </h2>
                         {description && description.length > 120 && (
                           <button
+                            aria-label={'Show more or less description toggle'}
                             onClick={() => setShowMoreDesc(!showMoreDesc)}
-                            className={
-                              'underline-offset-4 text-sm font-light bottom-[18px] right-[32px] bg-white lg:absolute hover:underline'
-                            }
+                            className={`underline-offset-4 w-fit mt-2 ${
+                              showMoreDesc && 'mt-4'
+                            } text-sm font-light bottom-[14px] right-[32px] bg-white lg:absolute lg:mt-0 hover:underline`}
                           >
                             {showMoreDesc ? 'Show less' : 'Show more'}
                           </button>
