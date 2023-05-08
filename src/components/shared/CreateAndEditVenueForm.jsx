@@ -105,7 +105,7 @@ function CreateAndEditVenueForm({
           {isLoading ? 'Processing..' : `${btnTitle}`}
         </button>
       </div>
-      <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
+      <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6 break-words'}>{errorMsg}</div>}</div>
     </form>
   );
 }
