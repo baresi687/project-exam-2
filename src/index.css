@@ -40,6 +40,12 @@
     border: 2px solid #881337;
   }
 
+  .create-edit-description {
+    border: 0;
+    border-top: 1rem solid white;
+    box-shadow: 0 0 0 1px #e5e7eb;
+  }
+
   .venue-desc-shadow {
     box-shadow: 0 2px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 0 -1px rgb(0 0 0 / 0.1);
   }

@@ -13,8 +13,8 @@ const createAndEditSchema = yup.object({
   name: yup
     .string()
     .trim()
-    .required('Venue name is a required field')
-    .max(90, 'Venue name can not exceed 90 characters'),
+    .required('Name of venue is a required field')
+    .max(90, 'Name of venue can not exceed 90 characters'),
 
   description: yup
     .string()

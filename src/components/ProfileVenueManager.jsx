@@ -22,7 +22,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   const editForm = useForm({ resolver: yupResolver(createAndEditSchema) });
   const editFormErrorRef = useRef(null);
   const [isFormError, setIsFormError] = useState(false);
-  const { setValue } = editForm;
+  const { setValue, clearErrors } = editForm;
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const {
     isLoading: isLoadingEditVenue,
@@ -38,6 +38,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   }
 
   function handleEditVenue(e) {
+    clearErrors();
     const meta = JSON.parse(e.currentTarget.dataset.meta);
 
     setValue('name', e.currentTarget.dataset.name);
@@ -50,8 +51,8 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
       setValue(`meta.${property}`, meta[property]);
     }
 
-    setIsEditModalOpen(true);
     setVenueIdToBeDeletedOrChanged(e.currentTarget.dataset.id);
+    setIsEditModalOpen(true);
   }
 
   function handleDeleteModal(id, e) {
