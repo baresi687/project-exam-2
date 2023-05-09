@@ -69,10 +69,10 @@ function Header() {
 
   return (
     <>
-      <header className={'sm:border-b-2 sm:border-b-neutral-50'}>
+      <header className={'sm:border-b sm:border-b-gray-100'}>
         <div id={'header'}>
           <div className={'container mx-auto fixed z-50 bottom-0 bg-white sm:static sm:max-w-7xl sm:px-4'}>
-            <div className={'flex items-center justify-center gap-6 h-[72px] border-t-2 border-t-neutral-50 sm:gap-8'}>
+            <div className={'flex items-center justify-center gap-6 h-[72px] border-t border-t-gray-100 sm:gap-8'}>
               <Link to={'/'} className={'sm:shrink-0'}>
                 <img className={'w-[96px] pointer-events-none sm:w-[128px]'} src={logo} alt={'Holidaze home'} />
               </Link>
@@ -89,7 +89,7 @@ function Header() {
               <div
                 id={'search'}
                 className={
-                  'w-full fixed top-0 bg-white border-b-2 border-b-neutral-50 h-[72px] flex items-center sm:static sm:max-w-[600px] mx-auto sm:border-0'
+                  'w-full fixed top-0 bg-white border-b border-b-gray-100 h-[72px] flex items-center sm:static sm:max-w-[600px] mx-auto'
                 }
               >
                 <div className={'container mx-auto px-4'}>
