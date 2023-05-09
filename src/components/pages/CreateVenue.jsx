@@ -55,6 +55,7 @@ function CreateVenue() {
               setIsFormError={setIsFormError}
               errorMsg={errorMsg}
               formErrorRef={formErrorRef}
+              borderAndShadow
             />
           </div>
         </section>
