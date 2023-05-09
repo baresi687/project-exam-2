@@ -83,7 +83,7 @@ function Profile() {
             <div id={'profile-container'} className={'flex flex-col gap-14 sm:flex-row sm:gap-8'}>
               <div id={'avatar'} className={'sm:w-[18rem] shrink-0'}>
                 <h2 className={'text-xl font-bold mb-6'}>Avatar</h2>
-                <div className={'rounded-xl px-6 pt-12 pb-6 border border-gray-100 shadow-sm shadow-gray-100'}>
+                <div className={'rounded-xl px-6 pt-12 pb-6 border border-neutral-200 shadow-sm shadow-neutral-100'}>
                   <img
                     className={'h-32 w-32 object-cover rounded-full my-0 mx-auto'}
                     src={avatar ? avatar : profileImg}

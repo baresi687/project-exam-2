@@ -124,7 +124,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
             {data &&
               data.map(({ id, name: venueName, description, price, maxGuests, media, bookings, meta }, index) => {
                 return (
-                  <div key={index} className={'rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100'}>
+                  <div key={index} className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100'}>
                     <Link to={`/venues/venue-details/${id}`}>
                       <img
                         className={'rounded-xl object-cover h-72 w-full lg:h-44'}
@@ -195,7 +195,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
               })}
           </div>
           {data && data.length === 0 && !isError && created && (
-            <div className={'rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100 md:w-fit'}>
+            <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
               <h4 className={'text-lg font-semibold mb-2'}>You have no venues</h4>
               <p>
                 Create{' '}
