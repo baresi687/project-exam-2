@@ -26,50 +26,96 @@ function CreateAndEditVenueForm({
     >
       <h1 className={'text-4xl font-bold text-center mb-10'}>{title}</h1>
       <div className={'flex flex-col gap-4'}>
-        <label className={'w-full'}>
+        <div className={'w-full relative'}>
           <input
             {...register('name')}
-            className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.name && 'border-red-700'}`}
+            id={'name'}
+            className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'text'}
             placeholder={'Name of venue'}
           />
-        </label>
-        {errors.name && <p className={'text-red-700'}>{errors.name?.message}</p>}
-        <label className={'w-full'}>
+          <label
+            htmlFor={'name'}
+            className={`${
+              errors.name && 'text-red-700'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+          >
+            Name of venue
+          </label>
+          {errors.name && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.name?.message}</p>}
+        </div>
+
+        <div className={'w-full relative'}>
           <textarea
             {...register('description')}
-            className={`border-gray-200 border rounded h-40 px-4 pt-2 w-full ${errors.description && 'border-red-700'}`}
+            id={'description'}
+            className={`create-edit-description font-medium peer placeholder-transparent rounded h-40 px-4 pb-4 w-full`}
             placeholder={'Description'}
           />
-        </label>
-        {errors.description && <p className={'text-red-700'}>{errors.description?.message}</p>}
-        <label className={'w-full'}>
+          <label
+            htmlFor={'description'}
+            className={`${
+              errors.description && 'text-red-700'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+          >
+            Description
+          </label>
+          {errors.description && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.description?.message}</p>}
+        </div>
+        <div className={'w-full relative'}>
           <input
             {...register('price')}
-            className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.price && 'border-red-700'}`}
+            id={'price'}
+            className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'number'}
             placeholder={'Price'}
           />
-        </label>
-        {errors.price && <p className={'text-red-700'}>{errors.price?.message}</p>}
-        <label className={'w-full'}>
+          <label
+            htmlFor={'price'}
+            className={`${
+              errors.price && 'text-red-700'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+          >
+            Price
+          </label>
+          {errors.price && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.price?.message}</p>}
+        </div>
+        <div className={'w-full relative'}>
           <input
             {...register('maxGuests')}
-            className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.maxGuests && 'border-red-700'}`}
+            id={'maxGuests'}
+            className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'number'}
             placeholder={'Max guests'}
           />
-        </label>
-        {errors.maxGuests && <p className={'text-red-700'}>{errors.maxGuests?.message}</p>}
-        <label className={'w-full'}>
+          <label
+            htmlFor={'maxGuests'}
+            className={`${
+              errors.maxGuests && 'text-red-700'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+          >
+            Max guests
+          </label>
+          {errors.maxGuests && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.maxGuests?.message}</p>}
+        </div>
+        <div className={'w-full relative'}>
           <input
             {...register('media')}
-            className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.media && 'border-red-700'}`}
+            id={'media'}
+            className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'text'}
             placeholder={'Image URL'}
           />
-        </label>
-        {errors.media && <p className={'text-red-700'}>{errors.media?.message}</p>}
+          <label
+            htmlFor={'media'}
+            className={`${
+              errors.media && 'text-red-700'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+          >
+            Image URL
+          </label>
+          {errors.media && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.media?.message}</p>}
+        </div>
         <div id={'meta-checkboxes'} className={'text-sm flex gap-4 my-4 mx-auto md:ml-4'}>
           <div className={'flex items-center gap-1.5'}>
             <label htmlFor={'wifi'} className={'font-semibold select-none'}>
