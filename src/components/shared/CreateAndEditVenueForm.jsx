@@ -8,6 +8,7 @@ function CreateAndEditVenueForm({
   setIsFormError,
   errorMsg,
   formErrorRef,
+  borderAndShadow,
 }) {
   const {
     register,
@@ -19,9 +20,9 @@ function CreateAndEditVenueForm({
     <form
       onBlur={() => setIsFormError(false)}
       onSubmit={handleSubmit(onSubmit)}
-      className={
-        'rounded-xl px-6 pt-10 pb-6 border border-gray-100 shadow-sm shadow-gray-100 md:max-w-[568px] md:my-0 md:mx-auto'
-      }
+      className={`rounded-xl px-6 pt-10 pb-6 ${
+        borderAndShadow && 'border shadow-sm'
+      } border-neutral-200 shadow-neutral-100 md:max-w-[568px] md:my-0 md:mx-auto`}
     >
       <h1 className={'text-4xl font-bold text-center mb-10'}>{title}</h1>
       <div className={'flex flex-col gap-4'}>

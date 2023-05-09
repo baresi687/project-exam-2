@@ -38,7 +38,7 @@ function ProfileCustomer() {
             return (
               <div
                 key={index}
-                className={'flex flex-col gap-3 rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100'}
+                className={'flex flex-col gap-3 rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100'}
               >
                 <Link to={`/venues/venue-details/${venue.id}`}>
                   <img
@@ -62,7 +62,7 @@ function ProfileCustomer() {
           })}
       </div>
       {!upComingBookings.length && !isError && (
-        <div className={'rounded-xl p-6 border border-gray-100 shadow-sm shadow-gray-100 md:w-fit'}>
+        <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
           <h4 className={'text-lg font-semibold mb-2'}>No upcoming bookings</h4>
           <p>
             Have a look at{' '}
