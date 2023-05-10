@@ -9,6 +9,11 @@ function scrollToMessage(elemRef) {
   elemRef.current.scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
 
+const filterVenuesWithProperties = (venues) =>
+  venues.filter(
+    (venue) => venue.media.length && venue.name && venue.description && venue.price > 0 && venue.maxGuests > 0
+  );
+
 const createAndEditSchema = yup.object({
   name: yup
     .string()
@@ -41,4 +46,4 @@ const createAndEditSchema = yup.object({
     .matches(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/, 'Image URL is not valid'),
 });
 
-export { handleImgError, scrollToMessage, createAndEditSchema };
+export { handleImgError, scrollToMessage, filterVenuesWithProperties, createAndEditSchema };
