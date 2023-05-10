@@ -300,10 +300,16 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                     <button
                       onClick={() => handleDeleteVenue(venueIdToBeDeletedOrChanged)}
                       className={
-                        'relative bg-amber-500 text-gray-900 text-sm rounded h-10 w-full font-semibold hover:bg-amber-400 ease-out duration-200'
+                        'relative bg-amber-500 text-gray-900 rounded h-10 w-full font-semibold hover:bg-amber-400 ease-out duration-200'
                       }
                     >
-                      {isLoadingDeleteVenue && <span className={'loader absolute top-2 left-2 h-6 w-6'}></span>}
+                      {isLoadingDeleteVenue && (
+                        <span
+                          className={
+                            'loader absolute top-3 left-3 h-4 w-4 border-2 border-gray-900 border-t-transparent'
+                          }
+                        ></span>
+                      )}
                       {isLoadingDeleteVenue ? 'Processing..' : 'Delete'}
                     </button>
                   </div>

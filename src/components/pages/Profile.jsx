@@ -111,10 +111,14 @@ function Profile() {
                       <button
                         type={'submit'}
                         className={
-                          'relative font-semibold rounded mt-4 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+                          'relative rounded mt-4 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
                         }
                       >
-                        {isLoading && <span className={'loader absolute top-2 left-6 h-6 w-6'}></span>}
+                        {isLoading && (
+                          <span
+                            className={'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent'}
+                          ></span>
+                        )}
                         {isLoading ? 'Processing..' : 'Update avatar'}
                       </button>
                       <div ref={avatarErrorRef}>
