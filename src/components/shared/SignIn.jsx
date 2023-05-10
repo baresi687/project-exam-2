@@ -76,7 +76,7 @@ function SignIn({ closeModalonSignIn }) {
           {errors.password && <p className={'text-red-700'}>{errors.password?.message}</p>}
           <button
             className={
-              'relative font-semibold rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+              'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
             }
           >
             {isLoading && (

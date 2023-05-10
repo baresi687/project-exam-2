@@ -123,7 +123,7 @@ function SignUp({ signUpSuccess }) {
           <button
             type={'submit'}
             className={
-              'relative font-semibold rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+              'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
             }
           >
             {isLoading && (
