@@ -9,7 +9,7 @@ import VenueDetails from './components/pages/VenueDetails.jsx';
 import Search from './components/pages/Search.jsx';
 import Profile from './components/pages/Profile.jsx';
 import CreateVenue from './components/pages/CreateVenue.jsx';
-import ErrorPage from './components/shared/ErrorPage.jsx';
+import ErrorPage from './components/pages/ErrorPage.jsx';
 
 const router = createBrowserRouter([
   {
