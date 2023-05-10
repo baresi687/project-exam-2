@@ -313,7 +313,7 @@ function VenueDetails() {
                           {isLoadingBooking && (
                             <span
                               className={
-                                'loader absolute top-2 left-6 h-6 w-6 sm:left-3 sm:h-4 sm:w-4 sm:border-2 sm:top-3'
+                                'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent sm:left-2.5 '
                               }
                             ></span>
                           )}
