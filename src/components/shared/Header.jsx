@@ -16,13 +16,13 @@ function Header() {
   const [, setIsSignInUpModal] = useContext(SignInUpModal);
 
   function handleSearch() {
-    if (searchValue) {
-      navigate(`/search/${searchValue}`);
+    if (searchValue.trim()) {
+      navigate(`/search/${searchValue.trim().replace(/  +/g, ' ')}`);
     }
   }
 
   function handleSearchEnterPress(e) {
-    if (e.key === 'Enter' && searchValue) {
+    if (e.key === 'Enter' && searchValue.trim()) {
       handleSearch();
     }
   }
@@ -107,7 +107,7 @@ function Header() {
                       <button
                         aria-label={'Clear search value'}
                         onClick={() => setSearchValue('')}
-                        className={`${searchValue ? 'absolute' : 'hidden'} right-3 top-2`}
+                        className={`${searchValue.trim() ? 'absolute' : 'hidden'} right-3 top-2`}
                       >
                         <svg
                           className={'pointer-events-none'}

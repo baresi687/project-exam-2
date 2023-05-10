@@ -9,8 +9,7 @@ function Search() {
   const { data, isLoading, isError, fetchData } = useApi();
   const searchResults = data.filter(
     ({ name, description }) =>
-      name.toLowerCase().includes(value.toLowerCase().trim()) ||
-      description.toLowerCase().includes(value.toLowerCase().trim())
+      name.toLowerCase().includes(value.toLowerCase()) || description.toLowerCase().includes(value.toLowerCase())
   );
 
   useEffect(() => {
