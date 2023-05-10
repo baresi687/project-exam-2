@@ -37,7 +37,7 @@ const createAndEditSchema = yup.object({
     .number()
     .typeError('Max guests must be a number')
     .min(1, 'Max guests must be at least 1')
-    .max(200, 'Max guests can not exceed 200'),
+    .max(100, 'Max guests can not exceed 100'),
 
   media: yup
     .string()
