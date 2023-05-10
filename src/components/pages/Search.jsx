@@ -3,6 +3,7 @@ import VenueListItem from '../VenueListItem.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import { useEffect } from 'react';
+import { filterVenuesWithProperties } from '../../utils/validation.js';
 
 function Search() {
   const { value } = useParams();
@@ -38,9 +39,9 @@ function Search() {
               {!isError ? (
                 <>
                   {searchResults.length ? (
-                    searchResults
-                      .filter((venue) => venue.media.length)
-                      .map((venue) => <VenueListItem key={venue.id} {...venue} />)
+                    filterVenuesWithProperties(searchResults).map((venue) => (
+                      <VenueListItem key={venue.id} {...venue} />
+                    ))
                   ) : (
                     <h2 className={'text-lg font-normal'}>
                       No matches for <span className={'italic font-bold'}>{value.trim()}</span>

@@ -2,6 +2,7 @@ import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import VenueListItem from '../VenueListItem.jsx';
 import { useEffect } from 'react';
+import { filterVenuesWithProperties } from '../../utils/validation.js';
 
 function Home() {
   const { data, isLoading, isError, fetchData } = useApi();
@@ -42,8 +43,7 @@ function Home() {
             >
               {!isError ? (
                 <>
-                  {data
-                    .filter((venue) => venue.media.length)
+                  {filterVenuesWithProperties(data)
                     .slice(0, 12)
                     .map((venue) => (
                       <VenueListItem key={venue.id} {...venue} />
