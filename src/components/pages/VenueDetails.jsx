@@ -218,7 +218,7 @@ function VenueDetails() {
                           })}
                       </div>
                       <h3 className={'text-lg mt-2 pb-2 border-b border-b-zinc-100'}>
-                        <span className={'font-bold'}>{price} kr NOK</span> a night
+                        <span className={'font-bold'}>{price && price.toLocaleString()} kr NOK</span> a night
                       </h3>
                     </div>
                     <form
