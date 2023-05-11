@@ -25,8 +25,8 @@ function VenueDetails() {
   const [showMoreDesc, setShowMoreDesc] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [maxDate, setMaxDate] = useState(null);
   const [guests, setGuests] = useState(1);
-  const [isValidDateRange, setIsValidDateRange] = useState(true);
   const bookingsArray = [];
   const [isFormError, setIsFormError] = useState(false);
   const [auth] = useContext(AuthContext);
@@ -37,10 +37,11 @@ function VenueDetails() {
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {
-      if (new Date(booking.dateFrom) < new Date(booking.dateTo)) {
+      if (new Date(booking.dateFrom) <= new Date(booking.dateTo)) {
         bookingsArray.push({ start: new Date(booking.dateFrom), end: new Date(booking.dateTo) });
       }
     });
+    bookingsArray.sort((a, b) => a.start - b.start);
   }
 
   function handleSubmit(e) {
@@ -77,23 +78,17 @@ function VenueDetails() {
 
   const onChange = (dates) => {
     const [start, end] = dates;
-    setIsValidDateRange(true);
     setStartDate(start);
 
     if (bookingsArray.length > 0) {
       for (let i = 0; i < bookingsArray.length; i++) {
-        if (start < new Date(bookingsArray[i].start) && end > new Date(bookingsArray[i].end)) {
-          setStartDate(null);
-          setEndDate(null);
-          setIsValidDateRange(false);
+        if (start < bookingsArray[i].start) {
+          setMaxDate(bookingsArray[i].start);
           break;
-        } else {
-          setEndDate(end);
         }
       }
-    } else {
-      setEndDate(end);
     }
+    setEndDate(end);
   };
 
   useEffect(() => {
@@ -253,12 +248,12 @@ function VenueDetails() {
                             selectsRange
                             required={auth}
                             id={'dates'}
-                            className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52 ${
-                              !isValidDateRange && 'text-xs indent-2 border-2 border-red-700 placeholder:text-red-700'
-                            }`}
+                            className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52`}
                             dateFormat={'dd.MM.yyyy'}
                             minDate={new Date()}
-                            placeholderText={!isValidDateRange ? 'Please select valid available dates' : 'Select dates'}
+                            maxDate={maxDate}
+                            onCalendarOpen={() => setMaxDate(null)}
+                            placeholderText={'Select dates'}
                             excludeDateIntervals={bookingsArray}
                           />
                         </div>
