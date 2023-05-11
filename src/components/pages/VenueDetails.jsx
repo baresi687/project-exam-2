@@ -179,7 +179,7 @@ function VenueDetails() {
                       <p>
                         Up to <span className={'font-semibold'}>{maxGuests}</span> guests
                       </p>
-                      <div className={'flex gap-2'}>
+                      <div className={'flex items-center gap-2'}>
                         {owner && (
                           <>
                             <p>
@@ -187,6 +187,7 @@ function VenueDetails() {
                             </p>
                             {owner.avatar && (
                               <img
+                                loading={'lazy'}
                                 className={'object-cover rounded-full h-6 w-6'}
                                 src={owner.avatar}
                                 alt={owner.name}
@@ -198,22 +199,32 @@ function VenueDetails() {
                       </div>
                       <div
                         id={'venue-meta-values'}
-                        className={'flex gap-1 text-xs leading-6 font-semibold sm:text-base'}
+                        className={'flex flex-wrap text-sm gap-4 leading-6 font-semibold sm:text-base'}
                       >
                         {meta &&
-                          Object.keys(meta).map((item, index, array) => {
-                            let interPunct = <span className={'ml-1'}>·</span>;
-                            if (array.length - 1 === index) {
-                              interPunct = '';
-                            }
+                          Object.keys(meta).map((item, index) => {
                             return (
-                              <p key={index} className={'capitalize'}>
-                                {item}:
-                                <span className={meta[item] ? 'text-green-700' : ''}>
-                                  {meta[item] ? ' Yes' : ' No'}
-                                </span>
-                                {interPunct}
-                              </p>
+                              <div key={index} className={'flex gap-1.5 items-center capitalize'}>
+                                <p>{item}</p>
+                                {meta[item] ? (
+                                  <span aria-label={`This venue has ${item}`} className={'checkmark'}></span>
+                                ) : (
+                                  <span aria-label={`This venues does not have ${item}`}>
+                                    <svg
+                                      className={'pointer-events-none'}
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      width="14"
+                                      height="14"
+                                      fill="none"
+                                    >
+                                      <path
+                                        fill="#a3a3a3"
+                                        d="M7 0C5.068 0 3.418.684 2.05 2.05.685 3.419 0 5.069 0 7c0 1.932.684 3.582 2.05 4.95C3.419 13.315 5.069 14 7 14c1.932 0 3.582-.684 4.95-2.05C13.315 10.581 14 8.931 14 7c0-1.932-.684-3.582-2.05-4.95C10.581.685 8.931 0 7 0ZM1.176 7c0-1.604.57-2.976 1.709-4.115 1.14-1.14 2.51-1.71 4.115-1.71 1.44 0 2.661.447 3.664 1.34l-8.148 8.15C1.622 9.66 1.176 8.44 1.176 7ZM7 12.824c-1.44 0-2.661-.446-3.664-1.34l8.148-8.148c.894 1.003 1.34 2.224 1.34 3.664 0 1.604-.57 2.976-1.709 4.115-1.14 1.14-2.51 1.71-4.115 1.71Z"
+                                      />
+                                    </svg>
+                                  </span>
+                                )}
+                              </div>
                             );
                           })}
                       </div>
