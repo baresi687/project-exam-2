@@ -16,7 +16,7 @@ function VenueListItem({ id, name, media, maxGuests, price }) {
           Up to <span className={'font-bold'}>{maxGuests}</span> guests
         </p>
         <p className={'font-bold'}>
-          {price} kr NOK <span className={'font-normal'}>a night</span>
+          {price.toLocaleString()} kr NOK <span className={'font-normal'}>a night</span>
         </p>
       </div>
       <button

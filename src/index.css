@@ -40,6 +40,16 @@
     border: 2px solid #881337;
   }
 
+  .checkmark {
+    margin: 0 3px 6px 4px;
+    border-right: 3px solid;
+    border-bottom: 3px solid;
+    border-color: #15803d;
+    height: 13px;
+    width: 8px;
+    transform: rotate(45deg);
+  }
+
   .create-edit-description {
     border: 0;
     border-top: 1rem solid white;
