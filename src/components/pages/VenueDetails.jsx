@@ -179,10 +179,27 @@ function VenueDetails() {
                       <p>
                         Up to <span className={'font-semibold'}>{maxGuests}</span> guests
                       </p>
-                      <p>
-                        Hosted by <span className={'font-semibold'}>{owner && owner.name}</span>
-                      </p>
-                      <div id={'venue-meta-values'} className={'flex gap-1 text-xs font-semibold sm:text-base'}>
+                      <div className={'flex gap-2'}>
+                        {owner && (
+                          <>
+                            <p>
+                              Hosted by <span className={'font-semibold'}>{owner.name}</span>
+                            </p>
+                            {owner.avatar && (
+                              <img
+                                className={'object-cover rounded-full h-6 w-6'}
+                                src={owner.avatar}
+                                alt={owner.name}
+                                onError={(e) => e.currentTarget.remove()}
+                              />
+                            )}
+                          </>
+                        )}
+                      </div>
+                      <div
+                        id={'venue-meta-values'}
+                        className={'flex gap-1 text-xs leading-6 font-semibold sm:text-base'}
+                      >
                         {meta &&
                           Object.keys(meta).map((item, index, array) => {
                             let interPunct = <span className={'ml-1'}>·</span>;
