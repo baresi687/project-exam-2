@@ -30,7 +30,7 @@ function ProfileCustomer() {
       )}
       <div id={'bookings-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3'}>
         {upComingBookings.length > 0 &&
-          upComingBookings.map(({ created, dateFrom, dateTo, venue }, index) => {
+          upComingBookings.map(({ created, dateFrom, dateTo, guests, venue }, index) => {
             const dateCreated = format(parseISO(created), 'd MMM');
             const fromDate = format(parseISO(dateFrom), 'd MMM');
             const toDate = format(parseISO(dateTo), 'd MMM');
@@ -38,7 +38,7 @@ function ProfileCustomer() {
             return (
               <div
                 key={index}
-                className={'flex flex-col gap-3 rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100'}
+                className={'flex flex-col gap-2 rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100'}
               >
                 <Link to={`/venues/venue-details/${venue.id}`}>
                   <img
@@ -52,9 +52,12 @@ function ProfileCustomer() {
                   <h3 className={'text-lg font-bold capitalize whitespace-nowrap overflow-hidden text-ellipsis'}>
                     {venue.name}
                   </h3>
-                  <p className={'text-xs font-light'}>Booked on {dateCreated}</p>
+                  <p className={'text-xs font-light mt-1'}>Booked on {dateCreated}</p>
                 </div>
-                <h4 className={'text-base font-semibold mt-auto'}>
+                <p className={'mt-1.5'}>
+                  <span className={'font-semibold'}>{guests}</span> guest{guests > 1 && 's'}
+                </p>
+                <h4 className={'text-base font-semibold'}>
                   From {fromDate} to {toDate}
                 </h4>
               </div>
