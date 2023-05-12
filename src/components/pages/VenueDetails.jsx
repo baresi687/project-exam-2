@@ -126,6 +126,7 @@ function VenueDetails() {
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   <div className={'h-72 sm:h-96 md:h-[28rem] lg:h-auto lg:basis-1/2'}>
                     <img
+                      loading={'lazy'}
                       className={'rounded-xl object-cover h-full w-full'}
                       src={media && media[0]}
                       alt={name}
@@ -232,10 +233,10 @@ function VenueDetails() {
                       autoComplete="off"
                       onSubmit={handleSubmit}
                       id={'booking'}
-                      className={'flex flex-col gap-5 px-6 mt-8'}
+                      className={'flex flex-col gap-4 px-6 mt-8 lg:mt-9'}
                     >
                       <div className={'flex flex-col gap-4 sm:flex-row sm: sm:gap-8'}>
-                        <div className={'flex flex-col gap-2'}>
+                        <div className={'relative flex flex-col gap-2'}>
                           <label htmlFor={'dates'}>Available dates:</label>
                           <DatePicker
                             name={'dates'}
@@ -248,7 +249,7 @@ function VenueDetails() {
                             selectsRange
                             required={auth}
                             id={'dates'}
-                            className={`text-sm border-gray-200 border rounded h-10 indent-3 w-52`}
+                            className={`border-gray-200 border rounded h-10 indent-3 w-52`}
                             dateFormat={'dd.MM.yyyy'}
                             minDate={new Date()}
                             maxDate={maxDate}
@@ -331,13 +332,11 @@ function VenueDetails() {
                       <div className={'flex flex-col gap-4 sm:flex-row sm:items-center'}>
                         <button
                           type={'submit'}
-                          className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-40 hover:bg-rose-700 ease-out duration-200`}
+                          className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-52 hover:bg-rose-700 ease-out duration-200`}
                         >
                           {isLoadingBooking && (
                             <span
-                              className={
-                                'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent sm:left-2.5 '
-                              }
+                              className={'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent'}
                             ></span>
                           )}
                           {isLoadingBooking ? 'Processing..' : 'Reserve'}

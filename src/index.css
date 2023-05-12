@@ -69,3 +69,7 @@
     }
   }
 }
+
+.react-datepicker__tab-loop {
+  position: absolute;
+}
