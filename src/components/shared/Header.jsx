@@ -162,7 +162,7 @@ function Header() {
                           <p className={'text-sm font-light mb-1'}>
                             {auth.venueManager ? 'Venue manager' : 'Customer'}
                           </p>
-                          <p className={'text-sm font-semibold break-words'}>{auth.name}</p>
+                          <p className={'text-sm font-semibold overflow-hidden'}>{auth.name}</p>
                         </div>
                         <nav className={'flex flex-col mt-1.5 text-sm'}>
                           <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>

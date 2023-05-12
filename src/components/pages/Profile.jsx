@@ -89,7 +89,7 @@ function Profile() {
                     src={avatar ? avatar : profileImg}
                     alt={'Profile avatar'}
                   />
-                  <h3 className={'text-center text-xl font-semibold mt-8'}>{name}</h3>
+                  <h3 className={'text-center text-xl font-semibold mt-8 overflow-hidden'}>{name}</h3>
                   <h4 className={'text-center text-xl font-light italic mt-4'}>
                     {venueManager ? 'Venue Manager' : 'Customer'}
                   </h4>

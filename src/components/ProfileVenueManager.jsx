@@ -142,7 +142,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                       </h3>
                       {bookings.length ? (
                         <details className={'relative'}>
-                          <summary className={'cursor-pointer select-none font-semibold text-red-800 mt-1.5 mb-6'}>
+                          <summary className={'cursor-pointer select-none font-semibold text-red-800 mt-2.5 mb-6'}>
                             View bookings
                           </summary>
                           <ul
@@ -163,7 +163,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                           </ul>
                         </details>
                       ) : (
-                        <p className={'font-extralight mt-1.5 mb-6 text-gray-900 italic'}>No bookings</p>
+                        <p className={'font-extralight mt-2.5 mb-6 text-gray-900 italic'}>No bookings</p>
                       )}
                     </div>
                     <div className={'flex gap-3'}>
