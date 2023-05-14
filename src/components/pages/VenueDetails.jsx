@@ -22,6 +22,7 @@ function VenueDetails() {
     fetchData: fetchBooking,
   } = useApi();
   const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
+  const [activeSlide, setActiveSLide] = useState(0);
   const [showMoreDesc, setShowMoreDesc] = useState(false);
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -42,6 +43,19 @@ function VenueDetails() {
       }
     });
     bookingsArray.sort((a, b) => a.start - b.start);
+  }
+
+  function handleSlideshow(num) {
+    let slideIndex = activeSlide;
+    slideIndex += num;
+
+    if (slideIndex > media.length - 1) {
+      slideIndex = 0;
+    }
+    if (slideIndex < 0) {
+      slideIndex = media.length - 1;
+    }
+    setActiveSLide(slideIndex);
   }
 
   function handleSubmit(e) {
@@ -124,15 +138,102 @@ function VenueDetails() {
               <>
                 <h1 className={'text-2xl font-bold capitalize mb-10 sm:text-4xl'}>{name}</h1>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
-                  <div className={'h-72 sm:h-96 md:h-[28rem] lg:h-auto lg:basis-1/2'}>
-                    <img
-                      loading={'lazy'}
-                      className={'rounded-xl object-cover h-full w-full'}
-                      src={media && media[0]}
-                      alt={name}
-                      onError={handleImgError}
-                    />
-                  </div>
+                  {media && (
+                    <div className={'relative h-72 group sm:h-96 md:h-[28rem] lg:h-auto lg:basis-1/2'}>
+                      {media.length > 1 && (
+                        <button
+                          id={'prev-image'}
+                          aria-label={'Previous image'}
+                          onClick={() => handleSlideshow(-1)}
+                          className={
+                            'flex items-center justify-center absolute top-1/2 -translate-y-1/2 z-10 left-4 h-8 w-8 bg-gray-200/80 rounded-full ease-out duration-700 hover:bg-white lg:opacity-0 group-hover:opacity-100'
+                          }
+                        >
+                          <svg
+                            className={'pointer-events-none'}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                          >
+                            <rect x="0" y="0" width="24" height="24" fill="none" stroke="none" />
+                            <path fill="currentColor" d="M16 22L6 12L16 2l1.775 1.775L9.55 12l8.225 8.225L16 22Z" />
+                          </svg>
+                        </button>
+                      )}
+                      <div className={'h-full relative'}>
+                        {media.length > 1 ? (
+                          media.map((image, index) => {
+                            const active = index === activeSlide;
+                            return (
+                              <img
+                                key={index}
+                                loading={'lazy'}
+                                className={`absolute top-0 rounded-xl object-cover w-full h-full ease-in duration-300 ${
+                                  !active && 'invisible opacity-0'
+                                }`}
+                                src={image}
+                                alt={name}
+                                onError={handleImgError}
+                              />
+                            );
+                          })
+                        ) : (
+                          <img
+                            loading={'lazy'}
+                            className={'rounded-xl object-cover w-full h-full'}
+                            src={media[0]}
+                            alt={name}
+                            onError={handleImgError}
+                          />
+                        )}
+                      </div>
+                      {media.length > 1 && (
+                        <button
+                          id={'next-image'}
+                          aria-label={'Next image'}
+                          onClick={() => handleSlideshow(1)}
+                          className={
+                            'flex items-center justify-center rotate-180 absolute top-1/2 -translate-y-1/2 right-4 h-8 w-8 bg-gray-200/80 rounded-full ease-out duration-200 hover:bg-white lg:opacity-0 group-hover:opacity-100'
+                          }
+                        >
+                          <svg
+                            className={'pointer-events-none'}
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                          >
+                            <rect x="0" y="0" width="24" height="24" fill="none" stroke="none" />
+                            <path fill="currentColor" d="M16 22L6 12L16 2l1.775 1.775L9.55 12l8.225 8.225L16 22Z" />
+                          </svg>
+                        </button>
+                      )}
+                      <div className={'absolute bottom-6 w-full'}>
+                        <div
+                          className={
+                            'flex justify-center gap-3 ease-out duration-700 lg:opacity-0 group-hover:opacity-100'
+                          }
+                        >
+                          {media.length > 1 &&
+                            media.map((imageDots, index) => {
+                              return (
+                                <button
+                                  aria-label={'Select image'}
+                                  onClick={() => setActiveSLide(index)}
+                                  key={index}
+                                  className={`h-3 w-3 rounded-full ease-in duration-100 ${
+                                    index === activeSlide
+                                      ? 'bg-white'
+                                      : 'bg-neutral-300 opacity-70 hover:bg-white hover:opacity-100'
+                                  }`}
+                                ></button>
+                              );
+                            })}
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div
                     className={
                       'relative rounded-xl py-6 border border-neutral-200 shadow-sm shadow-neutral-100 lg:basis-1/2'
