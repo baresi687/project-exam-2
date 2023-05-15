@@ -5,6 +5,7 @@ function VenueListItem({ id, name, media, maxGuests, price }) {
   return (
     <Link key={id} to={`/venues/venue-details/${id}`} className={'group'}>
       <img
+        loading={'lazy'}
         className={'rounded-xl object-cover h-72 w-full md:h-64'}
         src={media[0]}
         alt={name}
