@@ -139,7 +139,11 @@ function VenueDetails() {
                 <h1 className={'text-2xl font-bold capitalize mb-10 sm:text-4xl'}>{name}</h1>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   {media && (
-                    <div className={'relative h-72 group sm:h-96 md:h-[28rem] lg:h-auto lg:basis-1/2'}>
+                    <div
+                      className={
+                        'rounded-xl overflow-hidden relative h-72 group sm:h-96 md:h-[28rem] lg:h-auto lg:basis-1/2'
+                      }
+                    >
                       {media.length > 1 && (
                         <button
                           id={'prev-image'}
@@ -169,7 +173,7 @@ function VenueDetails() {
                               <img
                                 key={index}
                                 loading={'lazy'}
-                                className={`absolute top-0 rounded-xl object-cover w-full h-full ease-in duration-300 ${
+                                className={`absolute top-0 object-cover w-full h-full ease-in duration-300 ${
                                   !active && 'invisible opacity-0'
                                 }`}
                                 src={image}
@@ -181,7 +185,7 @@ function VenueDetails() {
                         ) : (
                           <img
                             loading={'lazy'}
-                            className={'rounded-xl object-cover w-full h-full'}
+                            className={'object-cover w-full h-full'}
                             src={media[0]}
                             alt={name}
                             onError={handleImgError}
@@ -209,7 +213,7 @@ function VenueDetails() {
                           </svg>
                         </button>
                       )}
-                      <div className={'absolute bottom-6 w-full'}>
+                      <div className={'absolute bottom-6 z-10 w-full'}>
                         <div
                           className={
                             'flex justify-center gap-3 ease-out duration-700 lg:opacity-0 group-hover:opacity-100'
@@ -223,15 +227,20 @@ function VenueDetails() {
                                   onClick={() => setActiveSLide(index)}
                                   key={index}
                                   className={`h-3 w-3 rounded-full ease-in duration-100 ${
-                                    index === activeSlide
-                                      ? 'bg-white'
-                                      : 'bg-neutral-300 opacity-70 hover:bg-white hover:opacity-100'
+                                    index === activeSlide ? 'bg-white' : 'bg-neutral-400 opacity-90 hover:bg-white'
                                   }`}
                                 ></button>
                               );
                             })}
                         </div>
                       </div>
+                      {media.length > 1 && (
+                        <div
+                          className={
+                            'overlay absolute bottom-0 h-20 w-full ease-out duration-700 lg:opacity-0 group-hover:opacity-70'
+                          }
+                        ></div>
+                      )}
                     </div>
                   )}
                   <div
