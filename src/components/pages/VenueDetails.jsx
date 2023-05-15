@@ -136,7 +136,7 @@ function VenueDetails() {
             )}
             {!isError ? (
               <>
-                <h1 className={'text-2xl font-bold capitalize mb-10 sm:text-4xl'}>{name}</h1>
+                <h1 className={'text-2xl font-bold capitalize mb-10 break-words sm:text-4xl'}>{name}</h1>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   {media && (
                     <div
@@ -256,7 +256,9 @@ function VenueDetails() {
                       <div className={`border-b border-b-zinc-100 pb-3 ${showMoreDesc && 'lg:pb-9'}`}>
                         <h2
                           onClick={() => description && description.length > 120 && setShowMoreDesc(!showMoreDesc)}
-                          className={`text-base font-semibold ${showMoreDesc && 'whitespace-pre-line'}`}
+                          className={`text-base font-semibold overflow-wrap-anywhere ${
+                            showMoreDesc && 'whitespace-pre-line'
+                          }`}
                         >
                           {description && description.substring(0, 120)}
                           <span
