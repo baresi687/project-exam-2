@@ -1,7 +1,10 @@
+import { useState } from 'react';
+
 function CreateAndEditVenueForm({
   form,
   title,
   btnTitle,
+  mediaArray,
   onSubmit,
   isLoading,
   isFormError,
@@ -13,8 +16,59 @@ function CreateAndEditVenueForm({
   const {
     register,
     handleSubmit,
+    clearErrors,
+    getValues,
     formState: { errors },
   } = form;
+  const { fields, append, remove } = mediaArray;
+  const [mediaURL, setMediaURL] = useState('');
+  const [isImgURLValid, setIsImgURLValid] = useState(true);
+
+  async function validateImgURL(url) {
+    const res = await fetch(url, { method: 'HEAD' });
+    const buff = await res.blob();
+    return buff.type;
+  }
+
+  function handleImgURL(e) {
+    setIsImgURLValid(true);
+    clearErrors('media');
+
+    switch (e.currentTarget.id) {
+      case 'media':
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (e.currentTarget.value) {
+            validateImgURL(e.currentTarget.value)
+              .then((res) => {
+                if (res === 'image/jpeg') {
+                  append(mediaURL);
+                  setMediaURL('');
+                } else {
+                  setIsImgURLValid(false);
+                }
+              })
+              .catch(() => setIsImgURLValid(false));
+          }
+        }
+        break;
+      case 'media-btn':
+        if (mediaURL) {
+          validateImgURL(mediaURL)
+            .then((res) => {
+              if (res === 'image/jpeg') {
+                append(mediaURL);
+                setMediaURL('');
+              } else {
+                setIsImgURLValid(false);
+              }
+            })
+            .catch(() => setIsImgURLValid(false));
+        } else if (mediaURL || !mediaURL) {
+          setIsImgURLValid(false);
+        }
+    }
+  }
 
   return (
     <form
@@ -44,7 +98,6 @@ function CreateAndEditVenueForm({
           </label>
           {errors.name && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.name?.message}</p>}
         </div>
-
         <div className={'w-full relative'}>
           <textarea
             {...register('description')}
@@ -99,22 +152,52 @@ function CreateAndEditVenueForm({
           {errors.maxGuests && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.maxGuests?.message}</p>}
         </div>
         <div className={'w-full relative'}>
-          <input
-            {...register('media')}
-            id={'media'}
-            className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
-            type={'text'}
-            placeholder={'Image URL'}
-          />
-          <label
-            htmlFor={'media'}
-            className={`${
-              errors.media && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
-          >
-            Image URL
-          </label>
+          <div className={'flex gap-2'}>
+            <input
+              aria-label={'Add Image URL'}
+              value={mediaURL}
+              onChange={(e) => setMediaURL(e.target.value)}
+              onKeyDown={handleImgURL}
+              id={'media'}
+              className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
+              type={'text'}
+              placeholder={'Image URL'}
+            />
+            <button
+              aria-label={'Add Image URL'}
+              onClick={handleImgURL}
+              type={'button'}
+              id={'media-btn'}
+              className={'rounded bg-rose-800 text-white h-10 w-24  hover:bg-rose-700 ease-out duration-200'}
+            >
+              Add
+            </button>
+            <label
+              htmlFor={'media'}
+              className={`${
+                errors.media && 'text-red-700'
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+            >
+              Image URL
+            </label>
+          </div>
           {errors.media && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.media?.message}</p>}
+          {!isImgURLValid && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Image URL is not valid or empty</p>}
+          {fields.length > 0 && (
+            <div className={'grid grid-cols-5 gap-2 mt-6'}>
+              {fields.map((item, i) => {
+                return (
+                  <button type={'button'} onClick={() => remove(i)} key={i} {...register(`media.${i}`)}>
+                    <img
+                      className={'h-20 w-full rounded object-cover'}
+                      src={getValues(`media.${i}`)}
+                      alt={'Image to add'}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
         <div id={'meta-checkboxes'} className={'text-sm flex gap-4 my-4 mx-auto md:ml-4'}>
           <div className={'flex items-center gap-1.5'}>

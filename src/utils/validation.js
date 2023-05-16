@@ -39,11 +39,7 @@ const createAndEditSchema = yup.object({
     .min(1, 'Max guests must be at least 1')
     .max(100, 'Max guests can not exceed 100'),
 
-  media: yup
-    .string()
-    .trim()
-    .required('Image URL is a required field')
-    .matches(/\.(jpg|jpeg|png|webp|avif|gif|svg)$/, 'Image URL is not valid'),
+  media: yup.array().min(1, 'Image URL must have at least one image'),
 });
 
 export { handleImgError, scrollToMessage, filterVenuesWithProperties, createAndEditSchema };

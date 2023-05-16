@@ -5,19 +5,23 @@ import { createAndEditSchema, scrollToMessage } from '../../utils/validation.js'
 import { useNavigate } from 'react-router-dom';
 import { getFromStorage } from '../../utils/storage.js';
 import CreateAndEditVenueForm from '../shared/CreateAndEditVenueForm.jsx';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 function CreateVenue() {
   const { venueManager, accessToken } = getFromStorage('user');
   const createForm = useForm({ resolver: yupResolver(createAndEditSchema) });
+  const { control } = createForm;
+  const mediaArray = useFieldArray({
+    control,
+    name: 'media',
+  });
   const { data, created, isLoading, isError, errorMsg, fetchData } = useApi();
   const formErrorRef = useRef(null);
   const [isFormError, setIsFormError] = useState(false);
   const navigate = useNavigate();
 
   function onSubmit(data) {
-    data.media = [data.media];
     fetchData(CREATE_VENUE, 'POST', accessToken, data);
   }
 
@@ -49,6 +53,7 @@ function CreateVenue() {
               form={createForm}
               title={'Create Venue'}
               btnTitle={'Create Venue'}
+              mediaArray={mediaArray}
               onSubmit={onSubmit}
               isLoading={isLoading}
               isFormError={isFormError}
