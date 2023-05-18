@@ -25,7 +25,7 @@ function CreateAndEditVenueForm({
   const [isImgURLValid, setIsImgURLValid] = useState(true);
 
   async function validateImgURL(url) {
-    const res = await fetch(url, { method: 'HEAD' });
+    const res = await fetch(url.trim(), { method: 'HEAD' });
     const buff = await res.blob();
     return buff.type;
   }
@@ -34,39 +34,22 @@ function CreateAndEditVenueForm({
     setIsImgURLValid(true);
     clearErrors('media');
 
-    switch (e.currentTarget.id) {
-      case 'media':
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          if (e.currentTarget.value) {
-            validateImgURL(e.currentTarget.value)
-              .then((res) => {
-                if (res === 'image/jpeg') {
-                  append(mediaURL);
-                  setMediaURL('');
-                } else {
-                  setIsImgURLValid(false);
-                }
-              })
-              .catch(() => setIsImgURLValid(false));
+    if (mediaURL.trim() && (e.key === 'Enter' || e.currentTarget.id === 'media-btn')) {
+      e.preventDefault();
+
+      validateImgURL(mediaURL)
+        .then((res) => {
+          if (res === 'image/jpeg') {
+            append(mediaURL.trim());
+            setMediaURL('');
+          } else {
+            setIsImgURLValid(false);
           }
-        }
-        break;
-      case 'media-btn':
-        if (mediaURL) {
-          validateImgURL(mediaURL)
-            .then((res) => {
-              if (res === 'image/jpeg') {
-                append(mediaURL);
-                setMediaURL('');
-              } else {
-                setIsImgURLValid(false);
-              }
-            })
-            .catch(() => setIsImgURLValid(false));
-        } else if (mediaURL || !mediaURL) {
-          setIsImgURLValid(false);
-        }
+        })
+        .catch(() => setIsImgURLValid(false));
+    } else if (!mediaURL.trim() && (e.key === 'Enter' || e.currentTarget.id === 'media-btn')) {
+      e.preventDefault();
+      setIsImgURLValid(false);
     }
   }
 
