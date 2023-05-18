@@ -6,7 +6,7 @@ import { getFromStorage } from '../utils/storage.js';
 import { useEffect, useRef, useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import CreateAndEditVenueForm from './shared/CreateAndEditVenueForm.jsx';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ProfileCustomer from './ProfileCustomer.jsx';
 
@@ -20,6 +20,12 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   const [venueNameToBeDeleted, setVenueNameToBeDeleted] = useState('');
   const [venueDeleteError, setVenueDeleteError] = useState(false);
   const editForm = useForm({ resolver: yupResolver(createAndEditSchema) });
+  const { control } = editForm;
+  const mediaArray = useFieldArray({
+    control,
+    name: 'media',
+  });
+  const [mediaURL, setMediaURL] = useState('');
   const editFormErrorRef = useRef(null);
   const [isFormError, setIsFormError] = useState(false);
   const { setValue, clearErrors } = editForm;
@@ -33,19 +39,20 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   } = useApi();
 
   function onEditSubmit(data) {
-    data.media = [data.media];
     editVenue(`${EDIT_DELETE_VENUE}/${venueIdToBeDeletedOrChanged}`, 'PUT', accessToken, data);
   }
 
   function handleEditVenue(e) {
     clearErrors();
+    setMediaURL('');
     const meta = JSON.parse(e.currentTarget.dataset.meta);
+    const mediaArray = JSON.parse(e.currentTarget.dataset.media);
 
     setValue('name', e.currentTarget.dataset.name);
     setValue('description', e.currentTarget.dataset.description);
     setValue('price', e.currentTarget.dataset.price);
     setValue('maxGuests', e.currentTarget.dataset.maxguests);
-    setValue('media', e.currentTarget.dataset.media);
+    setValue('media', [...mediaArray]);
 
     for (const property in meta) {
       setValue(`meta.${property}`, meta[property]);
@@ -173,7 +180,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                         data-description={description}
                         data-price={price}
                         data-maxguests={maxGuests}
-                        data-media={media[0]}
+                        data-media={JSON.stringify(media)}
                         data-meta={JSON.stringify(meta)}
                         onClick={handleEditVenue}
                         className={'bg-rose-800 text-white rounded h-8 w-full hover:bg-rose-700 ease-out duration-200'}
@@ -248,6 +255,9 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                 form={editForm}
                 title={'Edit Venue'}
                 btnTitle={'Edit Venue'}
+                mediaArray={mediaArray}
+                mediaURL={mediaURL}
+                setMediaURL={setMediaURL}
                 onSubmit={onEditSubmit}
                 isLoading={isLoadingEditVenue}
                 isFormError={isFormError}

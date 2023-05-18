@@ -1,7 +1,12 @@
+import { useState } from 'react';
+
 function CreateAndEditVenueForm({
   form,
   title,
   btnTitle,
+  mediaArray,
+  mediaURL,
+  setMediaURL,
   onSubmit,
   isLoading,
   isFormError,
@@ -13,12 +18,50 @@ function CreateAndEditVenueForm({
   const {
     register,
     handleSubmit,
+    clearErrors,
+    getValues,
     formState: { errors },
   } = form;
+  const { fields, append, remove } = mediaArray;
+  const [isImgURLValid, setIsImgURLValid] = useState(true);
+
+  async function validateImgURL(url) {
+    const res = await fetch(url.trim(), { method: 'HEAD' });
+    const buff = await res.blob();
+    return buff.type;
+  }
+
+  function handleImgURL(e) {
+    setIsImgURLValid(true);
+    clearErrors('media');
+
+    if (mediaURL.trim() && fields.length < 5 && (e.key === 'Enter' || e.currentTarget.id === 'media-btn')) {
+      e.preventDefault();
+
+      validateImgURL(mediaURL)
+        .then((res) => {
+          if (res === 'image/jpeg') {
+            append(mediaURL.trim());
+            setMediaURL('');
+          } else {
+            setIsImgURLValid(false);
+          }
+        })
+        .catch(() => setIsImgURLValid(false));
+    } else if (!mediaURL.trim() && (e.key === 'Enter' || e.currentTarget.id === 'media-btn')) {
+      e.preventDefault();
+      setIsImgURLValid(false);
+    }
+  }
+
+  function handleFormOnBlur() {
+    setIsFormError(false);
+    setIsImgURLValid(true);
+  }
 
   return (
     <form
-      onBlur={() => setIsFormError(false)}
+      onBlur={handleFormOnBlur}
       onSubmit={handleSubmit(onSubmit)}
       className={`rounded-xl px-6 pt-10 pb-6 ${
         borderAndShadow && 'border shadow-sm'
@@ -44,7 +87,6 @@ function CreateAndEditVenueForm({
           </label>
           {errors.name && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.name?.message}</p>}
         </div>
-
         <div className={'w-full relative'}>
           <textarea
             {...register('description')}
@@ -99,22 +141,91 @@ function CreateAndEditVenueForm({
           {errors.maxGuests && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.maxGuests?.message}</p>}
         </div>
         <div className={'w-full relative'}>
-          <input
-            {...register('media')}
-            id={'media'}
-            className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
-            type={'text'}
-            placeholder={'Image URL'}
-          />
-          <label
-            htmlFor={'media'}
-            className={`${
-              errors.media && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
-          >
-            Image URL
-          </label>
+          <div className={'flex gap-2'}>
+            <input
+              aria-label={'Add Image URL'}
+              value={mediaURL}
+              onChange={(e) => setMediaURL(e.target.value)}
+              onKeyDown={handleImgURL}
+              id={'media'}
+              className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
+              type={'text'}
+              placeholder={'Image URL'}
+              disabled={fields.length === 5}
+            />
+            <button
+              aria-label={'Add Image URL'}
+              onClick={handleImgURL}
+              type={'button'}
+              id={'media-btn'}
+              className={
+                'rounded bg-rose-800 text-white h-10 w-24 hover:bg-rose-700 ease-out duration-200 disabled:bg-gray-200'
+              }
+              disabled={fields.length === 5}
+            >
+              Add
+            </button>
+            <label
+              htmlFor={'media'}
+              className={`${
+                errors.media && 'text-red-700'
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+            >
+              {fields.length === 5 ? 'Max 5 images' : 'Image URL'}
+            </label>
+          </div>
           {errors.media && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.media?.message}</p>}
+          {!isImgURLValid && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Image URL is not valid or empty</p>}
+          {fields.length > 0 ? (
+            <div className={'mt-4 px-4'}>
+              <p className={`text-sm font-semibold`}>
+                Added images {fields.length === 5 && <span className={`text-xs italic`}>( max 5 )</span>}
+              </p>
+              <div className={'mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5'}>
+                {fields.map((item, i) => {
+                  return (
+                    <button
+                      aria-label={'Added image. Click to remove'}
+                      className={
+                        'group relative flex items-center justify-center h-20 sm:h-20 w-full rounded overflow-hidden'
+                      }
+                      type={'button'}
+                      onClick={() => remove(i)}
+                      key={item.id}
+                      {...register(`media.${i}`)}
+                    >
+                      <img
+                        className={'object-cover absolute top-0 w-full h-full z-0 pointer-events-none'}
+                        src={getValues(`media.${i}`)}
+                        alt={'Image to add'}
+                      />
+                      <span
+                        className={
+                          'ease-out duration-200 z-10 pointer-events-none rounded-full p-1 bg-gray-500/50 group-hover:bg-amber-500 group-hover:p-2'
+                        }
+                      >
+                        <svg
+                          className={'fill-white group-hover:fill-gray-900'}
+                          width="8"
+                          height="8"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z"
+                            fill="#none"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <p className={`mt-4 px-4 text-sm font-light italic`}>Added images will be displayed here</p>
+          )}
         </div>
         <div id={'meta-checkboxes'} className={'text-sm flex gap-4 my-4 mx-auto md:ml-4'}>
           <div className={'flex items-center gap-1.5'}>
