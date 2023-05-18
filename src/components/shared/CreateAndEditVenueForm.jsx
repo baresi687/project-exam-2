@@ -166,20 +166,53 @@ function CreateAndEditVenueForm({
           </div>
           {errors.media && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.media?.message}</p>}
           {!isImgURLValid && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Image URL is not valid or empty</p>}
-          {fields.length > 0 && (
-            <div className={'grid grid-cols-5 gap-2 mt-6'}>
-              {fields.map((item, i) => {
-                return (
-                  <button type={'button'} onClick={() => remove(i)} key={i} {...register(`media.${i}`)}>
-                    <img
-                      className={'h-20 w-full rounded object-cover'}
-                      src={getValues(`media.${i}`)}
-                      alt={'Image to add'}
-                    />
-                  </button>
-                );
-              })}
+          {fields.length > 0 ? (
+            <div className={'mt-4 px-4'}>
+              <p className={`text-sm font-semibold`}>Added images</p>
+              <div className={'mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5'}>
+                {fields.map((item, i) => {
+                  return (
+                    <button
+                      aria-label={'Added image. Click to remove'}
+                      className={
+                        'group relative flex items-center justify-center h-20 sm:h-20 w-full rounded overflow-hidden'
+                      }
+                      type={'button'}
+                      onClick={() => remove(i)}
+                      key={item.id}
+                      {...register(`media.${i}`)}
+                    >
+                      <img
+                        className={'object-cover absolute top-0 w-full h-full z-0 pointer-events-none'}
+                        src={getValues(`media.${i}`)}
+                        alt={'Image to add'}
+                      />
+                      <span
+                        className={
+                          'ease-out duration-200 z-10 pointer-events-none rounded-full p-1 bg-gray-500/50 group-hover:bg-rose-800 group-hover:p-2'
+                        }
+                      >
+                        <svg
+                          className={'fill-white'}
+                          width="8"
+                          height="8"
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M16 1.61143L14.3886 0L8 6.38857L1.61143 0L0 1.61143L6.38857 8L0 14.3886L1.61143 16L8 9.61143L14.3886 16L16 14.3886L9.61143 8L16 1.61143Z"
+                            fill="#none"
+                          />
+                        </svg>
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
+          ) : (
+            <p className={`mt-4 px-4 text-sm font-light italic`}>Added images will be displayed here</p>
           )}
         </div>
         <div id={'meta-checkboxes'} className={'text-sm flex gap-4 my-4 mx-auto md:ml-4'}>
