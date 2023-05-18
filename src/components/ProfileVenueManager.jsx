@@ -25,6 +25,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
     control,
     name: 'media',
   });
+  const [mediaURL, setMediaURL] = useState('');
   const editFormErrorRef = useRef(null);
   const [isFormError, setIsFormError] = useState(false);
   const { setValue, clearErrors } = editForm;
@@ -43,6 +44,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
 
   function handleEditVenue(e) {
     clearErrors();
+    setMediaURL('');
     const meta = JSON.parse(e.currentTarget.dataset.meta);
     const mediaArray = JSON.parse(e.currentTarget.dataset.media);
 
@@ -254,6 +256,8 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                 title={'Edit Venue'}
                 btnTitle={'Edit Venue'}
                 mediaArray={mediaArray}
+                mediaURL={mediaURL}
+                setMediaURL={setMediaURL}
                 onSubmit={onEditSubmit}
                 isLoading={isLoadingEditVenue}
                 isFormError={isFormError}

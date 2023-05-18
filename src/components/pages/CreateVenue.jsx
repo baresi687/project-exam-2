@@ -16,6 +16,7 @@ function CreateVenue() {
     control,
     name: 'media',
   });
+  const [mediaURL, setMediaURL] = useState('');
   const { data, created, isLoading, isError, errorMsg, fetchData } = useApi();
   const formErrorRef = useRef(null);
   const [isFormError, setIsFormError] = useState(false);
@@ -54,6 +55,8 @@ function CreateVenue() {
               title={'Create Venue'}
               btnTitle={'Create Venue'}
               mediaArray={mediaArray}
+              mediaURL={mediaURL}
+              setMediaURL={setMediaURL}
               onSubmit={onSubmit}
               isLoading={isLoading}
               isFormError={isFormError}

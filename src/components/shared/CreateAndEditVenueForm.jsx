@@ -5,6 +5,8 @@ function CreateAndEditVenueForm({
   title,
   btnTitle,
   mediaArray,
+  mediaURL,
+  setMediaURL,
   onSubmit,
   isLoading,
   isFormError,
@@ -21,7 +23,6 @@ function CreateAndEditVenueForm({
     formState: { errors },
   } = form;
   const { fields, append, remove } = mediaArray;
-  const [mediaURL, setMediaURL] = useState('');
   const [isImgURLValid, setIsImgURLValid] = useState(true);
 
   async function validateImgURL(url) {
@@ -34,7 +35,7 @@ function CreateAndEditVenueForm({
     setIsImgURLValid(true);
     clearErrors('media');
 
-    if (mediaURL.trim() && (e.key === 'Enter' || e.currentTarget.id === 'media-btn')) {
+    if (mediaURL.trim() && fields.length < 5 && (e.key === 'Enter' || e.currentTarget.id === 'media-btn')) {
       e.preventDefault();
 
       validateImgURL(mediaURL)
@@ -53,9 +54,14 @@ function CreateAndEditVenueForm({
     }
   }
 
+  function handleFormOnBlur() {
+    setIsFormError(false);
+    setIsImgURLValid(true);
+  }
+
   return (
     <form
-      onBlur={() => setIsFormError(false)}
+      onBlur={handleFormOnBlur}
       onSubmit={handleSubmit(onSubmit)}
       className={`rounded-xl px-6 pt-10 pb-6 ${
         borderAndShadow && 'border shadow-sm'
@@ -145,13 +151,17 @@ function CreateAndEditVenueForm({
               className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
               type={'text'}
               placeholder={'Image URL'}
+              disabled={fields.length === 5}
             />
             <button
               aria-label={'Add Image URL'}
               onClick={handleImgURL}
               type={'button'}
               id={'media-btn'}
-              className={'rounded bg-rose-800 text-white h-10 w-24  hover:bg-rose-700 ease-out duration-200'}
+              className={
+                'rounded bg-rose-800 text-white h-10 w-24 hover:bg-rose-700 ease-out duration-200 disabled:bg-gray-200'
+              }
+              disabled={fields.length === 5}
             >
               Add
             </button>
@@ -161,14 +171,16 @@ function CreateAndEditVenueForm({
                 errors.media && 'text-red-700'
               } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
             >
-              Image URL
+              {fields.length === 5 ? 'Max 5 images' : 'Image URL'}
             </label>
           </div>
           {errors.media && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.media?.message}</p>}
           {!isImgURLValid && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Image URL is not valid or empty</p>}
           {fields.length > 0 ? (
             <div className={'mt-4 px-4'}>
-              <p className={`text-sm font-semibold`}>Added images</p>
+              <p className={`text-sm font-semibold`}>
+                Added images {fields.length === 5 && <span className={`text-xs italic`}>( max 5 )</span>}
+              </p>
               <div className={'mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5'}>
                 {fields.map((item, i) => {
                   return (
@@ -189,11 +201,11 @@ function CreateAndEditVenueForm({
                       />
                       <span
                         className={
-                          'ease-out duration-200 z-10 pointer-events-none rounded-full p-1 bg-gray-500/50 group-hover:bg-rose-800 group-hover:p-2'
+                          'ease-out duration-200 z-10 pointer-events-none rounded-full p-1 bg-gray-500/50 group-hover:bg-amber-500 group-hover:p-2'
                         }
                       >
                         <svg
-                          className={'fill-white'}
+                          className={'fill-white group-hover:fill-gray-900'}
                           width="8"
                           height="8"
                           viewBox="0 0 16 16"
