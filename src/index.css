@@ -69,6 +69,14 @@
     box-shadow: 0 2px 3px 0 rgb(0 0 0 / 0.1), 0 -1px 0 -1px rgb(0 0 0 / 0.1);
   }
 
+  .modal-scrollbar-remove {
+    scrollbar-width: none;
+  }
+
+  .modal-scrollbar-remove::-webkit-scrollbar {
+    display: none;
+  }
+
   @keyframes spin {
     0% {
       transform: rotate(0deg);

@@ -224,13 +224,13 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
           )}
           <div
             id={'edit-venue-modal'}
-            className={`ease-in duration-100 fixed z-40 inset-0 bg-neutral-900/70 overflow-auto ${
+            className={`ease-in duration-100 fixed z-40 inset-0 flex bg-neutral-900/70 overflow-auto modal-scrollbar-remove ${
               isEditModalOpen ? '' : 'invisible opacity-0'
             }`}
           >
             <div
               id={'edit-venue-modal-content'}
-              className={'relative bg-white rounded-xl mx-auto my-28 sm:mt-36 sm:mb-0 sm:max-w-[568px]'}
+              className={'relative w-full bg-white rounded-xl m-auto sm:max-w-[568px]'}
             >
               <button
                 aria-label={'Close modal'}
