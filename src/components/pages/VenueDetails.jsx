@@ -351,6 +351,7 @@ function VenueDetails() {
                         <div className={'relative flex flex-col gap-2'}>
                           <label htmlFor={'dates'}>Available dates:</label>
                           <DatePicker
+                            disabledKeyboardNavigation
                             name={'dates'}
                             locale={'en-GB'}
                             selected={startDate}
