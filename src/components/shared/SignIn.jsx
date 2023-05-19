@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useApi } from '../../hooks/useApi.js';
 import { SIGN_IN } from '../../settings/api.js';
 import { AuthContext } from '../../context/AuthContext.js';
+import { scrollToMessage } from '../../utils/validation.js';
 
 const schema = yup.object({
   email: yup
@@ -21,7 +22,7 @@ const schema = yup.object({
     .min(8, 'Password must be at least 8 characters'),
 });
 
-function SignIn({ closeModalonSignIn }) {
+function SignIn({ closeModalOnSignIn, formErrorRef }) {
   const [isFormError, setIsFormError] = useState(false);
   const {
     register,
@@ -39,16 +40,17 @@ function SignIn({ closeModalonSignIn }) {
   useEffect(() => {
     if (isError) {
       setIsFormError(true);
+      scrollToMessage(formErrorRef);
     }
-  }, [isError]);
+  }, [formErrorRef, isError]);
 
   useEffect(() => {
     if (response.name) {
       setAuth(response);
       localStorage.setItem('user', JSON.stringify(response));
-      closeModalonSignIn(false);
+      closeModalOnSignIn(false);
     }
-  }, [closeModalonSignIn, response, setAuth]);
+  }, [closeModalOnSignIn, response, setAuth]);
 
   return (
     <>
@@ -85,7 +87,7 @@ function SignIn({ closeModalonSignIn }) {
             {isLoading ? 'Processing..' : 'Sign In'}
           </button>
         </form>
-        {isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}
+        <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
       </div>
     </>
   );

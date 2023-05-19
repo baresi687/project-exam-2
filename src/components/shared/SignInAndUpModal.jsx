@@ -1,7 +1,10 @@
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
+import { useRef } from 'react';
 
 function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemActive, setIsSignInElemActive }) {
+  const formErrorRef = useRef(null);
+
   return (
     <>
       <div
@@ -54,9 +57,9 @@ function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemAct
             </div>
             <div className={'mt-12'}>
               {isSignInElemActive ? (
-                <SignIn closeModalonSignIn={setIsSignInUpModal} />
+                <SignIn closeModalOnSignIn={setIsSignInUpModal} formErrorRef={formErrorRef} />
               ) : (
-                <SignUp signUpSuccess={setIsSignInElemActive} />
+                <SignUp signUpSuccess={setIsSignInElemActive} formErrorRef={formErrorRef} />
               )}
             </div>
           </div>
