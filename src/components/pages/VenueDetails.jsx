@@ -352,6 +352,7 @@ function VenueDetails() {
                           <label htmlFor={'dates'}>Available dates:</label>
                           <DatePicker
                             disabledKeyboardNavigation
+                            onFocus={(e) => e.target.blur()}
                             name={'dates'}
                             locale={'en-GB'}
                             selected={startDate}
