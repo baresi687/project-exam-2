@@ -351,6 +351,8 @@ function VenueDetails() {
                         <div className={'relative flex flex-col gap-2'}>
                           <label htmlFor={'dates'}>Available dates:</label>
                           <DatePicker
+                            disabledKeyboardNavigation
+                            onFocus={(e) => e.currentTarget.blur()}
                             name={'dates'}
                             locale={'en-GB'}
                             selected={startDate}
