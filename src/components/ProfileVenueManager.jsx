@@ -230,7 +230,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
           >
             <div
               id={'edit-venue-modal-content'}
-              className={'relative w-full bg-white rounded-xl m-auto sm:max-w-[568px]'}
+              className={'relative w-full h-fit bg-white rounded-xl mx-auto my-24 sm:max-w-[568px]'}
             >
               <button
                 aria-label={'Close modal'}
