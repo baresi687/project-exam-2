@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { useEffect, useState } from 'react';
 import { useApi } from '../../hooks/useApi.js';
 import { SIGN_UP } from '../../settings/api.js';
+import { scrollToMessage } from '../../utils/validation.js';
 
 const schema = yup.object({
   name: yup
@@ -31,7 +32,7 @@ const schema = yup.object({
     .oneOf([yup.ref('password')], 'Password do not match'),
 });
 
-function SignUp({ signUpSuccess }) {
+function SignUp({ signUpSuccess, formErrorRef }) {
   const [isVenueManager, setIsVenueManager] = useState(false);
   const [isFormError, setIsFormError] = useState(false);
   const {
@@ -62,8 +63,9 @@ function SignUp({ signUpSuccess }) {
   useEffect(() => {
     if (isError) {
       setIsFormError(true);
+      scrollToMessage(formErrorRef);
     }
-  }, [isError]);
+  }, [formErrorRef, isError]);
 
   return (
     <>
@@ -132,7 +134,7 @@ function SignUp({ signUpSuccess }) {
             {isLoading ? 'Processing..' : 'Sign Up'}
           </button>
         </form>
-        {isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}
+        <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
       </div>
     </>
   );
