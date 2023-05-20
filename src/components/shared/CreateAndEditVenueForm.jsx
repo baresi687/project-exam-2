@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 function CreateAndEditVenueForm({
   form,
@@ -23,12 +23,20 @@ function CreateAndEditVenueForm({
     formState: { errors },
   } = form;
   const { fields, append, remove } = mediaArray;
+  const [imgURLLoading, setImgURLLoading] = useState(false);
   const [isImgURLValid, setIsImgURLValid] = useState(true);
+  const mediaInputRef = useRef(null);
 
   async function validateImgURL(url) {
-    const res = await fetch(url.trim(), { method: 'HEAD' });
-    const buff = await res.blob();
-    return buff.type;
+    try {
+      setImgURLLoading(true);
+      const res = await fetch(url.trim(), { method: 'HEAD' });
+      const buff = await res.blob();
+
+      return buff.type;
+    } finally {
+      setImgURLLoading(false);
+    }
   }
 
   function handleImgURL(e) {
@@ -58,6 +66,12 @@ function CreateAndEditVenueForm({
     setIsFormError(false);
     setIsImgURLValid(true);
   }
+
+  useEffect(() => {
+    if (!isImgURLValid) {
+      mediaInputRef.current.focus();
+    }
+  }, [mediaInputRef, isImgURLValid]);
 
   return (
     <form
@@ -143,6 +157,7 @@ function CreateAndEditVenueForm({
         <div className={'w-full relative'}>
           <div className={'flex gap-2'}>
             <input
+              ref={mediaInputRef}
               aria-label={'Add Image URL'}
               value={mediaURL}
               onChange={(e) => setMediaURL(e.target.value)}
@@ -151,19 +166,23 @@ function CreateAndEditVenueForm({
               className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
               type={'text'}
               placeholder={'Image URL'}
-              disabled={fields.length === 5}
+              disabled={imgURLLoading || fields.length === 5}
             />
             <button
               aria-label={'Add Image URL'}
               onClick={handleImgURL}
               type={'button'}
               id={'media-btn'}
-              className={
-                'rounded bg-rose-800 text-white h-10 w-24 hover:bg-rose-700 ease-out duration-200 disabled:bg-gray-200'
-              }
-              disabled={fields.length === 5}
+              className={`relative rounded bg-rose-800 text-white h-10 w-24 hover:bg-rose-700 ease-out duration-200 ${
+                !imgURLLoading && 'disabled:bg-gray-200'
+              } `}
+              disabled={imgURLLoading || fields.length === 5}
             >
-              Add
+              {imgURLLoading ? (
+                <span className={'loader absolute top-2.5 left-7 h-5 w-5 border-2 border-t-transparent'}></span>
+              ) : (
+                'Add'
+              )}
             </button>
             <label
               htmlFor={'media'}
