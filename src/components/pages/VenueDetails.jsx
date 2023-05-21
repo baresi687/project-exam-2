@@ -172,7 +172,6 @@ function VenueDetails() {
                             return (
                               <img
                                 key={index}
-                                loading={'lazy'}
                                 className={`absolute top-0 object-cover w-full h-full ease-in duration-300 ${
                                   !active && 'invisible opacity-0'
                                 }`}
@@ -184,7 +183,6 @@ function VenueDetails() {
                           })
                         ) : (
                           <img
-                            loading={'lazy'}
                             className={'object-cover w-full h-full'}
                             src={media[0]}
                             alt={name}
