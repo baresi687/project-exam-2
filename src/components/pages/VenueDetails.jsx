@@ -385,7 +385,7 @@ function VenueDetails() {
                               type={'button'}
                               disabled={guests === 1}
                               onClick={(e) => handleGuests(e)}
-                              className={`rounded-full p-2 border border-neutral-400 ${
+                              className={`rounded-full p-3 lg:p-2 border border-neutral-400 ${
                                 guests === 1 && 'opacity-30 cursor-not-allowed'
                               }`}
                             >
@@ -423,7 +423,7 @@ function VenueDetails() {
                               type={'button'}
                               disabled={guests === maxGuests}
                               onClick={(e) => handleGuests(e)}
-                              className={`rounded-full p-2 border border-neutral-400 ${
+                              className={`rounded-full p-3 lg:p-2 border border-neutral-400 ${
                                 guests === maxGuests && 'opacity-30 cursor-not-allowed'
                               }`}
                             >
