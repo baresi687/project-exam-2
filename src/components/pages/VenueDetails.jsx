@@ -315,9 +315,13 @@ function VenueDetails() {
                               <div key={index} className={'flex gap-1.5 items-center capitalize'}>
                                 <p>{item}</p>
                                 {meta[item] ? (
-                                  <span aria-label={`This venue has ${item}`} className={'checkmark'}></span>
+                                  <span
+                                    role={'status'}
+                                    aria-label={`This venue has ${item}`}
+                                    className={'checkmark'}
+                                  ></span>
                                 ) : (
-                                  <span aria-label={`This venues does not have ${item}`}>
+                                  <span role={'status'} aria-label={`This venue does not have ${item}`}>
                                     <svg
                                       className={'pointer-events-none'}
                                       xmlns="http://www.w3.org/2000/svg"
