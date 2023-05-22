@@ -12,6 +12,7 @@ function CreateAndEditVenueForm({
   isFormError,
   setIsFormError,
   errorMsg,
+  submitButtonRef,
   formErrorRef,
   borderAndShadow,
 }) {
@@ -273,8 +274,12 @@ function CreateAndEditVenueForm({
           </div>
         </div>
         <button
+          ref={submitButtonRef}
           type={'submit'}
-          className={'relative rounded bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'}
+          className={
+            'relative rounded bg-rose-800 text-white h-10 w-full hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200'
+          }
+          disabled={isLoading}
         >
           {isLoading && (
             <span className={'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent'}></span>

@@ -32,6 +32,7 @@ function VenueDetails() {
   const [isFormError, setIsFormError] = useState(false);
   const [auth] = useContext(AuthContext);
   const [, setIsSignInUpModal] = useContext(SignInUpModal);
+  const submitBookingRef = useRef(null);
   const bookingErrorRef = useRef(null);
   const [isVenueOwnedByUser, setIsVenueOwnedByUSer] = useState(false);
   const navigate = useNavigate();
@@ -111,6 +112,7 @@ function VenueDetails() {
 
   useEffect(() => {
     if (isErrorBooking) {
+      submitBookingRef.current.focus();
       setIsFormError(true);
       scrollToMessage(bookingErrorRef);
     }
@@ -447,8 +449,10 @@ function VenueDetails() {
                       </div>
                       <div className={'flex flex-col gap-4 sm:flex-row sm:items-center'}>
                         <button
+                          ref={submitBookingRef}
                           type={'submit'}
-                          className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-52 hover:bg-rose-700 ease-out duration-200`}
+                          className={`relative bg-rose-800 text-white rounded h-10 w-full sm:w-52 hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200`}
+                          disabled={isLoadingBooking}
                         >
                           {isLoadingBooking && (
                             <span

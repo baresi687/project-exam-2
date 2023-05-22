@@ -18,6 +18,8 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [venueIdToBeDeletedOrChanged, setVenueIdToBeDeletedOrChanged] = useState('');
   const [venueNameToBeDeleted, setVenueNameToBeDeleted] = useState('');
+  const editSubmitRef = useRef(null);
+  const deleteSubmitRef = useRef(null);
   const [venueDeleteError, setVenueDeleteError] = useState(false);
   const editForm = useForm({ resolver: yupResolver(createAndEditSchema) });
   const { control } = editForm;
@@ -87,6 +89,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
 
   useEffect(() => {
     if (isEditError) {
+      editSubmitRef.current.focus();
       setIsFormError(true);
       scrollToMessage(editFormErrorRef);
     }
@@ -94,6 +97,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
 
   useEffect(() => {
     if (isDeleteError) {
+      deleteSubmitRef.current.focus();
       setVenueDeleteError(true);
     }
   }, [isDeleteError]);
@@ -263,6 +267,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                 isFormError={isFormError}
                 setIsFormError={setIsFormError}
                 errorMsg={editErrorMsg}
+                submitButtonRef={editSubmitRef}
                 formErrorRef={editFormErrorRef}
               />
             </div>
@@ -308,10 +313,12 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                       Cancel
                     </button>
                     <button
+                      ref={deleteSubmitRef}
                       onClick={() => handleDeleteVenue(venueIdToBeDeletedOrChanged)}
                       className={
-                        'relative bg-amber-500 text-gray-900 rounded h-10 w-full font-semibold hover:bg-amber-400 ease-out duration-200'
+                        'relative bg-amber-500 text-gray-900 rounded h-10 w-full font-semibold hover:bg-amber-400 disabled:hover:cursor-none ease-out duration-200'
                       }
+                      disabled={isLoadingDeleteVenue}
                     >
                       {isLoadingDeleteVenue && (
                         <span
@@ -324,7 +331,10 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                     </button>
                   </div>
                   {venueDeleteError && (
-                    <div className={'api-error mt-6'}>Something went wrong.. please try again later</div>
+                    <div className={'api-error mt-6'}>
+                      <p>Something went wrong..</p>
+                      <p>Please try again later</p>
+                    </div>
                   )}
                 </div>
               </div>

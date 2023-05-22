@@ -35,6 +35,7 @@ function Profile() {
   const { data, isLoading, errorMsg, isError, fetchData } = useApi();
   const [isFormError, setIsFormError] = useState(false);
   const avatarErrorRef = useRef(null);
+  const avatarSubmitButtonRef = useRef(null);
   const [hasVenueManagerBooked, setHasVenueManagerBooked] = useState(false);
   const { state } = useLocation();
 
@@ -59,6 +60,7 @@ function Profile() {
 
   useEffect(() => {
     if (isError) {
+      avatarSubmitButtonRef.current.focus();
       setIsFormError(true);
       scrollToMessage(avatarErrorRef);
     }
@@ -109,10 +111,12 @@ function Profile() {
                       />
                       {errors.avatar && <p className={'text-red-700 mt-4'}>{errors.avatar?.message}</p>}
                       <button
+                        ref={avatarSubmitButtonRef}
                         type={'submit'}
                         className={
-                          'relative rounded mt-4 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+                          'relative rounded mt-4 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200'
                         }
+                        disabled={isLoading}
                       >
                         {isLoading && (
                           <span

@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useApi } from '../../hooks/useApi.js';
 import { SIGN_IN } from '../../settings/api.js';
 import { AuthContext } from '../../context/AuthContext.js';
@@ -32,6 +32,7 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
   } = useForm({ resolver: yupResolver(schema) });
   const { data: response, isLoading, isError, errorMsg, fetchData } = useApi();
   const [, setAuth] = useContext(AuthContext);
+  const submitButtonRef = useRef(null);
 
   const useSubmit = (data) => {
     fetchData(SIGN_IN, 'POST', null, data);
@@ -39,6 +40,7 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
 
   useEffect(() => {
     if (isError) {
+      submitButtonRef.current.focus();
       setIsFormError(true);
       scrollToMessage(formErrorRef);
     }
@@ -81,9 +83,11 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
           </label>
           {errors.password && <p className={'text-red-700'}>{errors.password?.message}</p>}
           <button
+            ref={submitButtonRef}
             className={
-              'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+              'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200'
             }
+            disabled={isLoading}
           >
             {isLoading && (
               <span className={'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent'}></span>

@@ -19,6 +19,7 @@ function CreateVenue() {
   const [mediaURL, setMediaURL] = useState('');
   const { data, created, isLoading, isError, errorMsg, fetchData } = useApi();
   const formErrorRef = useRef(null);
+  const submitButtonRef = useRef(null);
   const [isFormError, setIsFormError] = useState(false);
   const navigate = useNavigate();
 
@@ -34,6 +35,7 @@ function CreateVenue() {
 
   useEffect(() => {
     if (isError) {
+      submitButtonRef.current.focus();
       setIsFormError(true);
       scrollToMessage(formErrorRef);
     }
@@ -62,6 +64,7 @@ function CreateVenue() {
               isFormError={isFormError}
               setIsFormError={setIsFormError}
               errorMsg={errorMsg}
+              submitButtonRef={submitButtonRef}
               formErrorRef={formErrorRef}
               borderAndShadow
             />
