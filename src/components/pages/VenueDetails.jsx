@@ -172,7 +172,6 @@ function VenueDetails() {
                             return (
                               <img
                                 key={index}
-                                loading={'lazy'}
                                 className={`absolute top-0 object-cover w-full h-full ease-in duration-300 ${
                                   !active && 'invisible opacity-0'
                                 }`}
@@ -184,7 +183,6 @@ function VenueDetails() {
                           })
                         ) : (
                           <img
-                            loading={'lazy'}
                             className={'object-cover w-full h-full'}
                             src={media[0]}
                             alt={name}
@@ -315,9 +313,13 @@ function VenueDetails() {
                               <div key={index} className={'flex gap-1.5 items-center capitalize'}>
                                 <p>{item}</p>
                                 {meta[item] ? (
-                                  <span aria-label={`This venue has ${item}`} className={'checkmark'}></span>
+                                  <span
+                                    role={'status'}
+                                    aria-label={`This venue has ${item}`}
+                                    className={'checkmark'}
+                                  ></span>
                                 ) : (
-                                  <span aria-label={`This venues does not have ${item}`}>
+                                  <span role={'status'} aria-label={`This venue does not have ${item}`}>
                                     <svg
                                       className={'pointer-events-none'}
                                       xmlns="http://www.w3.org/2000/svg"
@@ -363,7 +365,7 @@ function VenueDetails() {
                             selectsRange
                             required={auth}
                             id={'dates'}
-                            className={`border-gray-200 border rounded h-10 indent-3 w-52`}
+                            className={`border-gray-200 border rounded h-10 indent-3 w-52 font-medium placeholder:text-zinc-500 placeholder:font-normal`}
                             dateFormat={'dd.MM.yyyy'}
                             minDate={new Date()}
                             maxDate={maxDate}
@@ -381,7 +383,7 @@ function VenueDetails() {
                               type={'button'}
                               disabled={guests === 1}
                               onClick={(e) => handleGuests(e)}
-                              className={`rounded-full p-2 border border-neutral-400 ${
+                              className={`rounded-full p-3 lg:p-2 border border-neutral-400 ${
                                 guests === 1 && 'opacity-30 cursor-not-allowed'
                               }`}
                             >
@@ -419,7 +421,7 @@ function VenueDetails() {
                               type={'button'}
                               disabled={guests === maxGuests}
                               onClick={(e) => handleGuests(e)}
-                              className={`rounded-full p-2 border border-neutral-400 ${
+                              className={`rounded-full p-3 lg:p-2 border border-neutral-400 ${
                                 guests === maxGuests && 'opacity-30 cursor-not-allowed'
                               }`}
                             >

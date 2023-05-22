@@ -95,7 +95,7 @@ function CreateAndEditVenueForm({
             htmlFor={'name'}
             className={`${
               errors.name && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Name of venue
           </label>
@@ -112,7 +112,7 @@ function CreateAndEditVenueForm({
             htmlFor={'description'}
             className={`${
               errors.description && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Description
           </label>
@@ -130,7 +130,7 @@ function CreateAndEditVenueForm({
             htmlFor={'price'}
             className={`${
               errors.price && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Price
           </label>
@@ -148,7 +148,7 @@ function CreateAndEditVenueForm({
             htmlFor={'maxGuests'}
             className={`${
               errors.maxGuests && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Max guests
           </label>
@@ -188,7 +188,7 @@ function CreateAndEditVenueForm({
               htmlFor={'media'}
               className={`${
                 errors.media && 'text-red-700'
-              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-gray-400 px-2 bg-white`}
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
             >
               {fields.length === 5 ? 'Max 5 images' : 'Image URL'}
             </label>
@@ -197,9 +197,9 @@ function CreateAndEditVenueForm({
           {!isImgURLValid && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Image URL is not valid or empty</p>}
           {fields.length > 0 ? (
             <div className={'mt-4 px-4'}>
-              <p className={`text-sm font-semibold`}>
+              <h2 className={`text-sm font-semibold`}>
                 Added images {fields.length === 5 && <span className={`text-xs italic`}>( max 5 )</span>}
-              </p>
+              </h2>
               <div className={'mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5'}>
                 {fields.map((item, i) => {
                   return (
@@ -243,7 +243,7 @@ function CreateAndEditVenueForm({
               </div>
             </div>
           ) : (
-            <p className={`mt-4 px-4 text-sm font-light italic`}>Added images will be displayed here</p>
+            <h2 className={`mt-4 px-4 text-sm font-light italic`}>Added images will be displayed here</h2>
           )}
         </div>
         <div id={'meta-checkboxes'} className={'text-sm flex gap-4 my-4 mx-auto md:ml-4'}>

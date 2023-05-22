@@ -97,7 +97,9 @@ function Header() {
                     <label className={'w-full relative'}>
                       <input
                         aria-label={'Search for venues'}
-                        className={'border-gray-200 border rounded h-10 indent-4 w-full'}
+                        className={
+                          'border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal'
+                        }
                         type={'text'}
                         placeholder={'Search for venues'}
                         value={searchValue}

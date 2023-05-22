@@ -66,7 +66,7 @@ function ProfileCustomer() {
       </div>
       {!upComingBookings.length && !isError && (
         <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
-          <h4 className={'text-lg font-semibold mb-2'}>No upcoming bookings</h4>
+          <h3 className={'text-lg font-semibold mb-2'}>No upcoming bookings</h3>
           <p>
             Have a look at{' '}
             <Link
