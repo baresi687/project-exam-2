@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useApi } from '../../hooks/useApi.js';
 import { SIGN_UP } from '../../settings/api.js';
 import { scrollToMessage } from '../../utils/validation.js';
@@ -42,6 +42,7 @@ function SignUp({ signUpSuccess, formErrorRef }) {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { data: response, isLoading, isError, errorMsg, fetchData } = useApi();
+  const submitButtonRef = useRef(null);
 
   const useSubmit = (data) => {
     const body = data;
@@ -62,6 +63,7 @@ function SignUp({ signUpSuccess, formErrorRef }) {
 
   useEffect(() => {
     if (isError) {
+      submitButtonRef.current.focus();
       setIsFormError(true);
       scrollToMessage(formErrorRef);
     }
@@ -129,10 +131,12 @@ function SignUp({ signUpSuccess, formErrorRef }) {
             <input id={'venue-manager'} type={'checkbox'} onChange={handleVenueManager} />
           </div>
           <button
+            ref={submitButtonRef}
             type={'submit'}
             className={
-              'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 ease-out duration-200'
+              'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200'
             }
+            disabled={isLoading}
           >
             {isLoading && (
               <span className={'loader absolute top-2.5 left-4 h-5 w-5 border-2 border-t-transparent'}></span>
