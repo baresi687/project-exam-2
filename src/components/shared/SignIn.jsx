@@ -61,7 +61,9 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('email')}
-              className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.email && 'border-red-700'}`}
+              className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
+                errors.email && 'border-red-700'
+              }`}
               type={'email'}
               placeholder={'Email address'}
             />
@@ -70,7 +72,9 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('password')}
-              className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.password && 'border-red-700'}`}
+              className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
+                errors.password && 'border-red-700'
+              }`}
               type={'password'}
               placeholder={'Password'}
             />

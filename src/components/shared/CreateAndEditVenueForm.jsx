@@ -95,7 +95,7 @@ function CreateAndEditVenueForm({
             htmlFor={'name'}
             className={`${
               errors.name && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-zinc-500 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Name of venue
           </label>
@@ -112,7 +112,7 @@ function CreateAndEditVenueForm({
             htmlFor={'description'}
             className={`${
               errors.description && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-zinc-500 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Description
           </label>
@@ -130,7 +130,7 @@ function CreateAndEditVenueForm({
             htmlFor={'price'}
             className={`${
               errors.price && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-zinc-500 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Price
           </label>
@@ -148,7 +148,7 @@ function CreateAndEditVenueForm({
             htmlFor={'maxGuests'}
             className={`${
               errors.maxGuests && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-zinc-500 px-2 bg-white`}
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
           >
             Max guests
           </label>
@@ -188,7 +188,7 @@ function CreateAndEditVenueForm({
               htmlFor={'media'}
               className={`${
                 errors.media && 'text-red-700'
-              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs font-medium text-zinc-500 px-2 bg-white`}
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
             >
               {fields.length === 5 ? 'Max 5 images' : 'Image URL'}
             </label>

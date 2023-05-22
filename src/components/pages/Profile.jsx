@@ -101,7 +101,7 @@ function Profile() {
                       <input
                         {...register('avatar')}
                         id={'avatar'}
-                        className={`border-gray-200 border rounded h-10 indent-4 w-full ${
+                        className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
                           errors.avatar && 'border-red-700'
                         }`}
                         type={'text'}

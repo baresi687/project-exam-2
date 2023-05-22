@@ -81,7 +81,9 @@ function SignUp({ signUpSuccess, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('name')}
-              className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.name && 'border-red-700'}`}
+              className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
+                errors.name && 'border-red-700'
+              }`}
               type={'text'}
               placeholder={'Name'}
             />
@@ -90,7 +92,9 @@ function SignUp({ signUpSuccess, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('email')}
-              className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.email && 'border-red-700'}`}
+              className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
+                errors.email && 'border-red-700'
+              }`}
               type={'email'}
               placeholder={'Email address'}
             />
@@ -99,7 +103,9 @@ function SignUp({ signUpSuccess, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('password')}
-              className={`border-gray-200 border rounded h-10 indent-4 w-full ${errors.password && 'border-red-700'}`}
+              className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
+                errors.password && 'border-red-700'
+              }`}
               type={'password'}
               placeholder={'Password'}
             />
@@ -108,7 +114,7 @@ function SignUp({ signUpSuccess, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('confirmPassword')}
-              className={`border-gray-200 border rounded h-10 indent-4 w-full ${
+              className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
                 errors.confirmPassword && 'border-red-700'
               }`}
               type={'password'}

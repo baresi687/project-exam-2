@@ -365,7 +365,7 @@ function VenueDetails() {
                             selectsRange
                             required={auth}
                             id={'dates'}
-                            className={`border-gray-200 border rounded h-10 indent-3 w-52`}
+                            className={`border-gray-200 border rounded h-10 indent-3 w-52 font-medium placeholder:text-zinc-500 placeholder:font-normal`}
                             dateFormat={'dd.MM.yyyy'}
                             minDate={new Date()}
                             maxDate={maxDate}

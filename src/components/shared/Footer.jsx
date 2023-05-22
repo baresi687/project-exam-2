@@ -12,7 +12,7 @@ function Footer() {
               <label className={'w-full'}>
                 <input
                   aria-label={'Newsletter Sign Up'}
-                  className={'border-gray-200 border rounded h-10 indent-4 w-full'}
+                  className={'border-gray-200 border rounded h-10 indent-4 w-full placeholder:text-zinc-500'}
                   type={'text'}
                   placeholder={'Your email address'}
                 />
