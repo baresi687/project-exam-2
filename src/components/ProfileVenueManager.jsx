@@ -204,7 +204,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
           </div>
           {data && data.length === 0 && !isError && created && (
             <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
-              <h4 className={'text-lg font-semibold mb-2'}>You have no venues</h4>
+              <h3 className={'text-lg font-semibold mb-2'}>You have no venues</h3>
               <p>
                 Create{' '}
                 <Link

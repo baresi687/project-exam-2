@@ -81,7 +81,7 @@ function Profile() {
           <div className={'container mx-auto px-4 max-w-7xl'}>
             <h1 className={'text-4xl font-bold mb-10'}>Profile</h1>
             <div id={'profile-container'} className={'flex flex-col gap-14 sm:flex-row sm:gap-8'}>
-              <div id={'avatar'} className={'sm:w-[18rem] shrink-0'}>
+              <div id={'avatar-container'} className={'sm:w-[18rem] shrink-0'}>
                 <h2 className={'text-xl font-bold mb-6'}>Avatar</h2>
                 <div className={'rounded-xl px-6 pt-12 pb-6 border border-neutral-200 shadow-sm shadow-neutral-100'}>
                   <img
