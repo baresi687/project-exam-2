@@ -54,7 +54,9 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
 
     setValue('name', e.currentTarget.dataset.name);
     setValue('description', e.currentTarget.dataset.description);
-    setLocationString(`${location.address}, ${location.zip}, ${location.city}, ${location.country} `);
+    setLocationString(
+      `${locationObject.address}, ${locationObject.zip}, ${locationObject.city}, ${locationObject.country} `
+    );
     setValue('price', e.currentTarget.dataset.price);
     setValue('maxGuests', e.currentTarget.dataset.maxguests);
     setValue('media', [...mediaArray]);
