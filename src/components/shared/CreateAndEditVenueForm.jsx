@@ -34,6 +34,7 @@ function CreateAndEditVenueForm({
   const mediaInputRef = useRef(null);
 
   function handleRetrieve(e) {
+    clearErrors('location');
     const locationObject = {
       address: e.features[0].properties.address_line1,
       city: e.features[0].properties.place,
@@ -90,7 +91,6 @@ function CreateAndEditVenueForm({
   function handleFormOnBlur() {
     setIsFormError(false);
     setIsImgURLValid(true);
-    clearErrors('location');
   }
 
   useEffect(() => {
@@ -125,9 +125,8 @@ function CreateAndEditVenueForm({
           />
           <label
             htmlFor={'name'}
-            className={`${
-              errors.name && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+            className={`${errors.name ? 'text-red-700' : 'text-zinc-500'} 
+              absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs px-2 bg-white`}
           >
             Name of venue
           </label>
@@ -143,8 +142,8 @@ function CreateAndEditVenueForm({
           <label
             htmlFor={'description'}
             className={`${
-              errors.description && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+              errors.description ? 'text-red-700' : 'text-zinc-500'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs px-2 bg-white`}
           >
             Description
           </label>
@@ -165,8 +164,8 @@ function CreateAndEditVenueForm({
             <label
               htmlFor={'address'}
               className={`${
-                errors.location && 'text-red-700'
-              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+                errors.location ? 'text-red-700' : 'text-zinc-500'
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs px-2 bg-white`}
             >
               Address <span className={'text-xs'}>( Type in and select from menu )</span>
             </label>
@@ -186,8 +185,8 @@ function CreateAndEditVenueForm({
           <label
             htmlFor={'price'}
             className={`${
-              errors.price && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+              errors.price ? 'text-red-700' : 'text-zinc-500'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs px-2 bg-white`}
           >
             Price
           </label>
@@ -204,8 +203,8 @@ function CreateAndEditVenueForm({
           <label
             htmlFor={'maxGuests'}
             className={`${
-              errors.maxGuests && 'text-red-700'
-            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+              errors.maxGuests ? 'text-red-700' : 'text-zinc-500'
+            } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs px-2 bg-white`}
           >
             Max guests
           </label>
@@ -244,8 +243,8 @@ function CreateAndEditVenueForm({
             <label
               htmlFor={'media'}
               className={`${
-                errors.media && 'text-red-700'
-              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+                errors.media ? 'text-red-700' : 'text-zinc-500'
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs px-2 bg-white`}
             >
               {fields.length === 5 ? 'Max 5 images' : 'Image URL'}
             </label>
