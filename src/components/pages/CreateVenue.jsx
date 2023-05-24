@@ -12,6 +12,7 @@ function CreateVenue() {
   const { venueManager, accessToken } = getFromStorage('user');
   const createForm = useForm({ resolver: yupResolver(createAndEditSchema) });
   const { control } = createForm;
+  const [locationString, setLocationString] = useState('');
   const mediaArray = useFieldArray({
     control,
     name: 'media',
@@ -56,6 +57,8 @@ function CreateVenue() {
               form={createForm}
               title={'Create Venue'}
               btnTitle={'Create Venue'}
+              locationString={locationString}
+              setLocationString={setLocationString}
               mediaArray={mediaArray}
               mediaURL={mediaURL}
               setMediaURL={setMediaURL}

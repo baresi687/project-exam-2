@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { AddressAutofill } from '@mapbox/search-js-react';
 
 function CreateAndEditVenueForm({
   form,
   title,
   btnTitle,
+  locationString,
+  setLocationString,
   mediaArray,
   mediaURL,
   setMediaURL,
@@ -21,12 +24,33 @@ function CreateAndEditVenueForm({
     handleSubmit,
     clearErrors,
     getValues,
+    setValue,
     formState: { errors },
   } = form;
   const { fields, append, remove } = mediaArray;
+  const [location, setLocation] = useState(null);
   const [imgURLLoading, setImgURLLoading] = useState(false);
   const [isImgURLValid, setIsImgURLValid] = useState(true);
   const mediaInputRef = useRef(null);
+
+  function handleRetrieve(e) {
+    const locationObject = {
+      address: e.features[0].properties.address_line1,
+      city: e.features[0].properties.place,
+      zip: e.features[0].properties.postcode,
+      country: e.features[0].properties.country,
+      lat: e.features[0].geometry.coordinates[1],
+      lng: e.features[0].geometry.coordinates[0],
+    };
+    setLocation({ ...locationObject });
+    setLocationString(e.features[0].properties.place_name);
+  }
+
+  function handleLocationString(e) {
+    setLocationString(e.target.value);
+    setLocation({});
+    clearErrors('location');
+  }
 
   async function validateImgURL(url) {
     try {
@@ -66,7 +90,14 @@ function CreateAndEditVenueForm({
   function handleFormOnBlur() {
     setIsFormError(false);
     setIsImgURLValid(true);
+    clearErrors('location');
   }
+
+  useEffect(() => {
+    if (location) {
+      setValue('location', location);
+    }
+  }, [location, setValue]);
 
   useEffect(() => {
     if (!isImgURLValid) {
@@ -118,6 +149,31 @@ function CreateAndEditVenueForm({
             Description
           </label>
           {errors.description && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>{errors.description?.message}</p>}
+        </div>
+        <div className={'w-full relative'}>
+          <AddressAutofill onRetrieve={handleRetrieve} accessToken={import.meta.env.VITE_ACCESS_TOKEN}>
+            <input
+              value={locationString}
+              onChange={handleLocationString}
+              id={'address'}
+              type={'text'}
+              className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
+              placeholder={'Address'}
+              autoComplete="shipping sex"
+            />
+            <input type={'hidden'} {...register('location', { value: location ? location : {} })} />
+            <label
+              htmlFor={'address'}
+              className={`${
+                errors.location && 'text-red-700'
+              } absolute transition-all duration-100 peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-xs -top-2 left-2 text-xs text-zinc-500 px-2 bg-white`}
+            >
+              Address <span className={'text-xs'}>( Type in and select from menu )</span>
+            </label>
+            {errors.location && (
+              <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Please type in your address and select from menu</p>
+            )}
+          </AddressAutofill>
         </div>
         <div className={'w-full relative'}>
           <input

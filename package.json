@@ -12,8 +12,10 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
+    "@mapbox/search-js-react": "^1.0.0-beta.16",
     "date-fns": "^2.29.3",
     "localforage": "^1.10.0",
+    "mapbox-gl": "^2.14.1",
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-datepicker": "^4.11.0",
