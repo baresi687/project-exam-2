@@ -21,7 +21,7 @@ function VenueDetails() {
     errorMsg,
     fetchData: fetchBooking,
   } = useApi();
-  const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
+  const { id: venueId, name, description, media, location, owner, maxGuests, meta, price, bookings } = data;
   const [activeSlide, setActiveSLide] = useState(0);
   const [showMoreDesc, setShowMoreDesc] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -138,7 +138,18 @@ function VenueDetails() {
             )}
             {!isError ? (
               <>
-                <h1 className={'text-2xl font-bold capitalize mb-10 break-words sm:text-4xl'}>{name}</h1>
+                <h1 className={'text-2xl font-bold capitalize mb-2 break-words sm:text-4xl'}>{name}</h1>
+                <h2 className={'mb-6'}>
+                  {location &&
+                  location.address !== 'Unknown' &&
+                  location.address.length &&
+                  location.city !== 'Unknown' &&
+                  location.city.length &&
+                  location.country !== 'Unknown' &&
+                  location.country.length
+                    ? `${location.address}, ${location.city}, ${location.country}`
+                    : 'Placeholder for venues with no address'}
+                </h2>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   {media && (
                     <div
