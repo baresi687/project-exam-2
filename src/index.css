@@ -90,3 +90,16 @@
 .react-datepicker__tab-loop {
   position: absolute;
 }
+
+.mapboxgl-popup-content {
+  background: #9f1239 !important;
+  color: white;
+  font-size: 14px;
+  text-align: center;
+  padding: 1rem !important;
+  border-radius: 12px !important;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: #9f1239 !important;
+}
