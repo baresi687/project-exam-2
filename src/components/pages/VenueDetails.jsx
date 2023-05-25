@@ -8,7 +8,11 @@ import en_gb from 'date-fns/locale/en-GB';
 import { AuthContext } from '../../context/AuthContext.js';
 import { SignInUpModal } from '../layout/Layout.jsx';
 import { handleImgError, scrollToMessage } from '../../utils/validation.js';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 registerLocale('en-GB', en_gb);
+
+mapboxgl.accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
 function VenueDetails() {
   const { id } = useParams();
@@ -21,7 +25,7 @@ function VenueDetails() {
     errorMsg,
     fetchData: fetchBooking,
   } = useApi();
-  const { id: venueId, name, description, media, owner, maxGuests, meta, price, bookings } = data;
+  const { id: venueId, name, description, media, location, owner, maxGuests, meta, price, bookings } = data;
   const [activeSlide, setActiveSLide] = useState(0);
   const [showMoreDesc, setShowMoreDesc] = useState(false);
   const [startDate, setStartDate] = useState(null);
@@ -36,6 +40,14 @@ function VenueDetails() {
   const bookingErrorRef = useRef(null);
   const [isVenueOwnedByUser, setIsVenueOwnedByUSer] = useState(false);
   const navigate = useNavigate();
+  const [hasVenueCoordinates, setHasVenueCoordinates] = useState(false);
+  const venueAddressPopUp = useRef(null);
+  const [venueAddress, setVenueAddress] = useState('');
+  const mapContainer = useRef(null);
+  const map = useRef(null);
+  const marker = useRef(null);
+  const [lng, setLng] = useState(-70.9);
+  const [lat, setLat] = useState(42.35);
 
   if (bookings && bookings.length) {
     bookings.forEach((booking) => {
@@ -124,10 +136,63 @@ function VenueDetails() {
     }
   }, [created, navigate]);
 
+  useEffect(() => {
+    if (map.current) return;
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [lng, lat],
+      zoom: 14,
+    });
+    venueAddressPopUp.current = new mapboxgl.Popup({
+      closeButton: false,
+      maxWidth: 'none',
+    });
+    marker.current = new mapboxgl.Marker({ color: '#9f1239' });
+  });
+
+  useEffect(() => {
+    let venueAddressString;
+
+    if (
+      location &&
+      location.address !== 'Unknown' &&
+      location.address.length &&
+      location.city !== 'Unknown' &&
+      location.city.length &&
+      location.country !== 'Unknown' &&
+      location.country.length
+    ) {
+      venueAddressString = `${location.address}, ${location.city}, ${location.country}`;
+    } else {
+      venueAddressString = 'Placeholder for venues with no address';
+    }
+    setVenueAddress(venueAddressString);
+  }, [location]);
+
+  useEffect(() => {
+    if (location && location.address && location.lat !== 0 && location.lng !== 0) {
+      setHasVenueCoordinates(true);
+      setLng(location.lng);
+      setLat(location.lat);
+
+      venueAddressPopUp.current.setText(venueAddress).addTo(map.current);
+      marker.current
+        .setLngLat([location.lng, location.lat])
+        .addTo(map.current)
+        .setPopup(venueAddressPopUp.current)
+        .togglePopup();
+
+      map.current.jumpTo({
+        center: [lng, lat],
+      });
+    }
+  }, [lat, lng, location, venueAddress]);
+
   return (
     <>
       <main className={'mt-[120px] sm:mt-12'}>
-        <section id={'venue-details'} className={'mt-[88px] mb-12 sm:mt-12 lg:mb-36'}>
+        <section id={'venue-details'} className={'mt-[88px] mb-6 sm:mt-12 lg:mb-20'}>
           <div className={'container mx-auto px-4 max-w-7xl'}>
             {isLoading && (
               <>
@@ -138,7 +203,8 @@ function VenueDetails() {
             )}
             {!isError ? (
               <>
-                <h1 className={'text-2xl font-bold capitalize mb-10 break-words sm:text-4xl'}>{name}</h1>
+                <h1 className={'text-2xl font-bold capitalize mb-2 break-words sm:text-4xl'}>{name}</h1>
+                <h2 className={'mb-6 capitalize'}>{location && venueAddress}</h2>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   {media && (
                     <div
@@ -474,6 +540,9 @@ function VenueDetails() {
                 </div>
                 <div ref={bookingErrorRef}>
                   {isFormError && <div className={'api-error my-8 w-full lg:w-2/4 lg:pl-6 lg:ml-auto'}>{errorMsg}</div>}
+                </div>
+                <div id={'venue-map'} className={hasVenueCoordinates ? 'mt-12 lg:mt-20' : 'invisible h-0'}>
+                  <div ref={mapContainer} className={`map-container h-[480px] rounded-xl mt-6 mb-12`} />
                 </div>
               </>
             ) : (

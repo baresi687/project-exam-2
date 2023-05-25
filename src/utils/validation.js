@@ -27,6 +27,8 @@ const createAndEditSchema = yup.object({
     .required('Description is a required field')
     .max(450, 'Description can not exceed 450 characters'),
 
+  location: yup.object({ address: yup.string().required() }).required().nullable().default(null),
+
   price: yup
     .number()
     .typeError('Price must be a number')

@@ -23,6 +23,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   const [venueDeleteError, setVenueDeleteError] = useState(false);
   const editForm = useForm({ resolver: yupResolver(createAndEditSchema) });
   const { control } = editForm;
+  const [locationString, setLocationString] = useState('');
   const mediaArray = useFieldArray({
     control,
     name: 'media',
@@ -47,14 +48,19 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   function handleEditVenue(e) {
     clearErrors();
     setMediaURL('');
+    const locationObject = JSON.parse(e.currentTarget.dataset.location);
     const meta = JSON.parse(e.currentTarget.dataset.meta);
     const mediaArray = JSON.parse(e.currentTarget.dataset.media);
 
     setValue('name', e.currentTarget.dataset.name);
     setValue('description', e.currentTarget.dataset.description);
+    setLocationString(
+      `${locationObject.address}, ${locationObject.zip}, ${locationObject.city}, ${locationObject.country} `
+    );
     setValue('price', e.currentTarget.dataset.price);
     setValue('maxGuests', e.currentTarget.dataset.maxguests);
     setValue('media', [...mediaArray]);
+    setValue('location', { ...locationObject });
 
     for (const property in meta) {
       setValue(`meta.${property}`, meta[property]);
@@ -134,77 +140,87 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
           )}
           <div id={'venue-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3'}>
             {data &&
-              data.map(({ id, name: venueName, description, price, maxGuests, media, bookings, meta }, index) => {
-                return (
-                  <div key={index} className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100'}>
-                    <Link to={`/venues/venue-details/${id}`}>
-                      <img
-                        className={'rounded-xl object-cover h-72 w-full lg:h-44'}
-                        src={media[0]}
-                        alt={name}
-                        onError={handleImgError}
-                      />
-                    </Link>
-                    <div>
-                      <h3
-                        className={'text-lg font-bold mt-2 capitalize whitespace-nowrap overflow-hidden text-ellipsis'}
-                      >
-                        {venueName}
-                      </h3>
-                      {bookings.length ? (
-                        <details className={'relative'}>
-                          <summary className={'cursor-pointer select-none font-semibold text-red-800 mt-2.5 mb-6'}>
-                            View bookings
-                          </summary>
-                          <ul
-                            className={
-                              'absolute top-8 left-0 w-full font-semibold text-sm bg-gray-50 p-6 rounded-xl flex flex-col gap-3 drop-shadow-md border border-gray-100'
-                            }
-                          >
-                            {bookings
-                              .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
-                              .map(({ id, dateFrom, dateTo }) => {
-                                return (
-                                  <li key={id}>
-                                    {format(parseISO(dateFrom), 'd MMM')} to {format(parseISO(dateTo), 'd MMM')}{' '}
-                                    {format(parseISO(dateTo), 'y')}
-                                  </li>
-                                );
-                              })}
-                          </ul>
-                        </details>
-                      ) : (
-                        <p className={'font-extralight mt-2.5 mb-6 text-gray-900 italic'}>No bookings</p>
-                      )}
+              data.map(
+                ({ id, name: venueName, description, location, price, maxGuests, media, bookings, meta }, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100'}
+                    >
+                      <Link to={`/venues/venue-details/${id}`}>
+                        <img
+                          className={'rounded-xl object-cover h-72 w-full lg:h-44'}
+                          src={media[0]}
+                          alt={name}
+                          onError={handleImgError}
+                        />
+                      </Link>
+                      <div>
+                        <h3
+                          className={
+                            'text-lg font-bold mt-2 capitalize whitespace-nowrap overflow-hidden text-ellipsis'
+                          }
+                        >
+                          {venueName}
+                        </h3>
+                        {bookings.length ? (
+                          <details className={'relative'}>
+                            <summary className={'cursor-pointer select-none font-semibold text-red-800 mt-2.5 mb-6'}>
+                              View bookings
+                            </summary>
+                            <ul
+                              className={
+                                'absolute top-8 left-0 w-full font-semibold text-sm bg-gray-50 p-6 rounded-xl flex flex-col gap-3 drop-shadow-md border border-gray-100'
+                              }
+                            >
+                              {bookings
+                                .sort((a, b) => new Date(a.dateFrom) - new Date(b.dateFrom))
+                                .map(({ id, dateFrom, dateTo }) => {
+                                  return (
+                                    <li key={id}>
+                                      {format(parseISO(dateFrom), 'd MMM')} to {format(parseISO(dateTo), 'd MMM')}{' '}
+                                      {format(parseISO(dateTo), 'y')}
+                                    </li>
+                                  );
+                                })}
+                            </ul>
+                          </details>
+                        ) : (
+                          <p className={'font-extralight mt-2.5 mb-6 text-gray-900 italic'}>No bookings</p>
+                        )}
+                      </div>
+                      <div className={'flex gap-3'}>
+                        <button
+                          data-id={id}
+                          data-name={venueName}
+                          data-description={description}
+                          data-location={JSON.stringify(location)}
+                          data-price={price}
+                          data-maxguests={maxGuests}
+                          data-media={JSON.stringify(media)}
+                          data-meta={JSON.stringify(meta)}
+                          onClick={handleEditVenue}
+                          className={
+                            'bg-rose-800 text-white rounded h-8 w-full hover:bg-rose-700 ease-out duration-200'
+                          }
+                        >
+                          Edit
+                        </button>
+                        <button
+                          data-venueid={id}
+                          data-venuename={venueName}
+                          onClick={(e) => handleDeleteModal(id, e)}
+                          className={
+                            'bg-amber-500 w-28 text-gray-900 text-sm font-semibold rounded h-8 hover:bg-amber-400 ease-out duration-200'
+                          }
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </div>
-                    <div className={'flex gap-3'}>
-                      <button
-                        data-id={id}
-                        data-name={venueName}
-                        data-description={description}
-                        data-price={price}
-                        data-maxguests={maxGuests}
-                        data-media={JSON.stringify(media)}
-                        data-meta={JSON.stringify(meta)}
-                        onClick={handleEditVenue}
-                        className={'bg-rose-800 text-white rounded h-8 w-full hover:bg-rose-700 ease-out duration-200'}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        data-venueid={id}
-                        data-venuename={venueName}
-                        onClick={(e) => handleDeleteModal(id, e)}
-                        className={
-                          'bg-amber-500 w-28 text-gray-900 text-sm font-semibold rounded h-8 hover:bg-amber-400 ease-out duration-200'
-                        }
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                }
+              )}
           </div>
           {data && data.length === 0 && !isError && created && (
             <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
@@ -259,6 +275,8 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                 form={editForm}
                 title={'Edit Venue'}
                 btnTitle={'Edit Venue'}
+                locationString={locationString}
+                setLocationString={setLocationString}
                 mediaArray={mediaArray}
                 mediaURL={mediaURL}
                 setMediaURL={setMediaURL}

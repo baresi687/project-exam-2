@@ -1,9 +1,9 @@
-
-
 # Holidaze - Project Exam 2
+
 An accommodation booking site where users can sign up and place bookings on venues, and create venues when signing up with a manager account.
 
 ## Description
+
 Using the official API documentation, take the skills learned over the last two years, and take on an extensive
 project where the finished product should reflect my general development capabilites, including visual and technical skills,
 and build a modern front-end accommodation booking application.
@@ -34,11 +34,17 @@ This project has the following required User Stories:
 - [Tailwind CSS](https://tailwindcss.com/)
 - [date-fns](https://date-fns.org/)
 
-
-
 ## Getting Started
 
 ### Installing
+
+**Note:**
+<br>
+This project uses [Mapbox](https://www.mapbox.com/) for address autofill and displaying of venue location.<br>
+Create Venue form and Venues with coordinates will not work when running this project locally
+since my Mapbox access token is private.<br>
+To see the Mapbox functionality, visit the deployed site at [Holidaze](https://project-exam-2-hreinn.netlify.app/)<br>
+Or, sign up with [Mapbox](https://www.mapbox.com/) (free account), create/copy your access token, create a file called **.env.production** in project root with the contents of **VITE_ACCESS_TOKEN=YOUR_ACCESS_TOKEN**
 
 1. Clone the repo:
 
