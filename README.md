@@ -30,8 +30,9 @@ This project has the following required User Stories:
 
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
-- [React Datepicker](https://reactdatepicker.com/)
 - [Tailwind CSS](https://tailwindcss.com/)
+- [Mapbox](https://www.mapbox.com/) 
+- [React Datepicker](https://reactdatepicker.com/)
 - [date-fns](https://date-fns.org/)
 
 ## Getting Started
