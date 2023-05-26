@@ -118,6 +118,11 @@ function VenueDetails() {
     setEndDate(end);
   };
 
+  function validateCoordinates(num) {
+    if (Math.floor(num) === num) return false;
+    return num.toString().split('.')[1].length > 1;
+  }
+
   useEffect(() => {
     fetchData(`${GET_VENUES}/${id}?_owner=true&_bookings=true`);
   }, [fetchData, id, postBooking]);
@@ -171,7 +176,7 @@ function VenueDetails() {
   }, [location]);
 
   useEffect(() => {
-    if (location && location.address && location.lat !== 0 && location.lng !== 0) {
+    if (location && validateCoordinates(location.lat) && validateCoordinates(location.lng)) {
       setHasVenueCoordinates(true);
       setLng(location.lng);
       setLat(location.lat);
