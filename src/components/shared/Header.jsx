@@ -89,10 +89,10 @@ function Header() {
               <div
                 id={'search'}
                 className={
-                  'w-full fixed top-0 bg-white border-b border-b-gray-100 h-[72px] flex items-center sm:static sm:max-w-[600px] mx-auto'
+                  'w-full fixed top-0 bg-white border-b border-b-gray-100 h-[72px] flex items-center mx-auto sm:static sm:max-w-[600px] lg:ml-[72px]'
                 }
               >
-                <div className={'container mx-auto px-4'}>
+                <div className={'container mx-auto px-4 lg:p-0'}>
                   <div className={'flex gap-2 max-w-[600px]'}>
                     <label className={'w-full relative'}>
                       <input
