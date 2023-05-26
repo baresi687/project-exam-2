@@ -7,7 +7,7 @@ import { format, parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 function ProfileCustomer() {
-  const { data, isLoading, isError, fetchData } = useApi();
+  const { data, isLoading, created, isError, fetchData } = useApi();
   const { name, accessToken } = getFromStorage('user');
   const upComingBookings = data.bookings
     ? data.bookings
@@ -23,7 +23,7 @@ function ProfileCustomer() {
     <>
       {isLoading && (
         <>
-          <div className={'my-0 mx-auto w-fit min-h-screen'}>
+          <div className={'my-0 mx-auto w-fit min-h-screen sm:min-h-[50vh]'}>
             <div className={'loader'}></div>
           </div>
         </>
@@ -64,7 +64,7 @@ function ProfileCustomer() {
             );
           })}
       </div>
-      {!upComingBookings.length && !isError && (
+      {!upComingBookings.length && !isError && created && (
         <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
           <h3 className={'text-lg font-semibold mb-2'}>No upcoming bookings</h3>
           <p>
