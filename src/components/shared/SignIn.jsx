@@ -63,6 +63,7 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
           <label className={'w-full'}>
             <input
               {...register('email')}
+              data-cy={'email'}
               className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
                 errors.email && 'border-red-700'
               }`}
@@ -70,10 +71,15 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
               placeholder={'Email address'}
             />
           </label>
-          {errors.email && <p className={'text-red-700'}>{errors.email?.message}</p>}
+          {errors.email && (
+            <p data-cy={'email-error'} className={'text-red-700'}>
+              {errors.email?.message}
+            </p>
+          )}
           <label className={'w-full'}>
             <input
               {...register('password')}
+              data-cy={'password'}
               className={`border-gray-200 border rounded h-10 indent-4 w-full font-medium placeholder:text-zinc-500 placeholder:font-normal ${
                 errors.password && 'border-red-700'
               }`}
@@ -81,9 +87,14 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
               placeholder={'Password'}
             />
           </label>
-          {errors.password && <p className={'text-red-700'}>{errors.password?.message}</p>}
+          {errors.password && (
+            <p data-cy={'password-error'} className={'text-red-700'}>
+              {errors.password?.message}
+            </p>
+          )}
           <button
             ref={submitButtonRef}
+            data-cy={'submit'}
             className={
               'relative rounded mt-3 bg-rose-800 text-white h-10 w-full hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200'
             }
@@ -95,7 +106,13 @@ function SignIn({ closeModalOnSignIn, formErrorRef }) {
             {isLoading ? 'Processing..' : 'Sign In'}
           </button>
         </form>
-        <div ref={formErrorRef}>{isFormError && <div className={'api-error mt-6'}>{errorMsg}</div>}</div>
+        <div ref={formErrorRef}>
+          {isFormError && (
+            <div data-cy={'api-error'} className={'api-error mt-6'}>
+              {errorMsg}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
