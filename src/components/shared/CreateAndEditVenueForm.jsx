@@ -118,6 +118,7 @@ function CreateAndEditVenueForm({
         <div className={'w-full relative'}>
           <input
             {...register('name')}
+            data-cy={'name'}
             id={'name'}
             className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'text'}
@@ -135,6 +136,7 @@ function CreateAndEditVenueForm({
         <div className={'w-full relative'}>
           <textarea
             {...register('description')}
+            data-cy={'description'}
             id={'description'}
             className={`create-edit-description font-medium peer placeholder-transparent rounded h-40 px-4 pb-4 w-full`}
             placeholder={'Description'}
@@ -154,6 +156,7 @@ function CreateAndEditVenueForm({
             <input
               value={locationString}
               onChange={handleLocationString}
+              data-cy={'address'}
               id={'address'}
               type={'text'}
               className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
@@ -177,6 +180,7 @@ function CreateAndEditVenueForm({
         <div className={'w-full relative'}>
           <input
             {...register('price')}
+            data-cy={'price'}
             id={'price'}
             className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'number'}
@@ -195,6 +199,7 @@ function CreateAndEditVenueForm({
         <div className={'w-full relative'}>
           <input
             {...register('maxGuests')}
+            data-cy={'guests'}
             id={'maxGuests'}
             className={`font-medium peer placeholder-transparent border-gray-200 border rounded h-10 indent-4 w-full`}
             type={'number'}
@@ -214,6 +219,7 @@ function CreateAndEditVenueForm({
           <div className={'flex gap-2'}>
             <input
               ref={mediaInputRef}
+              data-cy={'media'}
               aria-label={'Add Image URL'}
               value={mediaURL}
               onChange={(e) => setMediaURL(e.target.value)}
@@ -226,6 +232,7 @@ function CreateAndEditVenueForm({
             />
             <button
               aria-label={'Add Image URL'}
+              data-cy={'submit-media'}
               onClick={handleImgURL}
               type={'button'}
               id={'media-btn'}
@@ -253,7 +260,7 @@ function CreateAndEditVenueForm({
           {!isImgURLValid && <p className={'text-red-700 ml-4 mt-2 mb-3 text-sm'}>Image URL is not valid or empty</p>}
           {fields.length > 0 ? (
             <div className={'mt-4 px-4'}>
-              <h2 className={`text-sm font-semibold`}>
+              <h2 data-cy={'added-image'} className={`text-sm font-semibold`}>
                 Added images {fields.length === 5 && <span className={`text-xs italic`}>( max 5 )</span>}
               </h2>
               <div className={'mt-2 grid grid-cols-3 gap-2 sm:grid-cols-5'}>
@@ -303,7 +310,7 @@ function CreateAndEditVenueForm({
           )}
         </div>
         <div id={'meta-checkboxes'} className={'text-sm flex gap-4 my-4 mx-auto md:ml-4'}>
-          <div className={'flex items-center gap-1.5'}>
+          <div data-cy={'wifi'} className={'flex items-center gap-1.5'}>
             <label htmlFor={'wifi'} className={'font-semibold select-none'}>
               Wifi
             </label>
@@ -330,6 +337,7 @@ function CreateAndEditVenueForm({
         </div>
         <button
           ref={submitButtonRef}
+          data-cy={'submit-venue'}
           type={'submit'}
           className={
             'relative rounded bg-rose-800 text-white h-10 w-full hover:bg-rose-700 disabled:hover:cursor-none ease-out duration-200'

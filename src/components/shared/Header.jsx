@@ -147,7 +147,7 @@ function Header() {
                   <>
                     <div className={'flex items-center gap-2 relative sm:justify-end'}>
                       <small className={'leading-none'}>Profile</small>
-                      <button id={'profile-menu'} onClick={handleProfileMenu}>
+                      <button data-cy={'profile-menu'} id={'profile-menu'} onClick={handleProfileMenu}>
                         <img
                           className={'pointer-events-none h-6 w-6 object-cover rounded-full'}
                           src={auth.avatar ? auth.avatar : profileSmall}
@@ -167,15 +167,24 @@ function Header() {
                           <p className={'text-sm font-semibold overflow-hidden'}>{auth.name}</p>
                         </div>
                         <nav className={'flex flex-col mt-1.5 text-sm'}>
-                          <Link to={'/profile'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                          <Link
+                            data-cy={'profile'}
+                            to={'/profile'}
+                            className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}
+                          >
                             Profile
                           </Link>
                           {auth.venueManager && (
-                            <Link to={'/create-venue'} className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}>
+                            <Link
+                              data-cy={'create-venue'}
+                              to={'/create-venue'}
+                              className={'px-3 py-1.5 hover:bg-rose-800 hover:text-white'}
+                            >
                               Create Venue
                             </Link>
                           )}
                           <button
+                            data-cy={'sign-out'}
                             onClick={handleSignOut}
                             className={
                               'text-left mt-1.5 px-3 py-2 border-t-2 border-gray-100 hover:bg-rose-800 hover:text-white'
@@ -192,6 +201,7 @@ function Header() {
                   <button
                     onClick={() => setIsSignInUpModal(true)}
                     id={'sign-in-up'}
+                    data-cy={'sign-in-up'}
                     className={
                       'bg-rose-800 text-white rounded h-10 w-full hover:bg-rose-700 ease-out duration-200 sm:w-[88px]'
                     }

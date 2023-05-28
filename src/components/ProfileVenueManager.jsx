@@ -207,6 +207,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                           Edit
                         </button>
                         <button
+                          data-cy={venueName}
                           data-venueid={id}
                           data-venuename={venueName}
                           onClick={(e) => handleDeleteModal(id, e)}
@@ -331,6 +332,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                       Cancel
                     </button>
                     <button
+                      data-cy={'delete-venue'}
                       ref={deleteSubmitRef}
                       onClick={() => handleDeleteVenue(venueIdToBeDeletedOrChanged)}
                       className={

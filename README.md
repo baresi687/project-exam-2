@@ -31,7 +31,7 @@ This project has the following required User Stories:
 - [Vite](https://vitejs.dev/)
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [Mapbox](https://www.mapbox.com/) 
+- [Mapbox](https://www.mapbox.com/)
 - [React Datepicker](https://reactdatepicker.com/)
 - [date-fns](https://date-fns.org/)
 
@@ -66,6 +66,39 @@ To run the app, run the following commands:
 ```bash
 npm run build
 npm run preview
+```
+
+### Testing
+
+**Note:**<br>
+Mapbox access token is required for the following test:<br> **Sign In, create Venue, and delete Venue**
+
+#### Cypress tests
+
+- Sign In form validation. Show error messages.
+- Sign In with invalid credentials. Show error message from the API.
+- Sign In and Out. Display/hide Sign In button or Profile menu.
+- Sign In, create Venue, and delete Venue
+
+To run Cypress, make sure the local server is running.
+
+```bash
+npm run preview
+```
+
+And then in another terminal:
+
+```bash
+npm run cypress:open
+```
+
+Once Cypress has opened, select E2E testing, choose browser and click 'Start E2E Testing in browser'<br>
+Then you should see a list of the four tests where you can run them individually.
+
+To run all tests in the terminal without Cypress GUI:
+
+```bash
+npx cypress run
 ```
 
 ## Deployed site
