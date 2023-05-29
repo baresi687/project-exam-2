@@ -37,9 +37,9 @@ function Home() {
             )}
             <div
               id={'venues-container'}
-              className={
-                'flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4'
-              }
+              className={`flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4 ${
+                isError ? 'h-auto' : 'h-[377.5rem] sm:h-[184.5rem] md:h-[114rem] lg:h-[85rem]'
+              }`}
             >
               {!isError ? (
                 <>

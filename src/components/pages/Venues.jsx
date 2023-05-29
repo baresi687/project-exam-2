@@ -1,13 +1,13 @@
 import VenueListItem from '../VenueListItem.jsx';
 import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { filterVenuesWithProperties } from '../../utils/validation.js';
+import { VenuePageContext } from '../layout/Layout.jsx';
 
 function Venues() {
-  const [sort, setSort] = useState(true);
-  const [sortOrder, setSortOrder] = useState(true);
   const { data, isLoading, isError, fetchData } = useApi();
+  const [sort, setSort, sortOrder, setSortOrder] = useContext(VenuePageContext);
 
   useEffect(() => {
     fetchData(`${GET_VENUES}?&sort=${sort ? 'created' : 'name'}&sortOrder=${sortOrder ? 'desc' : 'asc'}`);
@@ -70,15 +70,18 @@ function Venues() {
             )}
             <div
               id={'venues-container'}
-              className={
-                'flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4'
-              }
+              className={`flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4              
+                 ${
+                   isError ? 'h-auto' : 'min-h-[2409.5rem] sm:min-h-[1184.5rem] md:min-h-[757.5rem] lg:min-h-[553rem]'
+                 }`}
             >
               {!isError ? (
                 <>
-                  {filterVenuesWithProperties(data).map((venue) => (
-                    <VenueListItem key={venue.id} {...venue} />
-                  ))}
+                  {filterVenuesWithProperties(data)
+                    .slice(0, 76)
+                    .map((venue) => (
+                      <VenueListItem key={venue.id} {...venue} />
+                    ))}
                 </>
               ) : (
                 <div className={'api-error'}>
