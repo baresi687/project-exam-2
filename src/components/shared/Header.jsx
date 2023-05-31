@@ -14,6 +14,19 @@ function Header() {
   const [isNotSignedIn, setIsNotSignedIn] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
   const [, setIsSignInUpModal] = useContext(SignInUpModal);
+  const [prevScrollPosition, setPrevScrollPosition] = useState(0);
+  const [headerVisible, setHeaderVisible] = useState(true);
+
+  function handleHeaderOnScroll() {
+    const currentScrollPos = window.scrollY;
+
+    if (currentScrollPos > prevScrollPosition) {
+      setHeaderVisible(false);
+    } else {
+      setHeaderVisible(true);
+    }
+    setPrevScrollPosition(currentScrollPos);
+  }
 
   function handleSearch() {
     if (searchValue.trim()) {
@@ -45,6 +58,11 @@ function Header() {
   }
 
   useEffect(() => {
+    window.addEventListener('scroll', handleHeaderOnScroll);
+    return () => window.removeEventListener('scroll', handleHeaderOnScroll);
+  });
+
+  useEffect(() => {
     document.addEventListener('mousedown', handleProfileMenuClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleProfileMenuClickOutside);
@@ -69,7 +87,11 @@ function Header() {
 
   return (
     <>
-      <header className={'sm:border-b sm:border-b-gray-100'}>
+      <header
+        className={`sm:border-b sm:border-b-gray-100 z-40 ease-in-out duration-300 sm:sticky ${
+          headerVisible ? 'top-0' : '-top-full'
+        } `}
+      >
         <div id={'header'}>
           <div className={'container mx-auto fixed z-50 bottom-0 bg-white sm:static sm:max-w-7xl sm:px-4'}>
             <div className={'flex items-center justify-center gap-6 h-[72px] border-t border-t-gray-100 sm:gap-8'}>
