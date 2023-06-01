@@ -201,8 +201,8 @@ function VenueDetails() {
           <div className={'container mx-auto px-4 max-w-7xl'}>
             {isLoading && (
               <>
-                <div className={'flex justify-center min-h-screen mt-48 lg:mt-32'}>
-                  <div className={'loader'}></div>
+                <div className={'absolute left-0 right-0 z-40 min-h-screen flex justify-center bg-white'}>
+                  <div className={'loader mt-24'}></div>
                 </div>
               </>
             )}

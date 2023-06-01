@@ -63,7 +63,7 @@ function Venues() {
             </div>
             {isLoading && (
               <>
-                <div className={'my-0 mx-auto w-fit min-h-screen'}>
+                <div className={'absolute left-0 right-0 min-h-screen flex justify-center bg-white'}>
                   <div className={'loader'}></div>
                 </div>
               </>

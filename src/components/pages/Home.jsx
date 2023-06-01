@@ -30,7 +30,7 @@ function Home() {
             <h2 className={'text-3xl font-bold mb-12'}>Latest venues</h2>
             {isLoading && (
               <>
-                <div className={'my-0 mx-auto w-fit min-h-screen'}>
+                <div className={'absolute left-0 right-0 min-h-screen flex justify-center bg-white'}>
                   <div className={'loader'}></div>
                 </div>
               </>
