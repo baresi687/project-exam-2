@@ -16,7 +16,7 @@ mapboxgl.accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
 function VenueDetails() {
   const { id } = useParams();
-  const { data, isLoading, isError, fetchData } = useApi();
+  const { data, isLoading, created: venueLoaded, isError, fetchData } = useApi();
   const {
     data: postBooking,
     created,
@@ -169,11 +169,11 @@ function VenueDetails() {
       location.country.length
     ) {
       venueAddressString = `${location.address}, ${location.city}, ${location.country}`;
-    } else {
+    } else if (venueLoaded) {
       venueAddressString = 'Placeholder for venues with no address';
     }
     setVenueAddress(venueAddressString);
-  }, [location]);
+  }, [location, venueLoaded]);
 
   useEffect(() => {
     if (location && validateCoordinates(location.lat) && validateCoordinates(location.lng)) {
@@ -209,7 +209,7 @@ function VenueDetails() {
             {!isError ? (
               <>
                 <h1 className={'text-2xl font-bold capitalize mb-2 break-words sm:text-4xl'}>{name}</h1>
-                <h2 className={'mb-6 capitalize'}>{location && venueAddress}</h2>
+                <h2 className={'h-6 mb-6 capitalize'}>{location && venueAddress}</h2>
                 <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
                   {media && (
                     <div
