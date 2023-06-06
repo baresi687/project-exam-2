@@ -2,6 +2,16 @@
 
 An accommodation booking site where users can sign up and place bookings on venues, and create venues when signing up with a manager account.
 
+#### Screenshots mobile and desktop
+
+<div>
+ <img src="screenshots/mobile-01.png" alt="Mobile screenshot 1"> 
+  &nbsp&nbsp&nbsp 
+ <img src="screenshots/mobile-02.png" alt="Mobile screenshot 2">
+</div>
+
+![Desktop screenshot](screenshots/desktop.png)
+
 ## Description
 
 Using the official API documentation, take the skills learned over the last two years, and take on an extensive
