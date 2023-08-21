@@ -70,10 +70,7 @@ function Venues() {
             )}
             <div
               id={'venues-container'}
-              className={`flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4              
-                 ${
-                   isError ? 'h-auto' : 'min-h-[2409.5rem] sm:min-h-[1184.5rem] md:min-h-[757.5rem] lg:min-h-[553rem]'
-                 }`}
+              className={`flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4`}
             >
               {!isError ? (
                 <>
