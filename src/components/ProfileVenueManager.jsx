@@ -3,16 +3,18 @@ import { createAndEditSchema, handleImgError, scrollToMessage } from '../utils/v
 import { PROFILES, GET_VENUES as EDIT_DELETE_VENUE } from '../settings/api.js';
 import { useApi } from '../hooks/useApi.js';
 import { getFromStorage } from '../utils/storage.js';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import CreateAndEditVenueForm from './shared/CreateAndEditVenueForm.jsx';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import ProfileCustomer from './ProfileCustomer.jsx';
+import { DataAndSettingsContext } from '../context/DataAndSettingsContext.jsx';
 
-function ProfileVenueManager({ ifManagerHasBooked }) {
-  const [isVenueSectionActive, setIsVenueSectionActive] = useState(true);
-  const { data, isLoading, created, isError, fetchData } = useApi();
+function ProfileVenueManager() {
+  const [data, isLoading, isError, fetchData, , isVenueSectionActive, setIsVenueSectionActive] =
+    useContext(DataAndSettingsContext);
+  const [isDoneFetching, setIsDoneFetching] = useState(false);
   const { isError: isDeleteError, isLoading: isLoadingDeleteVenue, isDeleted, fetchData: deleteVenue } = useApi();
   const { name, accessToken } = getFromStorage('user');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -42,6 +44,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   } = useApi();
 
   function onEditSubmit(data) {
+    setIsDoneFetching(false);
     editVenue(`${EDIT_DELETE_VENUE}/${venueIdToBeDeletedOrChanged}`, 'PUT', accessToken, data);
   }
 
@@ -82,16 +85,15 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
   }
 
   useEffect(() => {
-    if (ifManagerHasBooked) {
-      setIsVenueSectionActive(false);
+    if (isVenueSectionActive) {
+      setIsDoneFetching(false);
+      fetchData(`${PROFILES}/${name}/venues?_bookings=true&_venues=true`, 'GET', accessToken).then(() =>
+        setIsDoneFetching(true)
+      );
+      setIsDeleteModalOpen(false);
+      setIsEditModalOpen(false);
     }
-  }, [ifManagerHasBooked]);
-
-  useEffect(() => {
-    fetchData(`${PROFILES}/${name}/venues?_bookings=true&_venues=true`, 'GET', accessToken);
-    setIsDeleteModalOpen(false);
-    setIsEditModalOpen(false);
-  }, [accessToken, fetchData, name, isDeleted, venueEdited]);
+  }, [accessToken, fetchData, name, isDeleted, venueEdited, isVenueSectionActive]);
 
   useEffect(() => {
     if (isEditError) {
@@ -139,7 +141,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
             </>
           )}
           <div id={'venue-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3'}>
-            {data &&
+            {data.length > 0 &&
               data.map(
                 ({ id, name: venueName, description, location, price, maxGuests, media, bookings, meta }, index) => {
                   return (
@@ -163,7 +165,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                         >
                           {venueName}
                         </h3>
-                        {bookings.length ? (
+                        {bookings && bookings.length ? (
                           <details className={'relative'}>
                             <summary className={'cursor-pointer select-none font-semibold text-red-800 mt-2.5 mb-6'}>
                               View bookings
@@ -223,7 +225,7 @@ function ProfileVenueManager({ ifManagerHasBooked }) {
                 }
               )}
           </div>
-          {data && data.length === 0 && !isError && created && (
+          {isDoneFetching && data.length === 0 && !isError && (
             <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
               <h3 className={'text-lg font-semibold mb-2'}>You have no venues</h3>
               <p>

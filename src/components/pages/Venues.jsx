@@ -1,13 +1,12 @@
 import VenueListItem from '../VenueListItem.jsx';
-import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import { useContext, useEffect } from 'react';
 import { filterVenuesWithProperties } from '../../utils/validation.js';
-import { VenuePageContext } from '../layout/Layout.jsx';
+import { DataAndSettingsContext } from '../../context/DataAndSettingsContext.jsx';
 
 function Venues() {
-  const { data, isLoading, isError, fetchData } = useApi();
-  const [sort, setSort, sortOrder, setSortOrder] = useContext(VenuePageContext);
+  const [data, isLoading, isError, fetchData, , , , sort, setSort, sortOrder, setSortOrder] =
+    useContext(DataAndSettingsContext);
 
   useEffect(() => {
     fetchData(`${GET_VENUES}?&sort=${sort ? 'created' : 'name'}&sortOrder=${sortOrder ? 'desc' : 'asc'}`);
@@ -74,11 +73,10 @@ function Venues() {
             >
               {!isError ? (
                 <>
-                  {filterVenuesWithProperties(data)
-                    .slice(0, 76)
-                    .map((venue) => (
-                      <VenueListItem key={venue.id} {...venue} />
-                    ))}
+                  {data.length > 0 &&
+                    filterVenuesWithProperties(data)
+                      .slice(0, 76)
+                      .map((venue) => <VenueListItem key={venue.id} {...venue} />)}
                 </>
               ) : (
                 <div className={'api-error'}>

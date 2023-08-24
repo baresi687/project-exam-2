@@ -5,11 +5,12 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import en_gb from 'date-fns/locale/en-GB';
-import { AuthContext } from '../../context/AuthContext.js';
-import { SignInUpModal } from '../layout/Layout.jsx';
+import { AuthContext } from '../../context/AuthContext.jsx';
+import { SignInUpModalContext } from '../../context/SignInUpModalContext.jsx';
 import { handleImgError, scrollToMessage } from '../../utils/validation.js';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import { DataAndSettingsContext } from '../../context/DataAndSettingsContext.jsx';
 registerLocale('en-GB', en_gb);
 
 mapboxgl.accessToken = import.meta.env.VITE_ACCESS_TOKEN;
@@ -35,7 +36,8 @@ function VenueDetails() {
   const bookingsArray = [];
   const [isFormError, setIsFormError] = useState(false);
   const [auth] = useContext(AuthContext);
-  const [, setIsSignInUpModal] = useContext(SignInUpModal);
+  const [, setIsSignInUpModal] = useContext(SignInUpModalContext);
+  const [, , , , , , setIsVenueSectionActive] = useContext(DataAndSettingsContext);
   const submitBookingRef = useRef(null);
   const bookingErrorRef = useRef(null);
   const [isVenueOwnedByUser, setIsVenueOwnedByUSer] = useState(false);
@@ -137,9 +139,12 @@ function VenueDetails() {
 
   useEffect(() => {
     if (created) {
-      navigate('/profile', { state: { ifManagerHasBooked: true } });
+      const promise = new Promise((resolve) => {
+        resolve(setIsVenueSectionActive(false));
+      });
+      promise.then(() => navigate('/profile'));
     }
-  }, [created, navigate]);
+  }, [created, navigate, setIsVenueSectionActive]);
 
   useEffect(() => {
     if (map.current) return;

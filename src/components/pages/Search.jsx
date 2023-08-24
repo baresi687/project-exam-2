@@ -1,17 +1,19 @@
 import { useParams } from 'react-router-dom';
 import VenueListItem from '../VenueListItem.jsx';
-import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { filterVenuesWithProperties } from '../../utils/validation.js';
+import { DataAndSettingsContext } from '../../context/DataAndSettingsContext.jsx';
 
 function Search() {
   const { value } = useParams();
-  const { data, isLoading, isError, fetchData } = useApi();
-  const searchResults = data.filter(
-    ({ name, description }) =>
-      name.toLowerCase().includes(value.toLowerCase()) || description.toLowerCase().includes(value.toLowerCase())
-  );
+  const [data, isLoading, isError, fetchData] = useContext(DataAndSettingsContext);
+  const searchResults =
+    data.length > 0 &&
+    data.filter(
+      ({ name, description }) =>
+        name.toLowerCase().includes(value.toLowerCase()) || description.toLowerCase().includes(value.toLowerCase())
+    );
 
   useEffect(() => {
     fetchData(GET_VENUES + '?&sort=created&sortOrder=desc');

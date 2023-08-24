@@ -1,8 +1,11 @@
 import SignUp from './SignUp.jsx';
 import SignIn from './SignIn.jsx';
-import { useRef } from 'react';
+import { useContext, useRef } from 'react';
+import { SignInUpModalContext } from '../../context/SignInUpModalContext.jsx';
 
-function SignInAndUpModal({ isSignInUpModal, setIsSignInUpModal, isSignInElemActive, setIsSignInElemActive }) {
+function SignInAndUpModal() {
+  const [isSignInUpModal, setIsSignInUpModal, isSignInElemActive, setIsSignInElemActive] =
+    useContext(SignInUpModalContext);
   const formErrorRef = useRef(null);
 
   return (
