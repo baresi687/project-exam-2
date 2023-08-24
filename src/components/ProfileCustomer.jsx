@@ -26,8 +26,8 @@ function ProfileCustomer() {
     <>
       {isLoading && (
         <>
-          <div className={'my-0 mx-auto w-fit min-h-screen sm:min-h-[50vh]'}>
-            <div className={'loader'}></div>
+          <div className={'my-0 mx-auto w-fit relative'}>
+            <div className={'loader absolute'}></div>
           </div>
         </>
       )}

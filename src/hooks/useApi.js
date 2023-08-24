@@ -10,8 +10,6 @@ export function useApi() {
 
   const fetchData = useCallback(
     async function (url, method = 'GET', auth, postData) {
-      setData([]);
-      setCreated(false);
       try {
         setIsLoading(true);
         setIsError(false);
