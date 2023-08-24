@@ -14,7 +14,6 @@ import { DataAndSettingsContext } from '../context/DataAndSettingsContext.jsx';
 function ProfileVenueManager() {
   const [data, isLoading, isError, fetchData, , isVenueSectionActive, setIsVenueSectionActive] =
     useContext(DataAndSettingsContext);
-  const [venues, setVenues] = useState([]);
   const [isDoneFetching, setIsDoneFetching] = useState(false);
   const { isError: isDeleteError, isLoading: isLoadingDeleteVenue, isDeleted, fetchData: deleteVenue } = useApi();
   const { name, accessToken } = getFromStorage('user');
@@ -97,12 +96,6 @@ function ProfileVenueManager() {
   }, [accessToken, fetchData, name, isDeleted, venueEdited, isVenueSectionActive]);
 
   useEffect(() => {
-    if (isDoneFetching) {
-      setVenues(data);
-    }
-  }, [data, isDoneFetching]);
-
-  useEffect(() => {
     if (isEditError) {
       editSubmitRef.current.focus();
       setIsFormError(true);
@@ -139,17 +132,17 @@ function ProfileVenueManager() {
         </button>
       </div>
       {isVenueSectionActive ? (
-        <div id={'venues'}>
+        <div id={'venues'} className={'relative h-full'}>
           {isLoading && (
             <>
-              <div className={'my-0 mx-auto w-fit relative'}>
-                <div className={'loader absolute'}></div>
+              <div className={'absolute left-0 right-0 h-full flex justify-center bg-white'}>
+                <div className={'loader'}></div>
               </div>
             </>
           )}
           <div id={'venue-container'} className={'flex flex-col gap-6 lg:grid lg:grid-cols-2 xl:grid-cols-3'}>
-            {venues.length > 0 &&
-              venues.map(
+            {data.length > 0 &&
+              data.map(
                 ({ id, name: venueName, description, location, price, maxGuests, media, bookings, meta }, index) => {
                   return (
                     <div
@@ -232,7 +225,7 @@ function ProfileVenueManager() {
                 }
               )}
           </div>
-          {isDoneFetching && venues.length === 0 && !isError && (
+          {isDoneFetching && data.length === 0 && !isError && (
             <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
               <h3 className={'text-lg font-semibold mb-2'}>You have no venues</h3>
               <p>

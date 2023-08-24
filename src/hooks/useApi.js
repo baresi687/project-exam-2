@@ -33,15 +33,18 @@ export function useApi() {
           if (response.status === 200 || response.status === 201 || response.status === 202) {
             setData(responseJSON);
             setCreated(true);
-          } else if (response.status === 400 || response.status === 401) {
-            setIsError(true);
-            setErrorMsg(responseJSON.errors[0].message);
           } else {
+            setData([]);
             setIsError(true);
-            setErrorMsg('Something went wrong.. please try again later');
+            if (response.status === 400 || response.status === 401) {
+              setErrorMsg(responseJSON.errors[0].message);
+            } else {
+              setErrorMsg('Something went wrong.. please try again later');
+            }
           }
         }
       } catch (error) {
+        setData([]);
         setIsError(true);
         setErrorMsg('Something went wrong.. please try again later');
       } finally {

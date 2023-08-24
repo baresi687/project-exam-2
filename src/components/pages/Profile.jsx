@@ -124,7 +124,7 @@ function Profile() {
                   </div>
                 </div>
               </div>
-              <div id={'customer-manager'} className={'sm:grow'}>
+              <div id={'customer-manager'} className={'flex flex-col sm:grow'}>
                 {venueManager ? (
                   <ProfileVenueManager />
                 ) : (

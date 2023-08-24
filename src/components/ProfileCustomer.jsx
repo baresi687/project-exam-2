@@ -26,7 +26,7 @@ function ProfileCustomer() {
     <>
       {isLoading && (
         <>
-          <div className={'my-0 mx-auto w-fit relative'}>
+          <div className={'flex justify-center my-0 mx-auto relative'}>
             <div className={'loader absolute'}></div>
           </div>
         </>
