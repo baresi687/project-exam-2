@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext.js';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 import profileImg from '../../assets/profile.svg';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -36,8 +36,6 @@ function Profile() {
   const [isFormError, setIsFormError] = useState(false);
   const avatarErrorRef = useRef(null);
   const avatarSubmitButtonRef = useRef(null);
-  const [hasVenueManagerBooked, setHasVenueManagerBooked] = useState(false);
-  const { state } = useLocation();
 
   function onAvatarSubmit(data) {
     fetchData(`${PROFILES}/${name}/media`, 'PUT', accessToken, data);
@@ -51,12 +49,6 @@ function Profile() {
       navigate('/', { replace: true });
     }
   }, [navigate, setAuth]);
-
-  useEffect(() => {
-    if (state && state.ifManagerHasBooked === true) {
-      setHasVenueManagerBooked(true);
-    }
-  }, [state]);
 
   useEffect(() => {
     if (isError) {
@@ -132,9 +124,9 @@ function Profile() {
                   </div>
                 </div>
               </div>
-              <div id={'customer-manager'} className={'sm:grow'}>
+              <div id={'customer-manager'} className={'flex flex-col sm:grow'}>
                 {venueManager ? (
-                  <ProfileVenueManager ifManagerHasBooked={hasVenueManagerBooked} />
+                  <ProfileVenueManager />
                 ) : (
                   <div>
                     <h2 className={'text-xl font-bold mb-6'}>Upcoming bookings</h2>

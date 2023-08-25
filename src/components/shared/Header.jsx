@@ -2,8 +2,8 @@ import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import profileSmall from '../../assets/profile-small.svg';
 import { useContext, useEffect, useRef, useState } from 'react';
-import { AuthContext } from '../../context/AuthContext.js';
-import { SignInUpModal } from '../layout/Layout.jsx';
+import { AuthContext } from '../../context/AuthContext.jsx';
+import { SignInUpModalContext } from '../../context/SignInUpModalContext.jsx';
 
 function Header() {
   const [searchValue, setSearchValue] = useState('');
@@ -13,7 +13,7 @@ function Header() {
   const { pathname } = useLocation();
   const [isNotSignedIn, setIsNotSignedIn] = useState(false);
   const [auth, setAuth] = useContext(AuthContext);
-  const [, setIsSignInUpModal] = useContext(SignInUpModal);
+  const [, setIsSignInUpModal] = useContext(SignInUpModalContext);
 
   function handleSearch() {
     if (searchValue.trim()) {

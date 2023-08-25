@@ -1,33 +1,21 @@
 import Header from '../shared/Header.jsx';
 import Footer from '../shared/Footer.jsx';
 import { Outlet } from 'react-router-dom';
-import { createContext, useState } from 'react';
 import SignInAndUpModal from '../shared/SignInAndUpModal.jsx';
-
-export const SignInUpModal = createContext([]);
-export const VenuePageContext = createContext([]);
+import DataAndSettingsProvider from '../../context/DataAndSettingsContext.jsx';
+import SignInUpModalProvider from '../../context/SignInUpModalContext.jsx';
 
 function Layout() {
-  const [isSignInUpModal, setIsSignInUpModal] = useState(false);
-  const [isSignInElemActive, setIsSignInElemActive] = useState(true);
-  const [sort, setSort] = useState(true);
-  const [sortOrder, setSortOrder] = useState(true);
-
   return (
     <>
-      <SignInUpModal.Provider value={[isSignInUpModal, setIsSignInUpModal, isSignInElemActive, setIsSignInElemActive]}>
+      <SignInUpModalProvider>
         <Header />
-        <SignInAndUpModal
-          isSignInUpModal={isSignInUpModal}
-          setIsSignInUpModal={setIsSignInUpModal}
-          isSignInElemActive={isSignInElemActive}
-          setIsSignInElemActive={setIsSignInElemActive}
-        />
-        <VenuePageContext.Provider value={[sort, setSort, sortOrder, setSortOrder]}>
+        <SignInAndUpModal />
+        <DataAndSettingsProvider>
           <Outlet />
-        </VenuePageContext.Provider>
+        </DataAndSettingsProvider>
         <Footer />
-      </SignInUpModal.Provider>
+      </SignInUpModalProvider>
     </>
   );
 }

@@ -1,13 +1,14 @@
-import { useApi } from '../hooks/useApi.js';
 import { PROFILES } from '../settings/api.js';
-import { useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { getFromStorage } from '../utils/storage.js';
 import { handleImgError } from '../utils/validation.js';
 import { format, parseISO } from 'date-fns';
 import { Link } from 'react-router-dom';
+import { DataAndSettingsContext } from '../context/DataAndSettingsContext.jsx';
 
 function ProfileCustomer() {
-  const { data, isLoading, created, isError, fetchData } = useApi();
+  const [data, isLoading, isError, fetchData] = useContext(DataAndSettingsContext);
+  const [isDoneFetching, setIsDoneFetching] = useState(false);
   const { name, accessToken } = getFromStorage('user');
   const upComingBookings = data.bookings
     ? data.bookings
@@ -16,15 +17,17 @@ function ProfileCustomer() {
     : [];
 
   useEffect(() => {
-    fetchData(`${PROFILES}/${name}?_bookings=true&_venues=true`, 'GET', accessToken);
+    fetchData(`${PROFILES}/${name}?_bookings=true&_venues=true`, 'GET', accessToken).then(() =>
+      setIsDoneFetching(true)
+    );
   }, [accessToken, fetchData, name]);
 
   return (
     <>
       {isLoading && (
         <>
-          <div className={'my-0 mx-auto w-fit min-h-screen sm:min-h-[50vh]'}>
-            <div className={'loader'}></div>
+          <div className={'flex justify-center my-0 mx-auto relative'}>
+            <div className={'loader absolute'}></div>
           </div>
         </>
       )}
@@ -64,7 +67,7 @@ function ProfileCustomer() {
             );
           })}
       </div>
-      {!upComingBookings.length && !isError && created && (
+      {isDoneFetching && upComingBookings.length === 0 && !isError && (
         <div className={'rounded-xl p-6 border border-neutral-200 shadow-sm shadow-neutral-100 md:w-fit'}>
           <h3 className={'text-lg font-semibold mb-2'}>No upcoming bookings</h3>
           <p>

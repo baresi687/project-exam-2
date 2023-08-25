@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { useApi } from '../../hooks/useApi.js';
 import { SIGN_IN } from '../../settings/api.js';
-import { AuthContext } from '../../context/AuthContext.js';
+import { AuthContext } from '../../context/AuthContext.jsx';
 import { scrollToMessage } from '../../utils/validation.js';
 
 const schema = yup.object({

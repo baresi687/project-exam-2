@@ -1,11 +1,11 @@
-import { useApi } from '../../hooks/useApi.js';
 import { GET_VENUES } from '../../settings/api.js';
 import VenueListItem from '../VenueListItem.jsx';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { filterVenuesWithProperties } from '../../utils/validation.js';
+import { DataAndSettingsContext } from '../../context/DataAndSettingsContext.jsx';
 
 function Home() {
-  const { data, isLoading, isError, fetchData } = useApi();
+  const [data, isLoading, isError, fetchData] = useContext(DataAndSettingsContext);
 
   useEffect(() => {
     fetchData(GET_VENUES + '?&sort=created');
@@ -37,17 +37,14 @@ function Home() {
             )}
             <div
               id={'venues-container'}
-              className={`flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4 ${
-                isError ? 'h-auto' : 'h-[377.5rem] sm:h-[184.5rem] md:h-[114rem] lg:h-[85rem]'
-              }`}
+              className={`flex flex-col gap-14 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4`}
             >
               {!isError ? (
                 <>
-                  {filterVenuesWithProperties(data)
-                    .slice(0, 12)
-                    .map((venue) => (
-                      <VenueListItem key={venue.id} {...venue} />
-                    ))}
+                  {data.length > 0 &&
+                    filterVenuesWithProperties(data)
+                      .slice(0, 12)
+                      .map((venue) => <VenueListItem key={venue.id} {...venue} />)}
                 </>
               ) : (
                 <div className={'api-error'}>
