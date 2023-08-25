@@ -320,9 +320,9 @@ function VenueDetails() {
                     </div>
                   )}
                   <div
-                    className={
-                      'relative rounded-xl py-6 border border-neutral-200 shadow-sm shadow-neutral-100 lg:basis-1/2'
-                    }
+                    className={`${
+                      !venueLoaded ? 'hidden' : 'block'
+                    } relative rounded-xl py-6 border border-neutral-200 shadow-sm shadow-neutral-100 lg:basis-1/2`}
                   >
                     <div
                       className={`left-0 px-6 bg-white lg:absolute ${
