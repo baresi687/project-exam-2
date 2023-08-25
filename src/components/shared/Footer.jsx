@@ -6,8 +6,8 @@ function Footer() {
         <div className={'sm:flex justify-center items-center gap-14'}>
           <img className={'mx-auto my-0 sm:h-max sm:m-0'} src={newsletterImg} alt={'Newsletter'} />
           <div className={'container mx-auto mt-8 px-4 flex flex-col gap-4 sm:max-w-[400px] sm:m-0 sm:p-0'}>
-            <h3 className={'text-2xl font-bold'}>Sign up for our newsletter</h3>
-            <p className={'text-lg'}>Receive travel tips and special offers on venues.</p>
+            <h3 className={'text-2xl font-bold text-center sm:text-start'}>Sign up for our newsletter</h3>
+            <p className={'text-center sm:text-start sm:text-lg'}>Receive travel tips and special offers on venues.</p>
             <div className={'flex gap-4'}>
               <label className={'w-full'}>
                 <input
