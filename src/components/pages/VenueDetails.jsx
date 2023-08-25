@@ -215,7 +215,10 @@ function VenueDetails() {
               <>
                 <h1 className={'text-2xl font-bold capitalize mb-2 break-words sm:text-4xl'}>{name}</h1>
                 <h2 className={'h-6 mb-6 capitalize'}>{location && venueAddress}</h2>
-                <div id={'venue-content'} className={'flex flex-col gap-6 lg:flex-row lg:h-[460px]'}>
+                <div
+                  id={'venue-content'}
+                  className={'flex flex-col gap-6 min-h-[888px] lg:min-h-0 lg:flex-row lg:h-[460px]'}
+                >
                   {media && (
                     <div
                       className={
